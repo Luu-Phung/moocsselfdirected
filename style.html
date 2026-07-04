@@ -1,0 +1,40 @@
+<style>
+    .btn-primary {
+    display: block;
+    width: fit-content;   /* hoặc bỏ dòng này nếu không cần */
+    margin: 20px auto;
+
+    background: var(--primary);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+    border: none;
+    cursor: pointer;
+}
+        ..btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+}
+
+
+<button class="btn-primary"style="margin-top:20px;"onclick="finishModule1()">Hoàn thành Module</button>
+    </main>
+
+
+
+<script>
+         function finishModule1(){
+
+    localStorage.setItem("currentModule",2);
+
+    alert("Bạn đã hoàn thành Module 2!");
+
+    window.location.href="module3.html";
+
+}

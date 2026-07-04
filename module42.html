@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BÀI 4.2: Đánh giá tài liệu học tập</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f2f7fc;
+            padding: 30px 20px;
+            color: #0b2a44;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 48px;
+            box-shadow: 0 25px 60px rgba(0, 20, 40, 0.10);
+            padding: 40px 45px 50px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* ---------- Nội dung học tập ---------- */
+        .content-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e4a6b, #0f2c44);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .content-section .subhead {
+            font-size: 16px;
+            color: #3f627c;
+            border-bottom: 2px dashed #d0e0ed;
+            padding-bottom: 18px;
+            margin-bottom: 25px;
+        }
+
+        .content-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a405b;
+            margin: 28px 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section h2 .emoji-big {
+            font-size: 28px;
+        }
+
+        .content-section p {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            color: #1f3e57;
+        }
+
+        .content-section ul, .content-section ol {
+            padding-left: 28px;
+            margin-bottom: 20px;
+        }
+
+        .content-section li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            color: #1f3e57;
+        }
+
+        .content-section .highlight-box {
+            background: #e5f0fa;
+            border-left: 6px solid #1e4a6b;
+            padding: 18px 24px;
+            border-radius: 16px;
+            margin: 22px 0;
+        }
+
+        .content-section .highlight-box strong {
+            color: #0f2c44;
+        }
+
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 28px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .content-section th {
+            background: #1e4a6b;
+            color: white;
+            font-weight: 600;
+            padding: 12px 12px;
+            text-align: left;
+        }
+
+        .content-section td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e5edf5;
+            background: #fafdff;
+        }
+
+        .content-section tr:last-child td {
+            border-bottom: none;
+        }
+
+        .content-section .table-wrap {
+            overflow-x: auto;
+        }
+
+        .content-section .principle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0 20px;
+        }
+
+        .content-section .principle-item {
+            background: #f3f8fe;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border-left: 4px solid #1e4a6b;
+            font-weight: 500;
+        }
+
+        .content-section .principle-item span {
+            font-weight: 700;
+            color: #0f2c44;
+        }
+
+        .content-section .app-example {
+            background: #f6faff;
+            border-radius: 20px;
+            padding: 16px 22px;
+            margin: 12px 0 20px;
+            border: 1px solid #dce8f3;
+        }
+
+        .content-section .app-example strong {
+            color: #1a405b;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #dce8f3;
+            margin: 30px 0;
+        }
+
+        /* ---------- Bài kiểm tra ---------- */
+        .quiz-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #1e4a6b;
+        }
+
+        .quiz-section .quiz-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .quiz-section .quiz-header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0b2a44;
+        }
+
+        .score-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: #e3eef9;
+            border-radius: 60px;
+            padding: 10px 20px 10px 25px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02), 0 6px 14px rgba(0, 30, 60, 0.06);
+        }
+
+        .score-bar .info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .score-bar .info span {
+            font-weight: 500;
+            color: #1a405b;
+        }
+
+        .score-bar .info .count {
+            background: white;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #0b2a44;
+            font-size: 15px;
+        }
+
+        .score-bar .result-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .score-bar .result-area .score-display {
+            font-weight: 700;
+            font-size: 22px;
+            color: #0f2c44;
+            background: white;
+            padding: 2px 20px;
+            border-radius: 60px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn {
+            border: none;
+            background: white;
+            padding: 10px 26px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #1a405b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 20, 40, 0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #1e4a6b;
+            color: white;
+            box-shadow: 0 8px 20px rgba(26, 67, 113, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #143a55;
+            box-shadow: 0 12px 28px rgba(26, 67, 113, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #b0c8dd;
+        }
+
+        .btn-outline:hover {
+            background: #e3eef9;
+            border-color: #7c9bb8;
+        }
+
+        .btn-success {
+            background: #2b7a4b;
+            color: white;
+            box-shadow: 0 8px 20px rgba(33, 120, 70, 0.25);
+        }
+
+        .btn-success:hover {
+            background: #1f603a;
+            transform: translateY(-2px);
+        }
+
+        .btn-google {
+            background: #4285f4;
+            color: white;
+            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.30);
+        }
+
+        .btn-google:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(66, 133, 244, 0.40);
+        }
+
+        .question {
+            background: white;
+            border-radius: 24px;
+            padding: 22px 28px 18px;
+            margin-bottom: 28px;
+            box-shadow: 0 6px 18px rgba(0, 20, 40, 0.04);
+            transition: box-shadow 0.25s, transform 0.2s;
+            border-left: 6px solid #b8d0e3;
+        }
+
+        .question:hover {
+            box-shadow: 0 10px 30px rgba(0, 20, 40, 0.08);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .question-header .qnum {
+            font-weight: 700;
+            color: #1e4a6b;
+            background: #e3eef9;
+            border-radius: 40px;
+            padding: 0 14px;
+            font-size: 15px;
+            line-height: 30px;
+        }
+
+        .question-header .qtext {
+            font-weight: 600;
+            font-size: 18px;
+            color: #0b2a44;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-left: 6px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 14px 8px 8px;
+            border-radius: 16px;
+            transition: background 0.15s;
+            background: #fafdff;
+            border: 1px solid transparent;
+        }
+
+        .option-item:hover {
+            background: #f0f7fd;
+        }
+
+        .option-item .label {
+            font-weight: 500;
+            color: #1e3c55;
+            min-width: 22px;
+        }
+
+        .option-item .statement {
+            flex: 1;
+            color: #1e3c55;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        .option-item .radio-group {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2a4c69;
+            cursor: pointer;
+            padding: 2px 10px 2px 6px;
+            border-radius: 30px;
+            transition: all 0.1s;
+        }
+
+        .radio-group label input[type="radio"] {
+            accent-color: #1e4a6b;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .radio-group label:hover {
+            background: #dce9f5;
+        }
+
+        .option-item.correct {
+            background: #e6f5ed !important;
+            border-color: #2b7a4b;
+            border-radius: 16px;
+        }
+
+        .option-item.wrong {
+            background: #ffeae9 !important;
+            border-color: #b33a34;
+            border-radius: 16px;
+        }
+
+        .option-item .icon-result {
+            margin-left: 6px;
+            font-size: 18px;
+        }
+
+        .disabled-radio input[type="radio"] {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .footer-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #dde8f2;
+        }
+
+        .footer-actions .message {
+            font-weight: 500;
+            color: #1e4a6b;
+            font-size: 16px;
+        }
+
+        .footer-actions .actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* Animation & responsive */
+        .fade-in {
+            animation: fadeUp 0.5s ease forwards;
+        }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(14px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .shake {
+            animation: shake 0.3s ease;
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .highlight-score {
+            animation: pop 0.4s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 700px) {
+            .wrapper {
+                padding: 24px 18px;
+            }
+            .content-section h1 {
+                font-size: 26px;
+            }
+            .principle-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .question {
+                padding: 16px 16px 12px;
+            }
+            .option-item {
+                flex-wrap: wrap;
+                padding: 8px 6px;
+            }
+            .option-item .radio-group {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .score-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .score-bar .result-area {
+                justify-content: space-between;
+            }
+            .footer-actions {
+                flex-direction: column;
+                gap: 14px;
+            }
+            .btn {
+                padding: 8px 18px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- ======== PHẦN NỘI DUNG HỌC TẬP ======== -->
+        <section class="content-section">
+            <h1>📚 BÀI 4.2. ĐÁNH GIÁ TÀI LIỆU HỌC TẬP</h1>
+            <div class="subhead">Phương pháp đánh giá nguồn tin – SIFT, CRAAP, Lateral Reading & Fact-checking</div>
+
+            <h2><span class="emoji-big">🔍</span> 1. Mô hình SIFT (4 bước kiểm tra nhanh)</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Bước</th><th>Tên</th><th>Hành động cụ thể</th><th>Ví dụ với tỏi trị COVID-19</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>S</strong></td><td>Stop</td><td>Dừng lại trước khi tin/share. Hỏi: Mình có cảm xúc mạnh (sợ, vui, giận) không?</td><td>"Ồ, tỏi chữa COVID ngon lành – nhưng sao bệnh viện không dùng?" → cần kiểm tra.</td></tr>
+                        <tr><td><strong>I</strong></td><td>Investigate source</td><td>Tìm hiểu tác giả/tổ chức đăng tin. Google tên + "reputation" / "bias".</td><td>Tìm "Bác sĩ Nguyễn Tâm" → không thấy hành nghề, chỉ bán tỏi đen.</td></tr>
+                        <tr><td><strong>F</strong></td><td>Find better coverage</td><td>Tìm nguồn uy tín hơn về cùng chủ đề (WHO, BBC, Lancet, FactCheck).</td><td>Google "garlic COVID WHO" → WHO nói no evidence.</td></tr>
+                        <tr><td><strong>T</strong></td><td>Trace claims</td><td>Truy tìm nguồn gốc thông tin: có trích dẫn nghiên cứu gốc không? Đọc link gốc.</td><td>Bài viết trích "nghiên cứu ĐH ABC" → click vào thấy nghiên cứu trên tế bào, không phải người.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Mẹo giảng:</strong> Dùng câu thần chú <em>"Dừng – Đào – So – Dò"</em> (Stop – Investigate – Find better – Trace).</p>
+
+            <h2><span class="emoji-big">📋</span> 2. Tiêu chí CRAAP (đánh giá chi tiết hơn)</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Tiêu chí</th><th>Câu hỏi kiểm tra</th><th>Ví dụ trang HealthFacts.vn (tỏi trị COVID)</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>C</strong> – Currency</td><td>Tin đăng/cập nhật khi nào? Có quá cũ không?</td><td>Đăng 2020, không cập nhật 2023 → lỗi thời.</td></tr>
+                        <tr><td><strong>R</strong> – Relevance</td><td>Nội dung có đúng nhu cầu của em không?</td><td>Đúng chủ đề COVID, nhưng sai sự thật.</td></tr>
+                        <tr><td><strong>A</strong> – Authority</td><td>Ai viết? Có chuyên môn/uy tín không?</td><td>"Bác sĩ Nguyễn Tâm" – không có chứng chỉ hành nghề.</td></tr>
+                        <tr><td><strong>A</strong> – Accuracy</td><td>Có bằng chứng, trích dẫn, số liệu kiểm chứng được không?</td><td>Không có link nghiên cứu gốc, chỉ khẳng định suông.</td></tr>
+                        <tr><td><strong>P</strong> – Purpose</td><td>Mục đích: cung cấp thông tin, bán hàng, tuyên truyền, giải trí?</td><td>Trang có quảng cáo tỏi đen → mục đích thương mại.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Ghi nhớ:</strong> CRAAP giúp "soi" một trang đứng yên. Còn SIFT + Lateral Reading giúp "soi" nhanh hơn bằng cách ra ngoài trang đó.</p>
+
+            <h2><span class="emoji-big">⚠️</span> 3. Phát hiện Fake News và Misinformation</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Thuật ngữ</th><th>Định nghĩa</th><th>Ví dụ</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Misinformation</strong></td><td>Thông tin sai nhưng không cố ý gây hại.</td><td>Chia sẻ lại ảnh cũ tưởng là tin mới.</td></tr>
+                        <tr><td><strong>Disinformation</strong></td><td>Thông tin sai cố ý tạo ra để lừa dối, thao túng.</td><td>"Tỏi chữa COVID – mua ngay kẻo hết" (hàng giả dược).</td></tr>
+                        <tr><td><strong>Malinformation</strong></td><td>Thông tin đúng nhưng được dùng với mục đích xấu.</td><td>Rò rỉ ảnh riêng tư của bác sĩ để hạ uy tín.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Dấu hiệu nhận biết nhanh:</strong></p>
+                <ul>
+                    <li>Tiêu đề giật gân, cảm xúc mạnh.</li>
+                    <li>Không ngày tháng, không tác giả.</li>
+                    <li>Kêu gọi chia sẻ gấp.</li>
+                    <li>Địa chỉ web lạ (như abc-news.com.co).</li>
+                </ul>
+                <p><strong>Hoạt động trên Genially:</strong> Cho học sinh click vào "Cờ đỏ" (red flags) trên từng website giả.</p>
+            </div>
+
+            <h2><span class="emoji-big">🌐</span> 4. Lateral Reading – đọc ngang để kiểm chứng</h2>
+            <p><strong>Khái niệm:</strong> Thay vì đọc dọc trang web đang nghi ngờ, bạn mở thêm nhiều tab trình duyệt để tìm thông tin về chính trang web/tác giả đó.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Tab 1</th><th>Tab 2</th><th>Tab 3</th></tr></thead>
+                    <tbody>
+                        <tr><td>Trang đang nghi ngờ (ví dụ: HealthFacts.vn)</td><td>Google tìm HealthFacts.vn reputation hoặc HealthFacts.vn review</td><td>Tìm tên tác giả + fact check hoặc scam</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="app-example">
+                <strong>Kết quả lateral reading cho HealthFacts.vn:</strong><br>
+                Tab 2 → không có trang nào uy tín nhắc đến, Tab 3 → tác giả từng bị phạt vì quảng cáo sai.
+            </div>
+            <p><strong>So sánh với CRAAP:</strong> CRAAP phân tích nội bộ trang, Lateral Reading phân tích từ bên ngoài, nhanh hơn, mạnh hơn với fake news.</p>
+
+            <h2><span class="emoji-big">🛠️</span> 5. Fact-checking tools (công cụ kiểm tra tin giả)</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Công cụ</th><th>Trang web</th><th>Dùng khi nào</th><th>Ví dụ</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Snopes</strong></td><td>snopes.com</td><td>Tin đồn Mỹ & thế giới (lâu đời nhất)</td><td>"Tỏi trị COVID" → Snopes gắn nhãn False.</td></tr>
+                        <tr><td><strong>FactCheck.org</strong></td><td>factcheck.org</td><td>Tin chính trị, y tế Mỹ, có trích dẫn nguồn</td><td>Kiểm tra tuyên bố của chính trị gia.</td></tr>
+                        <tr><td><strong>Google Fact Check Explorer</strong></td><td>toolbox.google.com/factcheck</td><td>Tìm kiếm đa ngôn ngữ, kể cả tiếng Việt</td><td>Gõ "tỏi COVID" → hiện kết quả từ AFP, VnFactCheck,...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Lưu ý với học sinh Việt Nam:</strong> Ngoài 3 tool trên, có thể dùng <strong>AFP Fact Check Việt Nam</strong> (facebook.com/AFPFactCheckVN) hoặc <strong>VnFactCheck</strong> (do chương trình phát triển).</p>
+                <p><strong>Thực hành nhanh trên lớp (1 phút):</strong> Lấy một câu "Uống nước muối ấm pha chanh diệt virus corona" → Gõ vào Google Fact Check → thấy ngay kết quả "Sai sự thật" từ các báo chính thống.</p>
+            </div>
+
+            <h2><span class="emoji-big">📊</span> Tóm tắt bảng so sánh SIFT vs CRAAP</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Phương pháp</th><th>Độ dài</th><th>Khi nào dùng</th><th>Ưu điểm</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>CRAAP</strong></td><td>Chi tiết, 5 tiêu chí</td><td>Cần đánh giá sâu một nguồn (bài nghiên cứu, sách)</td><td>Toàn diện</td></tr>
+                        <tr><td><strong>SIFT</strong></td><td>Nhanh, 4 bước</td><td>Lướt web, mạng xã hội, cần quyết định ngay</td><td>Tiết kiệm thời gian, phù hợp với lateral reading</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Lời khuyên:</strong> Dùng SIFT trước, nếu vẫn nghi ngờ thì áp dụng CRAAP để phân tích kỹ.</p>
+            <hr />
+        </section>
+
+        <!-- ======== PHẦN BÀI KIỂM TRA ======== -->
+        <section class="quiz-section" id="quizSection">
+            <div class="quiz-header">
+                <h2>📝 Kiểm tra kiến thức</h2>
+                <span style="background:#e3eef9; padding:6px 18px; border-radius:40px; font-weight:600; color:#1a405b;">5 câu · 20 nhận định</span>
+            </div>
+
+            <!-- Score bar -->
+            <div class="score-bar" id="scoreBar">
+                <div class="info">
+                    <span>📌 Trắc nghiệm</span>
+                    <span class="count" id="questionCount">5 câu · 20 nhận định</span>
+                </div>
+                <div class="result-area">
+                    <span style="font-weight:500; color:#1a405b;">Điểm</span>
+                    <span class="score-display" id="scoreDisplay">0 / 20</span>
+                    <button class="btn btn-success" id="submitBtn">✅ Nộp bài</button>
+                    <button class="btn btn-outline" id="resetBtn">⟳ Làm lại</button>
+                </div>
+            </div>
+
+            <!-- Questions container -->
+            <div id="questionsContainer"></div>
+
+            <!-- Footer actions -->
+            <div class="footer-actions">
+                <span class="message" id="footerMessage">💡 Hãy chọn Đúng / Sai cho từng nhận định.</span>
+                <div class="actions">
+                    <button class="btn btn-success" id="submitBtn2">✅ Nộp bài</button>
+                    <button class="btn btn-outline" id="resetBtn2">⟳ Làm lại</button>
+                    <!-- Nút Kiểm tra Module 4 -->
+                    <a href="https://forms.gle/afb9Ta6SGYA3KpXd7" target="_blank" class="btn btn-google" id="module4Btn">
+                        📋 Kiểm tra Module 4
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- Dữ liệu đáp án ----------
+            const questions = [{
+                id: 1,
+                text: 'Mô hình SIFT',
+                statements: [
+                    { label: 'a', text: 'Bước Stop yêu cầu người đọc dừng lại trước khi tin hoặc chia sẻ thông tin, đặc biệt khi thông tin gây cảm xúc mạnh.', answer: true },
+                    { label: 'b', text: 'Bước Investigate the source là tìm hiểu về tác giả hoặc tổ chức đã đăng tải thông tin.', answer: true },
+                    { label: 'c', text: 'Bước Find better coverage khuyến khích chỉ đọc duy nhất bài viết đang xem để tránh bị nhiễu thông tin.', answer: false },
+                    { label: 'd', text: 'Bước Trace claims yêu cầu truy tìm nguồn gốc của thông tin và kiểm tra nghiên cứu hoặc tài liệu được trích dẫn.', answer: true }
+                ]
+            }, {
+                id: 2,
+                text: 'Tiêu chí CRAAP',
+                statements: [
+                    { label: 'a', text: 'Tiêu chí Currency dùng để đánh giá tính cập nhật của tài liệu.', answer: true },
+                    { label: 'b', text: 'Tiêu chí Authority xem xét trình độ chuyên môn và uy tín của tác giả hoặc tổ chức.', answer: true },
+                    { label: 'c', text: 'Tiêu chí Purpose chỉ đánh giá chất lượng hình ảnh và bố cục của trang web.', answer: false },
+                    { label: 'd', text: 'Tiêu chí Accuracy kiểm tra xem thông tin có bằng chứng, số liệu hoặc nguồn tham khảo đáng tin cậy hay không.', answer: true }
+                ]
+            }, {
+                id: 3,
+                text: 'Fake News và Misinformation',
+                statements: [
+                    { label: 'a', text: 'Misinformation là thông tin sai nhưng không có chủ đích gây hại.', answer: true },
+                    { label: 'b', text: 'Disinformation là thông tin sai được tạo ra nhằm đánh lừa hoặc thao túng người khác.', answer: true },
+                    { label: 'c', text: 'Malinformation là thông tin sai hoàn toàn do người dùng vô tình chia sẻ.', answer: false },
+                    { label: 'd', text: 'Một dấu hiệu thường gặp của tin giả là tiêu đề giật gân, kêu gọi chia sẻ gấp và thiếu thông tin về tác giả.', answer: true }
+                ]
+            }, {
+                id: 4,
+                text: 'Lateral Reading',
+                statements: [
+                    { label: 'a', text: 'Lateral Reading là phương pháp mở thêm nhiều tab để kiểm tra thông tin từ các nguồn độc lập.', answer: true },
+                    { label: 'b', text: 'Khi áp dụng Lateral Reading, người đọc chỉ cần phân tích nội dung ngay trên trang web đang xem.', answer: false },
+                    { label: 'c', text: 'Một cách thực hiện là tìm kiếm tên trang web kèm từ khóa như "reputation", "review" hoặc tìm thông tin về tác giả.', answer: true },
+                    { label: 'd', text: 'So với CRAAP, Lateral Reading thường giúp phát hiện tin giả nhanh hơn khi lướt web.', answer: true }
+                ]
+            }, {
+                id: 5,
+                text: 'Công cụ kiểm tra tin giả',
+                statements: [
+                    { label: 'a', text: 'Snopes là công cụ chuyên kiểm tra các tin đồn và thông tin sai lệch, đặc biệt phổ biến tại Hoa Kỳ và quốc tế.', answer: true },
+                    { label: 'b', text: 'FactCheck.org chủ yếu dùng để kiểm tra các tuyên bố về chính trị và y tế.', answer: true },
+                    { label: 'c', text: 'Google Fact Check Explorer chỉ hỗ trợ tìm kiếm bằng tiếng Anh và không hỗ trợ tiếng Việt.', answer: false },
+                    { label: 'd', text: 'Khi vẫn còn nghi ngờ về một nguồn thông tin sau khi áp dụng SIFT, có thể tiếp tục sử dụng CRAAP để đánh giá chi tiết hơn.', answer: true }
+                ]
+            }];
+
+            // DOM refs
+            const container = document.getElementById('questionsContainer');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const footerMessage = document.getElementById('footerMessage');
+            const submitBtns = [document.getElementById('submitBtn'), document.getElementById('submitBtn2')];
+            const resetBtns = [document.getElementById('resetBtn'), document.getElementById('resetBtn2')];
+
+            let submitted = false;
+
+            // ---------- Render ----------
+            function renderQuestions() {
+                let html = '';
+                questions.forEach((q, qIdx) => {
+                    html += `<div class="question fade-in" data-qidx="${qIdx}">`;
+                    html += `<div class="question-header">
+                                <span class="qnum">Câu ${q.id}</span>
+                                <span class="qtext">${q.text}</span>
+                            </div>`;
+                    html += `<div class="options">`;
+                    q.statements.forEach((s, sIdx) => {
+                        const name = `q${qIdx}_s${sIdx}`;
+                        html += `<div class="option-item" data-q="${qIdx}" data-s="${sIdx}">
+                                    <span class="label">${s.label}.</span>
+                                    <span class="statement">${s.text}</span>
+                                    <div class="radio-group">
+                                        <label>
+                                            <input type="radio" name="${name}" value="true" /> Đúng
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="${name}" value="false" /> Sai
+                                        </label>
+                                    </div>
+                                    <span class="icon-result"></span>
+                                </div>`;
+                    });
+                    html += `</div></div>`;
+                });
+                container.innerHTML = html;
+                submitted = false;
+                updateScoreAndUI();
+                document.querySelectorAll('.option-item').forEach(el => {
+                    el.classList.remove('correct', 'wrong');
+                    el.querySelector('.icon-result').textContent = '';
+                });
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => {
+                    r.disabled = false;
+                    r.checked = false;
+                });
+                document.querySelectorAll('.option-item').forEach(el => el.classList.remove('disabled-radio'));
+                footerMessage.textContent = '💡 Hãy chọn Đúng / Sai cho từng nhận định.';
+                scoreDisplay.textContent = '0 / 20';
+                scoreDisplay.classList.remove('highlight-score');
+            }
+
+            // ---------- Collect answers ----------
+            function getSelectedAnswers() {
+                const result = [];
+                const items = document.querySelectorAll('.option-item');
+                items.forEach((el) => {
+                    const radios = el.querySelectorAll('input[type="radio"]');
+                    let selected = null;
+                    for (let r of radios) {
+                        if (r.checked) {
+                            selected = r.value === 'true';
+                            break;
+                        }
+                    }
+                    result.push(selected);
+                });
+                return result;
+            }
+
+            // ---------- Compute score ----------
+            function computeScore(selections) {
+                let correctCount = 0;
+                let total = 0;
+                const flatAnswers = [];
+                questions.forEach(q => {
+                    q.statements.forEach(s => flatAnswers.push(s.answer));
+                });
+                selections.forEach((sel, idx) => {
+                    if (sel !== null) {
+                        total++;
+                        if (sel === flatAnswers[idx]) correctCount++;
+                    }
+                });
+                return { correctCount, total, flatAnswers };
+            }
+
+            // ---------- Apply result ----------
+            function applyResult(selections, flatAnswers) {
+                const items = document.querySelectorAll('.option-item');
+                let correctCount = 0;
+                items.forEach((el, idx) => {
+                    const sel = selections[idx];
+                    const ans = flatAnswers[idx];
+                    const icon = el.querySelector('.icon-result');
+                    el.classList.remove('correct', 'wrong');
+                    if (sel === null) {
+                        el.classList.add('wrong');
+                        icon.textContent = '❌';
+                    } else if (sel === ans) {
+                        el.classList.add('correct');
+                        icon.textContent = '✅';
+                        correctCount++;
+                    } else {
+                        el.classList.add('wrong');
+                        icon.textContent = '❌';
+                    }
+                    el.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    el.classList.add('disabled-radio');
+                });
+
+                const total = flatAnswers.length;
+                scoreDisplay.textContent = `${correctCount} / ${total}`;
+                scoreDisplay.classList.add('highlight-score');
+                setTimeout(() => scoreDisplay.classList.remove('highlight-score'), 600);
+
+                const pct = Math.round((correctCount / total) * 100);
+                let msg = '';
+                if (pct === 100) msg = '🎉 Hoàn hảo! Bạn đã nắm vững kiến thức về đánh giá tài liệu.';
+                else if (pct >= 80) msg = '🌟 Rất tốt! Hãy xem lại những nhận định sai để hiểu sâu hơn.';
+                else if (pct >= 60) msg = '📖 Khá ổn! Bạn nên ôn lại các phương pháp SIFT, CRAAP và Lateral Reading.';
+                else msg = '🔄 Cần cố gắng hơn! Hãy đọc lại nội dung bài học và thử lại.';
+                footerMessage.textContent = msg;
+                submitted = true;
+            }
+
+            // ---------- Submit ----------
+            function handleSubmit() {
+                if (submitted) {
+                    footerMessage.textContent = '⏳ Bạn đã nộp bài rồi! Nhấn "Làm lại" để thử lại.';
+                    return;
+                }
+                const selections = getSelectedAnswers();
+                const allSelected = selections.every(s => s !== null);
+                if (!allSelected) {
+                    footerMessage.textContent = '⚠️ Bạn chưa chọn hết các nhận định. Vui lòng hoàn thành tất cả.';
+                    const bar = document.getElementById('scoreBar');
+                    bar.classList.add('shake');
+                    setTimeout(() => bar.classList.remove('shake'), 400);
+                    return;
+                }
+                const { correctCount, total, flatAnswers } = computeScore(selections);
+                applyResult(selections, flatAnswers);
+            }
+
+            // ---------- Reset ----------
+            function handleReset() {
+                renderQuestions();
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => r.checked = false);
+                document.querySelectorAll('.option-item').forEach(el => {
+                    el.classList.remove('correct', 'wrong', 'disabled-radio');
+                    el.querySelector('.icon-result').textContent = '';
+                });
+                submitted = false;
+                footerMessage.textContent = '💡 Hãy chọn Đúng / Sai cho từng nhận định.';
+                scoreDisplay.textContent = '0 / 20';
+                scoreDisplay.classList.remove('highlight-score');
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => r.disabled = false);
+                attachRadioEvents();
+            }
+
+            // ---------- Update score realtime ----------
+            function updateScoreAndUI() {
+                if (submitted) return;
+                const selections = getSelectedAnswers();
+                const answered = selections.filter(s => s !== null).length;
+                const total = questions.reduce((acc, q) => acc + q.statements.length, 0);
+                scoreDisplay.textContent = `${answered} / ${total}`;
+            }
+
+            function attachRadioEvents() {
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => {
+                    r.addEventListener('change', function() {
+                        if (!submitted) {
+                            updateScoreAndUI();
+                        }
+                    });
+                });
+            }
+
+            // ---------- Init ----------
+            function init() {
+                renderQuestions();
+                attachRadioEvents();
+                submitBtns.forEach(btn => {
+                    btn.addEventListener('click', handleSubmit);
+                });
+                resetBtns.forEach(btn => {
+                    btn.addEventListener('click', handleReset);
+                });
+                // Override để gắn lại event sau reset
+                const origReset = handleReset;
+                handleReset = function() {
+                    origReset();
+                    attachRadioEvents();
+                };
+                const origSubmit = handleSubmit;
+                handleSubmit = function() {
+                    origSubmit();
+                };
+                submitBtns.forEach(btn => {
+                    btn.removeEventListener('click', handleSubmit);
+                    btn.addEventListener('click', handleSubmit);
+                });
+                resetBtns.forEach(btn => {
+                    btn.removeEventListener('click', handleReset);
+                    btn.addEventListener('click', handleReset);
+                });
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>

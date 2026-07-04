@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BÀI 4.1: Tìm kiếm tài liệu học tập</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f2f7fc;
+            padding: 30px 20px;
+            color: #0b2a44;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 48px;
+            box-shadow: 0 25px 60px rgba(0, 20, 40, 0.10);
+            padding: 40px 45px 50px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .content-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e4a6b, #0f2c44);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .content-section .subhead {
+            font-size: 16px;
+            color: #3f627c;
+            border-bottom: 2px dashed #d0e0ed;
+            padding-bottom: 18px;
+            margin-bottom: 25px;
+        }
+
+        .content-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a405b;
+            margin: 28px 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section h2 .emoji-big {
+            font-size: 28px;
+        }
+
+        .content-section p {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            color: #1f3e57;
+        }
+
+        .content-section ul, .content-section ol {
+            padding-left: 28px;
+            margin-bottom: 20px;
+        }
+
+        .content-section li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            color: #1f3e57;
+        }
+
+        .content-section .highlight-box {
+            background: #e5f0fa;
+            border-left: 6px solid #1e4a6b;
+            padding: 18px 24px;
+            border-radius: 16px;
+            margin: 22px 0;
+        }
+
+        .content-section .highlight-box strong {
+            color: #0f2c44;
+        }
+
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 28px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .content-section th {
+            background: #1e4a6b;
+            color: white;
+            font-weight: 600;
+            padding: 12px 12px;
+            text-align: left;
+        }
+
+        .content-section td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e5edf5;
+            background: #fafdff;
+        }
+
+        .content-section tr:last-child td {
+            border-bottom: none;
+        }
+
+        .content-section .table-wrap {
+            overflow-x: auto;
+        }
+
+        .content-section .operator-table td:first-child {
+            font-weight: 600;
+            color: #1a405b;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #dce8f3;
+            margin: 30px 0;
+        }
+
+        /* ---------- Bài kiểm tra ---------- */
+        .quiz-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #1e4a6b;
+        }
+
+        .quiz-section .quiz-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .quiz-section .quiz-header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0b2a44;
+        }
+
+        .score-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: #e3eef9;
+            border-radius: 60px;
+            padding: 10px 20px 10px 25px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02), 0 6px 14px rgba(0, 30, 60, 0.06);
+        }
+
+        .score-bar .info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .score-bar .info span {
+            font-weight: 500;
+            color: #1a405b;
+        }
+
+        .score-bar .info .count {
+            background: white;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #0b2a44;
+            font-size: 15px;
+        }
+
+        .score-bar .result-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .score-bar .result-area .score-display {
+            font-weight: 700;
+            font-size: 22px;
+            color: #0f2c44;
+            background: white;
+            padding: 2px 20px;
+            border-radius: 60px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn {
+            border: none;
+            background: white;
+            padding: 10px 26px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #1a405b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 20, 40, 0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #1e4a6b;
+            color: white;
+            box-shadow: 0 8px 20px rgba(26, 67, 113, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #143a55;
+            box-shadow: 0 12px 28px rgba(26, 67, 113, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #b0c8dd;
+        }
+
+        .btn-outline:hover {
+            background: #e3eef9;
+            border-color: #7c9bb8;
+        }
+
+        .btn-success {
+            background: #2b7a4b;
+            color: white;
+            box-shadow: 0 8px 20px rgba(33, 120, 70, 0.25);
+        }
+
+        .btn-success:hover {
+            background: #1f603a;
+            transform: translateY(-2px);
+        }
+
+        .btn-next {
+            background: #c44536;
+            color: white;
+            box-shadow: 0 8px 20px rgba(196, 69, 54, 0.30);
+        }
+
+        .btn-next:hover {
+            background: #a8382b;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(196, 69, 54, 0.40);
+        }
+
+        .question {
+            background: white;
+            border-radius: 24px;
+            padding: 22px 28px 18px;
+            margin-bottom: 28px;
+            box-shadow: 0 6px 18px rgba(0, 20, 40, 0.04);
+            transition: box-shadow 0.25s, transform 0.2s;
+            border-left: 6px solid #b8d0e3;
+        }
+
+        .question:hover {
+            box-shadow: 0 10px 30px rgba(0, 20, 40, 0.08);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .question-header .qnum {
+            font-weight: 700;
+            color: #1e4a6b;
+            background: #e3eef9;
+            border-radius: 40px;
+            padding: 0 14px;
+            font-size: 15px;
+            line-height: 30px;
+        }
+
+        .question-header .qtext {
+            font-weight: 600;
+            font-size: 18px;
+            color: #0b2a44;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-left: 6px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 14px 8px 8px;
+            border-radius: 16px;
+            transition: background 0.15s;
+            background: #fafdff;
+            border: 1px solid transparent;
+        }
+
+        .option-item:hover {
+            background: #f0f7fd;
+        }
+
+        .option-item .label {
+            font-weight: 500;
+            color: #1e3c55;
+            min-width: 22px;
+        }
+
+        .option-item .statement {
+            flex: 1;
+            color: #1e3c55;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        .option-item .radio-group {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2a4c69;
+            cursor: pointer;
+            padding: 2px 10px 2px 6px;
+            border-radius: 30px;
+            transition: all 0.1s;
+        }
+
+        .radio-group label input[type="radio"] {
+            accent-color: #1e4a6b;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .radio-group label:hover {
+            background: #dce9f5;
+        }
+
+        .option-item.correct {
+            background: #e6f5ed !important;
+            border-color: #2b7a4b;
+            border-radius: 16px;
+        }
+
+        .option-item.wrong {
+            background: #ffeae9 !important;
+            border-color: #b33a34;
+            border-radius: 16px;
+        }
+
+        .option-item .icon-result {
+            margin-left: 6px;
+            font-size: 18px;
+        }
+
+        .disabled-radio input[type="radio"] {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .footer-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #dde8f2;
+        }
+
+        .footer-actions .message {
+            font-weight: 500;
+            color: #1e4a6b;
+            font-size: 16px;
+        }
+
+        .footer-actions .actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* Animation & responsive */
+        .fade-in {
+            animation: fadeUp 0.5s ease forwards;
+        }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(14px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .shake {
+            animation: shake 0.3s ease;
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .highlight-score {
+            animation: pop 0.4s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 700px) {
+            .wrapper {
+                padding: 24px 18px;
+            }
+            .content-section h1 {
+                font-size: 26px;
+            }
+            .question {
+                padding: 16px 16px 12px;
+            }
+            .option-item {
+                flex-wrap: wrap;
+                padding: 8px 6px;
+            }
+            .option-item .radio-group {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .score-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .score-bar .result-area {
+                justify-content: space-between;
+            }
+            .footer-actions {
+                flex-direction: column;
+                gap: 14px;
+            }
+            .btn {
+                padding: 8px 18px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- ======== PHẦN NỘI DUNG HỌC TẬP ======== -->
+        <section class="content-section">
+            <h1>🔍 MODULE 4 — TÌM KIẾM & ĐÁNH GIÁ TÀI LIỆU HỌC TẬP</h1>
+            <div class="subhead">BÀI 4.1: Tìm kiếm tài liệu học tập</div>
+
+            <h2><span class="emoji-big">⚠️</span> 1. Hạn chế của tìm kiếm thông thường (Google Search) trong nghiên cứu học thuật</h2>
+            <p>Việc chỉ dựa vào các công cụ tìm kiếm thông thường như Google cho mục đích nghiên cứu học thuật có thể gặp phải một số hạn chế cốt lõi:</p>
+            <ul>
+                <li><strong>Vấn đề về chất lượng và độ tin cậy:</strong> Kết quả tìm kiếm có thể bị trộn lẫn với nội dung rác hoặc các trang web được tối ưu hóa cho SEO (Search Engine Optimization) thay vì có giá trị học thuật thực sự, làm giảm chất lượng thông tin.</li>
+                <li><strong>Rào cản về kỹ thuật tìm kiếm:</strong> Các công cụ tìm kiếm truyền thống hoạt động dựa trên cơ chế "khớp chính xác" (exact-match). Do đó, nếu người dùng không biết cách sử dụng các từ khóa phù hợp hoặc các toán tử nâng cao, kết quả trả về có thể không liên quan, thậm chí trở thành rào cản hơn là cầu nối đến thông tin cần tìm.</li>
+                <li><strong>Hạn chế về phạm vi học thuật:</strong> Các công cụ này không thể tiếp cận hiệu quả vào các cơ sở dữ liệu học thuật chuyên sâu, nơi lưu trữ hầu hết các bài báo, công trình nghiên cứu có bình duyệt.</li>
+            </ul>
+
+            <h2><span class="emoji-big">📚</span> 2. Google Scholar và các cơ sở dữ liệu học thuật</h2>
+            <p><strong>Google Scholar</strong> (<a href="https://scholar.google.com" target="_blank">Scholar.google.com</a>) là công cụ tìm kiếm miễn phí, được mệnh danh là "phiên bản học thuật" của Google. Nó cho phép tìm kiếm trên diện rộng các tài liệu học thuật như bài báo, sách, luận văn, báo cáo kỹ thuật từ nhiều lĩnh vực khác nhau.</p>
+            <ul>
+                <li><strong>Tìm kiếm nâng cao:</strong> Giới hạn theo tác giả, năm xuất bản, tên ấn phẩm.</li>
+                <li><strong>Theo dõi trích dẫn:</strong> Xem số lần trích dẫn và theo dõi theo thời gian.</li>
+                <li><strong>Tích hợp thư viện:</strong> Liên kết với thư viện trường để truy cập toàn văn.</li>
+                <li><strong>Hỗ trợ đọc với AI:</strong> Google Scholar Labs cung cấp AI Outline để tạo tổng quan nhanh cho bài báo.</li>
+            </ul>
+            <p>Bên cạnh đó, các cơ sở dữ liệu chuyên ngành như <strong>PubMed</strong> (Y sinh), <strong>IEEE Xplore</strong> (Kỹ thuật - Công nghệ), <strong>JSTOR</strong> (Khoa học Xã hội & Nhân văn) cũng rất quan trọng.</p>
+
+            <h2><span class="emoji-big">🔧</span> 3. Toán tử tìm kiếm nâng cao (Google Search Operators)</h2>
+            <div class="table-wrap">
+                <table class="operator-table">
+                    <thead><tr><th>Toán tử</th><th>Cú pháp</th><th>Chức năng</th><th>Ví dụ</th></tr></thead>
+                    <tbody>
+                        <tr><td>Exact phrase</td><td>"từ khóa"</td><td>Tìm chính xác cụm từ, không tách rời.</td><td>"biến đổi khí hậu"</td></tr>
+                        <tr><td>Site search</td><td>site:tên_miền</td><td>Giới hạn tìm kiếm trong một trang web cụ thể.</td><td>AI site:gov.vn</td></tr>
+                        <tr><td>File type</td><td>filetype:đuôi_file</td><td>Tìm kiếm loại tệp tin cụ thể (PDF, PPTX, XLS).</td><td>filetype:pdf "deep learning"</td></tr>
+                        <tr><td>Exclude word</td><td>-từ_khóa</td><td>Loại trừ một từ khóa khỏi kết quả.</td><td>python -rắn</td></tr>
+                        <tr><td>OR logic</td><td>từ A OR từ B</td><td>Tìm kết quả chứa từ A hoặc từ B (dùng cho từ đồng nghĩa).</td><td>hiệu quả OR tác động</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2><span class="emoji-big">🎯</span> 4. Chiến lược tìm kiếm: Từ khóa rộng đến hẹp</h2>
+            <ol>
+                <li><strong>Hình thành ý tưởng và câu hỏi nghiên cứu:</strong> Bắt đầu với chủ đề rộng, đặt câu hỏi cụ thể.</li>
+                <li><strong>Xác định khái niệm chính và từ khóa:</strong> Rút ra các từ khóa quan trọng (2-4 khái niệm).</li>
+                <li><strong>Mở rộng từ khóa:</strong> Liệt kê từ đồng nghĩa, cách viết khác, khái niệm liên quan.</li>
+                <li><strong>Kết hợp và thực hiện tìm kiếm:</strong> Sử dụng OR, AND để kết nối.</li>
+                <li><strong>Đánh giá và tinh chỉnh:</strong> Thêm/bớt từ khóa, thử đồng nghĩa nếu cần.</li>
+            </ol>
+
+            <h2><span class="emoji-big">🛠️</span> 5. Công cụ bổ sung cho nghiên cứu hiện đại</h2>
+            <ul>
+                <li><strong>ResearchRabbit:</strong> "Spotify cho nghiên cứu", lập bản đồ tài liệu dựa trên trích dẫn (citation-based literature mapping) miễn phí sử dụng AI. Tạo mạng lưới trực quan từ một vài bài báo khởi đầu, khám phá kết nối và xu hướng.</li>
+                <li><strong>Semantic Scholar:</strong> Công cụ tìm kiếm học thuật của Viện AI Allen, hiểu ngữ nghĩa văn bản khoa học, mạnh về STEM và Y sinh.</li>
+                <li><strong>Wikipedia:</strong> Dù không nên trích dẫn trực tiếp, nhưng là điểm khởi đầu lý tưởng để nắm tổng quan, tìm từ khóa, và khai thác phần "Tài liệu tham khảo" và "Liên kết ngoài" để tìm nguồn đáng tin cậy.</li>
+            </ul>
+            <hr />
+        </section>
+
+        <!-- ======== PHẦN BÀI KIỂM TRA ======== -->
+        <section class="quiz-section" id="quizSection">
+            <div class="quiz-header">
+                <h2>📝 Kiểm tra kiến thức</h2>
+                <span style="background:#e3eef9; padding:6px 18px; border-radius:40px; font-weight:600; color:#1a405b;">5 câu trắc nghiệm</span>
+            </div>
+
+            <!-- Score bar -->
+            <div class="score-bar" id="scoreBar">
+                <div class="info">
+                    <span>📌 Trắc nghiệm</span>
+                    <span class="count" id="questionCount">5 câu</span>
+                </div>
+                <div class="result-area">
+                    <span style="font-weight:500; color:#1a405b;">Điểm</span>
+                    <span class="score-display" id="scoreDisplay">0 / 5</span>
+                    <button class="btn btn-success" id="submitBtn">✅ Nộp bài</button>
+                    <button class="btn btn-outline" id="resetBtn">⟳ Làm lại</button>
+                </div>
+            </div>
+
+            <!-- Questions container -->
+            <div id="questionsContainer"></div>
+
+            <!-- Footer actions -->
+            <div class="footer-actions">
+                <span class="message" id="footerMessage">💡 Hãy chọn đáp án đúng cho mỗi câu hỏi.</span>
+                <div class="actions">
+                    <button class="btn btn-success" id="submitBtn2">✅ Nộp bài</button>
+                    <button class="btn btn-outline" id="resetBtn2">⟳ Làm lại</button>
+                    <!-- Nút Học tiếp Module 4 -->
+                    <a href="https://tiny-llama-04f6c5.netlify.app/" target="_blank" class="btn btn-next">
+                        📖 HỌC TIẾP MODULE 4
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- Dữ liệu câu hỏi (trắc nghiệm) ----------
+            const questions = [{
+                id: 1,
+                text: 'Hạn chế lớn nhất của việc chỉ sử dụng Google Search trong nghiên cứu học thuật là gì?',
+                options: [
+                    { label: 'A', text: 'Không thể tìm kiếm bằng tiếng Việt.' },
+                    { label: 'B', text: 'Không hiển thị hình ảnh minh họa.' },
+                    { label: 'C', text: 'Kết quả có thể lẫn nhiều nội dung không có giá trị học thuật hoặc được tối ưu SEO.' },
+                    { label: 'D', text: 'Chỉ cho phép tìm tối đa 10 kết quả.' }
+                ],
+                answer: 2 // index 0-based: C
+            }, {
+                id: 2,
+                text: 'Công cụ nào dưới đây được xem là "phiên bản học thuật" của Google, chuyên tìm kiếm bài báo, luận văn và tài liệu nghiên cứu?',
+                options: [
+                    { label: 'A', text: 'Google Maps' },
+                    { label: 'B', text: 'Google Scholar' },
+                    { label: 'C', text: 'Google Drive' },
+                    { label: 'D', text: 'Google Translate' }
+                ],
+                answer: 1 // B
+            }, {
+                id: 3,
+                text: 'Muốn tìm chính xác cụm từ "biến đổi khí hậu", bạn nên sử dụng cú pháp nào?',
+                options: [
+                    { label: 'A', text: 'biến đổi khí hậu' },
+                    { label: 'B', text: 'site:biến đổi khí hậu' },
+                    { label: 'C', text: '"biến đổi khí hậu"' },
+                    { label: 'D', text: 'filetype:pdf biến đổi khí hậu' }
+                ],
+                answer: 2 // C
+            }, {
+                id: 4,
+                text: 'Theo chiến lược tìm kiếm tài liệu học thuật, sau khi xác định các khái niệm chính và từ khóa, bước tiếp theo là gì?',
+                options: [
+                    { label: 'A', text: 'Đánh giá và tinh chỉnh kết quả.' },
+                    { label: 'B', text: 'Mở rộng từ khóa bằng các từ đồng nghĩa hoặc thuật ngữ liên quan.' },
+                    { label: 'C', text: 'Trích dẫn tài liệu tham khảo.' },
+                    { label: 'D', text: 'Viết báo cáo nghiên cứu.' }
+                ],
+                answer: 1 // B
+            }, {
+                id: 5,
+                text: 'Công cụ AI nào được ví như "Spotify cho nghiên cứu", giúp khám phá các bài báo liên quan thông qua mạng lưới trích dẫn?',
+                options: [
+                    { label: 'A', text: 'PubMed' },
+                    { label: 'B', text: 'JSTOR' },
+                    { label: 'C', text: 'ResearchRabbit' },
+                    { label: 'D', text: 'Google Drive' }
+                ],
+                answer: 2 // C
+            }];
+
+            // DOM refs
+            const container = document.getElementById('questionsContainer');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const footerMessage = document.getElementById('footerMessage');
+            const submitBtns = [document.getElementById('submitBtn'), document.getElementById('submitBtn2')];
+            const resetBtns = [document.getElementById('resetBtn'), document.getElementById('resetBtn2')];
+
+            let submitted = false;
+
+            // ---------- Render ----------
+            function renderQuestions() {
+                let html = '';
+                questions.forEach((q, qIdx) => {
+                    html += `<div class="question fade-in" data-qidx="${qIdx}">`;
+                    html += `<div class="question-header">
+                                <span class="qnum">Câu ${q.id}</span>
+                                <span class="qtext">${q.text}</span>
+                            </div>`;
+                    html += `<div class="options">`;
+                    q.options.forEach((opt, oIdx) => {
+                        const name = `q${qIdx}`;
+                        const val = oIdx;
+                        html += `<div class="option-item" data-q="${qIdx}" data-opt="${oIdx}">
+                                    <span class="label">${opt.label}.</span>
+                                    <span class="statement">${opt.text}</span>
+                                    <div class="radio-group">
+                                        <label>
+                                            <input type="radio" name="${name}" value="${val}" /> Chọn
+                                        </label>
+                                    </div>
+                                    <span class="icon-result"></span>
+                                </div>`;
+                    });
+                    html += `</div></div>`;
+                });
+                container.innerHTML = html;
+                submitted = false;
+                updateScoreAndUI();
+                document.querySelectorAll('.option-item').forEach(el => {
+                    el.classList.remove('correct', 'wrong');
+                    el.querySelector('.icon-result').textContent = '';
+                });
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => {
+                    r.disabled = false;
+                    r.checked = false;
+                });
+                document.querySelectorAll('.option-item').forEach(el => el.classList.remove('disabled-radio'));
+                footerMessage.textContent = '💡 Hãy chọn đáp án đúng cho mỗi câu hỏi.';
+                scoreDisplay.textContent = '0 / 5';
+                scoreDisplay.classList.remove('highlight-score');
+            }
+
+            // ---------- Collect answers ----------
+            function getSelectedAnswers() {
+                const result = [];
+                const items = document.querySelectorAll('.question');
+                items.forEach((qEl, qIdx) => {
+                    const radios = qEl.querySelectorAll('input[type="radio"]');
+                    let selected = null;
+                    for (let r of radios) {
+                        if (r.checked) {
+                            selected = parseInt(r.value);
+                            break;
+                        }
+                    }
+                    result.push(selected);
+                });
+                return result;
+            }
+
+            // ---------- Compute score ----------
+            function computeScore(selections) {
+                let correctCount = 0;
+                selections.forEach((sel, idx) => {
+                    if (sel !== null && sel === questions[idx].answer) {
+                        correctCount++;
+                    }
+                });
+                return { correctCount, total: questions.length };
+            }
+
+            // ---------- Apply result ----------
+            function applyResult(selections) {
+                const items = document.querySelectorAll('.option-item');
+                let correctCount = 0;
+                // Reset highlights
+                items.forEach(el => {
+                    el.classList.remove('correct', 'wrong');
+                    el.querySelector('.icon-result').textContent = '';
+                });
+
+                // Highlight each option
+                items.forEach((el) => {
+                    const qIdx = parseInt(el.dataset.q);
+                    const optIdx = parseInt(el.dataset.opt);
+                    const selected = selections[qIdx];
+                    const correct = questions[qIdx].answer;
+                    const icon = el.querySelector('.icon-result');
+
+                    if (selected === null) {
+                        // Không chọn -> coi như sai (không highlight)
+                        if (optIdx === correct) {
+                            // Đáp án đúng nhưng không chọn -> không tô màu, chỉ hiện icon?
+                            // Thường thì không làm gì cả
+                        }
+                        // Nếu không chọn, ta có thể đánh dấu đáp án đúng? 
+                        // Ở đây ta sẽ đánh dấu đáp án đúng để người dùng biết.
+                        if (optIdx === correct) {
+                            el.classList.add('correct');
+                            icon.textContent = '✅';
+                        } else {
+                            // Không tô màu gì
+                        }
+                        // Disable radio
+                        el.querySelector('input[type="radio"]').disabled = true;
+                        el.classList.add('disabled-radio');
+                        return;
+                    }
+
+                    if (optIdx === correct) {
+                        el.classList.add('correct');
+                        icon.textContent = '✅';
+                    } else if (optIdx === selected && selected !== correct) {
+                        el.classList.add('wrong');
+                        icon.textContent = '❌';
+                    }
+                    // Nếu chọn đúng, không có wrong
+                    if (optIdx === selected && selected === correct) {
+                        correctCount++;
+                    }
+                    // Disable radio
+                    el.querySelector('input[type="radio"]').disabled = true;
+                    el.classList.add('disabled-radio');
+                });
+
+                // Update score
+                const total = questions.length;
+                scoreDisplay.textContent = `${correctCount} / ${total}`;
+                scoreDisplay.classList.add('highlight-score');
+                setTimeout(() => scoreDisplay.classList.remove('highlight-score'), 600);
+
+                const pct = Math.round((correctCount / total) * 100);
+                let msg = '';
+                if (pct === 100) msg = '🎉 Hoàn hảo! Bạn đã nắm vững kiến thức về tìm kiếm tài liệu.';
+                else if (pct >= 80) msg = '🌟 Rất tốt! Hãy xem lại các câu sai để hiểu sâu hơn.';
+                else if (pct >= 60) msg = '📖 Khá ổn! Bạn nên ôn lại các toán tử tìm kiếm và chiến lược.';
+                else msg = '🔄 Cần cố gắng hơn! Hãy đọc lại nội dung bài học và thử lại.';
+                footerMessage.textContent = msg;
+                submitted = true;
+            }
+
+            // ---------- Submit ----------
+            function handleSubmit() {
+                if (submitted) {
+                    footerMessage.textContent = '⏳ Bạn đã nộp bài rồi! Nhấn "Làm lại" để thử lại.';
+                    return;
+                }
+                const selections = getSelectedAnswers();
+                const allSelected = selections.every(s => s !== null);
+                if (!allSelected) {
+                    footerMessage.textContent = '⚠️ Bạn chưa chọn đáp án cho tất cả câu hỏi. Vui lòng hoàn thành.';
+                    const bar = document.getElementById('scoreBar');
+                    bar.classList.add('shake');
+                    setTimeout(() => bar.classList.remove('shake'), 400);
+                    return;
+                }
+                applyResult(selections);
+            }
+
+            // ---------- Reset ----------
+            function handleReset() {
+                renderQuestions();
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => r.checked = false);
+                document.querySelectorAll('.option-item').forEach(el => {
+                    el.classList.remove('correct', 'wrong', 'disabled-radio');
+                    el.querySelector('.icon-result').textContent = '';
+                });
+                submitted = false;
+                footerMessage.textContent = '💡 Hãy chọn đáp án đúng cho mỗi câu hỏi.';
+                scoreDisplay.textContent = '0 / 5';
+                scoreDisplay.classList.remove('highlight-score');
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => r.disabled = false);
+                attachRadioEvents();
+            }
+
+            // ---------- Update score realtime ----------
+            function updateScoreAndUI() {
+                if (submitted) return;
+                const selections = getSelectedAnswers();
+                const answered = selections.filter(s => s !== null).length;
+                const total = questions.length;
+                scoreDisplay.textContent = `${answered} / ${total}`;
+            }
+
+            function attachRadioEvents() {
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => {
+                    r.addEventListener('change', function() {
+                        if (!submitted) {
+                            updateScoreAndUI();
+                        }
+                    });
+                });
+            }
+
+            // ---------- Init ----------
+            function init() {
+                renderQuestions();
+                attachRadioEvents();
+                submitBtns.forEach(btn => {
+                    btn.addEventListener('click', handleSubmit);
+                });
+                resetBtns.forEach(btn => {
+                    btn.addEventListener('click', handleReset);
+                });
+                // Override để gắn lại event sau reset
+                const origReset = handleReset;
+                handleReset = function() {
+                    origReset();
+                    attachRadioEvents();
+                };
+                const origSubmit = handleSubmit;
+                handleSubmit = function() {
+                    origSubmit();
+                };
+                submitBtns.forEach(btn => {
+                    btn.removeEventListener('click', handleSubmit);
+                    btn.addEventListener('click', handleSubmit);
+                });
+                resetBtns.forEach(btn => {
+                    btn.removeEventListener('click', handleReset);
+                    btn.addEventListener('click', handleReset);
+                });
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>

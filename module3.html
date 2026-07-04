@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Module 3 — Cornell Note</title>
+    <!-- Google Font & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ---------- CSS Variables ---------- */
+        :root {
+            --primary: #2a4d7c;
+            --primary-light: #3a6ea5;
+            --primary-dark: #1d3557;
+            --accent: #e67e22;
+            --bg-light: #f8faff;
+            --bg-white: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #475569;
+            --border-light: #e2e8f0;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --transition: 0.25s ease;
+        }
+
+        /* ---------- Reset & Base ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 2rem 1.5rem;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 2.5rem 2.8rem;
+        }
+        @media (max-width: 700px) {
+            body {
+                padding: 1rem 0.8rem;
+            }
+            .container {
+                padding: 1.5rem 1.2rem;
+            }
+        }
+
+        /* ---------- Typography ---------- */
+        h1 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.02em;
+        }
+        h1 small {
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 0.1rem;
+        }
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 2rem 0 1rem 0;
+            border-left: 5px solid var(--accent);
+            padding-left: 1rem;
+        }
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 1.6rem 0 0.8rem 0;
+            color: var(--primary-dark);
+        }
+        h4 {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin: 1.2rem 0 0.4rem 0;
+            color: var(--primary-light);
+        }
+        p {
+            margin-bottom: 0.6rem;
+            color: var(--text-dark);
+        }
+        ul, ol {
+            padding-left: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+        li {
+            margin-bottom: 0.2rem;
+        }
+
+        /* ---------- Iframe ---------- */
+        .iframe-wrapper {
+            margin: 1rem 0 1.5rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            background: #f1f5f9;
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+        }
+        .iframe-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* ---------- Table (3 vùng) ---------- */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 1.2rem 0 1.8rem 0;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1rem;
+            text-align: left;
+        }
+        td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ---------- 5R steps ---------- */
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding-left: 0;
+        }
+        .step-list li {
+            counter-increment: step;
+            padding: 0.6rem 1rem 0.6rem 3.2rem;
+            position: relative;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 0.6rem;
+            border-left: 4px solid var(--primary-light);
+        }
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0.8rem;
+            top: 0.6rem;
+            font-weight: 700;
+            color: white;
+            background: var(--accent);
+            width: 1.8rem;
+            height: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.9rem;
+        }
+        .step-list strong {
+            color: var(--primary-dark);
+        }
+
+        /* ---------- Compare table ---------- */
+        .compare-wrap {
+            overflow-x: auto;
+            margin: 1.2rem 0 1.8rem 0;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-light);
+        }
+        .compare-wrap th {
+            background: var(--primary-dark);
+        }
+
+        /* ---------- Application grid ---------- */
+        .app-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0 1.5rem 0;
+        }
+        .app-card {
+            background: #f8faff;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        .app-card h4 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        @media (max-width: 650px) {
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---------- Quiz ---------- */
+        .quiz-section {
+            margin-top: 3.2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border-light);
+        }
+        .quiz-question {
+            background: #fafcff;
+            border-radius: 12px;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-light);
+            transition: border-color var(--transition);
+        }
+        .quiz-question.correct {
+            border-color: #27ae60;
+            background: #f0faf4;
+        }
+        .quiz-question.incorrect {
+            border-color: #e74c3c;
+            background: #fdf0ef;
+        }
+        .quiz-question p {
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            font-size: 1.02rem;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .quiz-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .quiz-options label:hover {
+            background: #eef4fe;
+        }
+        .quiz-options input[type="radio"] {
+            width: 1.1rem;
+            height: 1.1rem;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .quiz-options input[type="radio"]:disabled {
+            accent-color: #94a3b8;
+        }
+
+        .quiz-result {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 1.2rem 1.8rem;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .quiz-result .score {
+            color: var(--primary-dark);
+            background: white;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            font-size: 1.3rem;
+        }
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 2.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background var(--transition), transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .btn-secondary {
+            background: #94a3b8;
+        }
+        .btn-secondary:hover {
+            background: #64748b;
+        }
+        .btn-success {
+            background: #27ae60;
+        }
+        .btn-success:hover {
+            background: #1e8449;
+        }
+
+        .feedback {
+            margin-top: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.2rem 0.8rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .feedback.correct {
+            color: #1e8449;
+            background: #d5f0e0;
+        }
+        .feedback.incorrect {
+            color: #c0392b;
+            background: #fadbd8;
+        }
+
+        /* ---------- Next button container ---------- */
+        .next-module {
+            margin-top: 2.5rem;
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+            padding-top: 2rem;
+        }
+        .next-module .btn {
+            font-size: 1.1rem;
+            padding: 0.9rem 3rem;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 1rem 0.8rem;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+            .quiz-result {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        .icon-tag {
+            color: var(--primary-light);
+            margin-right: 6px;
+        }
+        .mt-2 {
+            margin-top: 1.5rem;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .summary-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ==================== HEADER ==================== -->
+    <header>
+        <h1>MODULE 3 — KỸ THUẬT GHI CHÉP HIỆU QUẢ <small>BÀI 3.1: Cornell Note</small></h1>
+    </header>
+
+    <!-- ==================== 1. NGUỒN GỐC ==================== -->
+    <section>
+        <h2><i class="fas fa-user-graduate icon-tag"></i> 1. Nguồn gốc và nghiên cứu</h2>
+
+        <!-- IFrame 1: Hình Walter Pauk -->
+        <div class="iframe-wrapper">
+            <iframe src="https://drive.google.com/file/d/1TsMyg8GgujbwtWEwiRo3MmwGWXGhOmSg/preview" allow="autoplay"></iframe>
+        </div>
+
+        <ul style="margin-top:0.2rem;">
+            <li><strong>Người sáng lập:</strong> Giáo sư <strong>Walter Pauk</strong>, Đại học Cornell (những năm 1950).</li>
+            <li><strong>Mục đích:</strong> Giúp sinh viên ghi chép, tổ chức thông tin và ôn tập hiệu quả.</li>
+            <li><strong>Phổ biến:</strong> Cuốn sách <em>"How to Study in College"</em> (1962) – tái bản 11 lần.</li>
+            <li><strong>Bằng chứng:</strong> Nhiều nghiên cứu (2010, 2023) cho thấy hiệu quả trong hiểu sâu và áp dụng kiến thức, tuy nhiên kết quả có thể phụ thuộc vào môn học và cách triển khai.</li>
+        </ul>
+    </section>
+
+    <!-- ==================== 2. BA VÙNG ==================== -->
+    <section>
+        <h2><i class="fas fa-layer-group icon-tag"></i> 2. Ba vùng trên một trang giấy</h2>
+
+        <!-- IFrame 2: Hình mẫu giấy (đã cập nhật link mới) -->
+        <div class="iframe-wrapper">
+            <iframe src="https://drive.google.com/file/d/1vcw_TuXx9NXj7OcVXcUrXIRfheSDwuCp/preview" allow="autoplay"></iframe>
+        </div>
+
+        <p>Bố cục chia thành 3 phần chức năng:</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Khu vực</th><th>Vị trí &amp; Tỷ lệ</th><th>Chức năng chính</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cột ghi chú chính</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Note-taking)</span></td>
+                        <td>Bên phải, ~70% chiều rộng</td>
+                        <td>Ghi ý chính, dữ kiện, ví dụ bằng ngôn ngữ riêng, không chép nguyên văn.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cột từ khóa / Câu hỏi</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Cue column)</span></td>
+                        <td>Bên trái, ~30% chiều rộng</td>
+                        <td>Tóm tắt ý chính thành từ khóa, câu hỏi để tự kiểm tra sau.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phần tóm tắt</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Summary)</span></td>
+                        <td>Cuối trang, khoảng 5–7 dòng</td>
+                        <td>Đoạn tóm tắt ngắn bao quát toàn bộ nội dung trang ghi chú.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ==================== 3. QUY TRÌNH 5R ==================== -->
+    <section>
+        <h2><i class="fas fa-sync-alt icon-tag"></i> 3. Quy trình 5R</h2>
+        <p style="margin-bottom:0.8rem;"><strong>Record – Reduce – Recite – Reflect – Review</strong></p>
+        <ol class="step-list">
+            <li><strong>Record (Ghi chép):</strong> Ghi thông tin quan trọng vào cột phải, dùng ký hiệu, viết tắt.</li>
+            <li><strong>Reduce (Tóm lược):</strong> Rút gọn thành từ khóa/câu hỏi ở cột trái, giúp xử lý thông tin chủ động.</li>
+            <li><strong>Recite (Đọc to – Kiểm tra):</strong> Che cột phải, chỉ nhìn từ khóa và tự nhớ lại nội dung.</li>
+            <li><strong>Reflect (Suy ngẫm):</strong> Kết nối kiến thức mới với đã biết, đặt câu hỏi “Tại sao?”, “Làm thế nào?”.</li>
+            <li><strong>Review (Ôn tập):</strong> Xem lại ghi chú định kỳ (hàng tuần) để củng cố trí nhớ dài hạn.</li>
+        </ol>
+    </section>
+
+    <!-- ==================== 4. PHÂN BIỆT ==================== -->
+    <section>
+        <h2><i class="fas fa-code-branch icon-tag"></i> 4. So sánh với ghi chép truyền thống</h2>
+        <div class="compare-wrap">
+            <table>
+                <thead>
+                    <tr><th>Tiêu chí</th><th>Ghi chép truyền thống</th><th>Phương pháp Cornell</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cấu trúc</strong></td>
+                        <td>Ghi liên tục, ít phân vùng</td>
+                        <td>3 vùng chức năng rõ ràng</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cách ghi</strong></td>
+                        <td>Nguyên văn</td>
+                        <td>Ngôn ngữ riêng, từ khóa, sơ đồ</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quy trình</strong></td>
+                        <td>Chỉ ghi chép</td>
+                        <td>Hệ thống khép kín 5R</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mục tiêu</strong></td>
+                        <td>Sao lưu nội dung</td>
+                        <td>Công cụ học chủ động, hiểu và nhớ</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ôn tập</strong></td>
+                        <td>Đọc lại thụ động</td>
+                        <td>Tự kiểm tra qua cột từ khóa và tóm tắt</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ==================== 5. ỨNG DỤNG ==================== -->
+    <section>
+        <h2><i class="fas fa-briefcase icon-tag"></i> 5. Ứng dụng đa lĩnh vực</h2>
+        <div class="app-grid">
+            <div class="app-card">
+                <h4><i class="fas fa-landmark"></i> Khoa học Xã hội</h4>
+                <p>Cột trái: mốc thời gian, nhân vật, tác phẩm. Cột phải: chi tiết sự kiện, phân tích, trích dẫn.</p>
+            </div>
+            <div class="app-card">
+                <h4><i class="fas fa-flask"></i> Khoa học Tự nhiên</h4>
+                <p>Cột trái: định luật, công thức, tên quá trình. Cột phải: giải thích, bài giải mẫu, mô tả chi tiết.</p>
+            </div>
+            <div class="app-card">
+                <h4><i class="fas fa-language"></i> Ngôn ngữ</h4>
+                <p>Cột trái: từ vựng mới, cấu trúc ngữ pháp. Cột phải: nghĩa, phiên âm, ví dụ. Tóm tắt: đoạn hội thoại ngắn.</p>
+            </div>
+            <div class="app-card" style="background:#f0f6fe;border-color:#c5d7f0;">
+                <h4><i class="fas fa-briefcase"></i> Công việc</h4>
+                <p><strong>Cuộc họp:</strong> Cột trái – chủ đề/câu hỏi; cột phải – ý kiến, quyết định, nhiệm vụ; tóm tắt – kết luận và hành động tiếp theo.</p>
+                <p><strong>Đọc sách/báo cáo:</strong> Cột trái – chương/phần/ý chính; cột phải – luận điểm, dẫn chứng, ghi chú cá nhân; tóm tắt – đánh giá tổng quan.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== BÀI KIỂM TRA ==================== -->
+    <section class="quiz-section" id="quizSection">
+        <h2><i class="fas fa-check-circle icon-tag"></i> Bài kiểm tra tương tác</h2>
+        <p style="margin-bottom:1.2rem;">Chọn đáp án đúng cho mỗi câu, sau đó bấm <strong>“Hoàn thành – Nộp bài”</strong>.</p>
+
+        <!-- Câu 1 -->
+        <div class="quiz-question" data-correct="B" data-answered="false">
+            <p><strong>Câu 1.</strong> Phương pháp Cornell được phát minh bởi ai?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q1" value="A" /> A. John Dewey</label>
+                <label><input type="radio" name="q1" value="B" /> B. Walter Pauk</label>
+                <label><input type="radio" name="q1" value="C" /> C. Benjamin Bloom</label>
+                <label><input type="radio" name="q1" value="D" /> D. Howard Gardner</label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Câu 2 -->
+        <div class="quiz-question" data-correct="C" data-answered="false">
+            <p><strong>Câu 2.</strong> Cột từ khóa/câu hỏi có chức năng chính là gì?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q2" value="A" /> A. Ghi lại toàn bộ nội dung nguyên văn</label>
+                <label><input type="radio" name="q2" value="B" /> B. Ghi công thức và ví dụ chi tiết</label>
+                <label><input type="radio" name="q2" value="C" /> C. Tóm tắt ý chính thành từ khóa/câu hỏi để ôn tập</label>
+                <label><input type="radio" name="q2" value="D" /> D. Viết kết luận cuối bài</label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Câu 3 -->
+        <div class="quiz-question" data-correct="C" data-answered="false">
+            <p><strong>Câu 3.</strong> Bước nào trong 5R yêu cầu che ghi chú và tự nhớ lại nội dung?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q3" value="A" /> A. Record</label>
+                <label><input type="radio" name="q3" value="B" /> B. Reduce</label>
+                <label><input type="radio" name="q3" value="C" /> C. Recite</label>
+                <label><input type="radio" name="q3" value="D" /> D. Review</label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Câu 4 -->
+        <div class="quiz-question" data-correct="C" data-answered="false">
+            <p><strong>Câu 4.</strong> Điểm khác biệt nổi bật của Cornell so với truyền thống?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q4" value="A" /> A. Ghi càng nhiều nguyên văn càng tốt</label>
+                <label><input type="radio" name="q4" value="B" /> B. Chỉ dùng cho khoa học tự nhiên</label>
+                <label><input type="radio" name="q4" value="C" /> C. Kết hợp ghi chép, hệ thống hóa, tự kiểm tra theo 5R</label>
+                <label><input type="radio" name="q4" value="D" /> D. Chỉ dùng trong cuộc họp</label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Câu 5 -->
+        <div class="quiz-question" data-correct="C" data-answered="false">
+            <p><strong>Câu 5.</strong> Khi ghi chép cuộc họp bằng Cornell, phần tóm tắt nên ghi gì?</p>
+            <div class="quiz-options">
+                <label><input type="radio" name="q5" value="A" /> A. Danh sách người tham dự</label>
+                <label><input type="radio" name="q5" value="B" /> B. Toàn bộ phát biểu</label>
+                <label><input type="radio" name="q5" value="C" /> C. Kết luận và bước hành động tiếp theo</label>
+                <label><input type="radio" name="q5" value="D" /> D. Các từ khóa được dùng nhiều</label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Buttons -->
+        <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center; margin-top:0.5rem;">
+            <button class="btn" id="submitQuiz"><i class="fas fa-paper-plane"></i> Hoàn thành – Nộp bài</button>
+            <button class="btn btn-secondary" id="resetQuiz"><i class="fas fa-undo-alt"></i> Làm lại</button>
+        </div>
+
+        <div class="quiz-result" id="quizResult" style="display:none;">
+            <span><i class="fas fa-chart-simple"></i> Kết quả:</span>
+            <span class="score" id="scoreDisplay">0 / 5</span>
+            <span id="resultMessage" style="font-weight:400; font-size:0.95rem;"></span>
+        </div>
+    </section>
+
+    <!-- ==================== NÚT TIẾP TỤC ==================== -->
+    <div class="next-module">
+        <a href="https://inspiring-moonbeam-99f163.netlify.app/" class="btn btn-success">
+            <i class="fas fa-arrow-right"></i> TIẾP TỤC VỚI MODULE 3
+        </a>
+    </div>
+
+</div>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+    (function() {
+        const questions = document.querySelectorAll('.quiz-question');
+        const submitBtn = document.getElementById('submitQuiz');
+        const resetBtn = document.getElementById('resetQuiz');
+        const resultDiv = document.getElementById('quizResult');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const resultMsg = document.getElementById('resultMessage');
+
+        function clearFeedback() {
+            questions.forEach(q => {
+                q.classList.remove('correct', 'incorrect');
+                const fb = q.querySelector('.feedback');
+                if (fb) fb.textContent = '';
+                q.dataset.answered = 'false';
+                const radios = q.querySelectorAll('input[type="radio"]');
+                radios.forEach(r => r.disabled = false);
+            });
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('.quiz-options input[type="radio"]').forEach(r => r.checked = false);
+            clearFeedback();
+            resultDiv.style.display = 'none';
+        }
+
+        function gradeQuiz() {
+            let correctCount = 0;
+            let answeredAll = true;
+
+            questions.forEach(q => {
+                const correctAnswer = q.dataset.correct;
+                const selected = q.querySelector('input[type="radio"]:checked');
+                const feedback = q.querySelector('.feedback');
+
+                q.classList.remove('correct', 'incorrect');
+
+                if (!selected) {
+                    answeredAll = false;
+                    feedback.textContent = '⚠️ Chưa chọn đáp án.';
+                    feedback.className = 'feedback';
+                    q.dataset.answered = 'false';
+                    return;
+                }
+
+                q.dataset.answered = 'true';
+                const userAnswer = selected.value;
+                const isCorrect = (userAnswer === correctAnswer);
+
+                if (isCorrect) {
+                    correctCount++;
+                    q.classList.add('correct');
+                    feedback.textContent = '✅ Đúng!';
+                    feedback.className = 'feedback correct';
+                } else {
+                    q.classList.add('incorrect');
+                    feedback.textContent = `❌ Sai. Đáp án đúng là ${correctAnswer}.`;
+                    feedback.className = 'feedback incorrect';
+                }
+
+                const radios = q.querySelectorAll('input[type="radio"]');
+                radios.forEach(r => r.disabled = true);
+            });
+
+            scoreDisplay.textContent = `${correctCount} / ${questions.length}`;
+            resultDiv.style.display = 'flex';
+
+            if (correctCount === questions.length) {
+                resultMsg.textContent = '🎉 Hoàn hảo! Bạn đã nắm vững kiến thức.';
+            } else if (correctCount >= 3) {
+                resultMsg.textContent = '👍 Tốt! Xem lại câu sai để củng cố thêm.';
+            } else {
+                resultMsg.textContent = '📖 Ôn tập lại bài học trước khi làm lại.';
+            }
+        }
+
+        submitBtn.addEventListener('click', gradeQuiz);
+        resetBtn.addEventListener('click', resetQuiz);
+
+        resetQuiz();
+    })();
+</script>
+
+</body>
+</html>

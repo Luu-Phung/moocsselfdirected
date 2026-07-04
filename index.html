@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỹ năng Tự học trong Thời đại Số | MOOCs Chuẩn Quốc Tế</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES & THEME
+           ========================================================================== */
+        :root {
+            /* Colors */
+            --primary: #2563EB;
+            --secondary: #3B82F6;
+            --accent: #F97316;
+            --success: #22C55E;
+            --warning: #FBBF24;
+            
+            /* Light Theme */
+            --bg-color: #F8FAFC;
+            --surface-color: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border-color: #E2E8F0;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px -5px rgba(15, 23, 42, 0.08);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-accent: linear-gradient(135deg, #F97316, #F59E0B);
+            
+            /* Typography */
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Transition */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0F172A;
+            --surface-color: #1E293B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --border-color: #334155;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow-lg: 0 20px 40px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ==========================================================================
+           RESET & BASE
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ==========================================================================
+           UTILITIES
+           ========================================================================== */
+        .container {
+            width: 100%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .text-center { text-align: center; }
+        
+        .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -10px rgba(37, 99, 235, 0.15);
+        }
+
+        /* ==========================================================================
+           BUTTONS
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 10px 20px -10px var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -10px var(--primary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-anim {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* ==========================================================================
+           NAVBAR
+           ========================================================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            padding: 12px 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+            transform: rotate(15deg);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           HERO SECTION
+           ========================================================================== */
+        .hero {
+            padding: 160px 0 100px;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Background Shapes */
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 10s ease-in-out infinite alternate;
+        }
+
+        .blob-1 {
+            top: -10%; left: -10%;
+            width: 500px; height: 500px;
+            background: rgba(37, 99, 235, 0.3);
+        }
+
+        .blob-2 {
+            bottom: -10%; right: -10%;
+            width: 600px; height: 600px;
+            background: rgba(249, 115, 22, 0.2);
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-family: var(--font-heading);
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .hero-desc {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 500px;
+        }
+
+        .hero-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .highlight-item i {
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* Visual Mocks */
+        .hero-visual {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .mockup-laptop {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            transform: rotateY(-15deg) rotateX(5deg);
+            transition: var(--transition);
+        }
+
+        .hero-visual:hover .mockup-laptop {
+            transform: rotateY(0) rotateX(0);
+        }
+
+        .mockup-tablet {
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 45%;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(20px);
+            animation: float-up-down 4s ease-in-out infinite alternate;
+            border: 4px solid var(--surface-color);
+        }
+
+        .floating-ai {
+            position: absolute;
+            top: -20px;
+            right: 40px;
+            background: var(--surface-color);
+            padding: 16px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            animation: float-up-down 3s ease-in-out infinite alternate-reverse;
+        }
+
+        .floating-ai i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        @keyframes float-up-down {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* ==========================================================================
+           STATS SECTION
+           ========================================================================== */
+        .stats-section {
+            padding: 60px 0;
+            position: relative;
+            z-index: 10;
+            margin-top: -80px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-item {
+            text-align: center;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .stat-item:last-child { border-right: none; }
+
+        .stat-number {
+            font-size: 3rem;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        /* ==========================================================================
+           WHY SECTION (Cards)
+           ========================================================================== */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .why-card {
+            padding: 40px 32px;
+            text-align: center;
+        }
+
+        .why-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 24px;
+            transition: var(--transition);
+        }
+
+        .why-card:hover .why-icon {
+            background: var(--gradient-primary);
+            color: white;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .why-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .why-card p {
+            color: var(--text-secondary);
+        }
+
+        /* ==========================================================================
+           BENEFITS GRID (What You Get)
+           ========================================================================== */
+        .benefits-section {
+            background: var(--surface-color);
+            position: relative;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .benefit-card {
+            padding: 32px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background: var(--bg-color);
+            transition: var(--transition);
+        }
+
+        .benefit-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .benefit-content h4 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .benefit-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================================================
+           LEARNING METHOD (Timeline)
+           ========================================================================== */
+        .method-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .method-timeline::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: var(--border-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 4px;
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+
+        .timeline-content {
+            width: 85%;
+            padding: 24px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content { text-align: right; margin-left: auto;}
+        .timeline-item:nth-child(even) .timeline-content { text-align: left; }
+
+        .timeline-dot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            border: 4px solid var(--bg-color);
+            border-radius: 50%;
+            top: 30px;
+            right: -12px;
+            z-index: 2;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+            transition: var(--transition);
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -12px;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+            background: var(--accent);
+        }
+
+        .timeline-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        /* ==========================================================================
+           ROADMAP (Horizontal Scroll)
+           ========================================================================== */
+        .roadmap-section {
+            background: var(--surface-color);
+            overflow: hidden;
+        }
+
+        .roadmap-wrapper {
+            display: flex;
+            gap: 24px;
+            padding: 40px 0;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+        
+        .roadmap-wrapper::-webkit-scrollbar { display: none; }
+
+        .module-card {
+            min-width: 350px;
+            scroll-snap-align: center;
+            position: relative;
+            padding-top: 30px;
+        }
+
+        /* Connecting Line */
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+        
+        .module-card::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 30px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            border: 3px solid var(--primary);
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        .module-card:hover::after {
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .module-inner {
+            padding: 32px;
+            height: 100%;
+        }
+
+        .module-badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .module-inner h4 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+        
+        .module-inner p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .module-list {
+            list-style: none;
+        }
+        
+        .module-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .module-list li i { color: var(--success); }
+
+        /* ==========================================================================
+           TECH STACK
+           ========================================================================== */
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .tech-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tech-item i { font-size: 1.5rem; }
+        
+        /* Brand Colors */
+        .fa-robot { color: #10a37f; } /* ChatGPTish */
+        .fa-google { color: #DB4437; } /* Gemini/Scholar */
+        .fa-microsoft { color: #00A4EF; } /* Copilot */
+        .fa-magnifying-glass { color: #000; } /* Perplexityish */
+
+        /* ==========================================================================
+           INSTRUCTORS
+           ========================================================================== */
+        .instructor-section { background: var(--surface-color); }
+        
+        .instructor-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .instructor-card {
+            padding: 40px 32px;
+            text-align: center;
+        }
+
+        .instructor-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 24px;
+            object-fit: cover;
+            border: 4px solid var(--bg-color);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .instructor-card:hover .instructor-img {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .instructor-card h4 { font-size: 1.25rem; margin-bottom: 4px; }
+        
+        .instructor-title {
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           CERTIFICATE
+           ========================================================================== */
+        .cert-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .cert-mockup {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 8px solid #f1f5f9;
+            position: relative;
+            text-align: center;
+            color: #0F172A; /* Fixed for cert */
+        }
+
+        .cert-mockup::before {
+            content: '\f0a3';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            font-size: 4rem;
+            color: #FBBF24;
+            opacity: 0.8;
+        }
+
+        .cert-mockup h3 { font-family: 'Times New Roman', serif; font-size: 2.5rem; margin-bottom: 20px;}
+        .cert-mockup p { margin-bottom: 10px; font-style: italic;}
+        .cert-name { font-size: 2rem; font-weight: bold; font-family: 'Great Vibes', cursive, sans-serif; color: var(--primary); margin: 20px 0; border-bottom: 2px solid #cbd5e1; display: inline-block; padding: 0 40px;}
+
+        /* ==========================================================================
+           FEEDBACK (Carousel)
+           ========================================================================== */
+        .feedback-section { background: var(--surface-color); }
+
+        .carousel-container {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 40px;
+            scrollbar-width: none;
+        }
+        
+        .carousel-container::-webkit-scrollbar { display: none; }
+
+        .feedback-card {
+            min-width: 400px;
+            scroll-snap-align: center;
+            padding: 40px;
+        }
+
+        .stars { color: var(--warning); margin-bottom: 20px; font-size: 1.2rem; }
+
+        .feedback-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 24px;
+            color: var(--text-secondary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--border-color);
+            object-fit: cover;
+        }
+
+        /* ==========================================================================
+           FAQ (Accordion)
+           ========================================================================== */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+
+        details {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        details:hover { border-color: var(--primary); }
+
+        summary {
+            padding: 24px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::after {
+            content: '\f067';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after { transform: rotate(45deg); }
+
+        .faq-content {
+            padding: 0 24px 24px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            animation: slideDown 0.3s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           FINAL CTA
+           ========================================================================== */
+        .cta-section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .cta-box {
+            background: var(--gradient-primary);
+            border-radius: 32px;
+            padding: 80px 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -15px rgba(37, 99, 235, 0.4);
+        }
+
+        .cta-box h2 { color: white; font-size: 3rem; margin-bottom: 24px; }
+        .cta-box p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
+
+        .cta-box .btn-outline {
+            border-color: rgba(255,255,255,0.5);
+            color: white;
+        }
+        .cta-box .btn-outline:hover { background: white; color: var(--primary); }
+        .cta-box .btn-primary { background: white; color: var(--primary); box-shadow: none; }
+        .cta-box .btn-primary:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer {
+            background: #0F172A;
+            color: #94A3B8;
+            padding: 80px 0 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+
+        .footer-logo { color: white; margin-bottom: 20px; font-size: 1.8rem; }
+        
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { transition: color 0.3s; }
+        .footer-links a:hover { color: white; }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .footer-contact i { color: var(--primary); }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Back to top */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+        }
+        #backToTop.show { opacity: 1; visibility: visible; }
+        #backToTop:hover { background: var(--secondary); transform: translateY(-5px); }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .hero-grid, .cert-container { grid-template-columns: 1fr; text-align: center; }
+            .hero-content h1 { font-size: 3rem; }
+            .hero-desc { margin: 0 auto 32px; }
+            .hero-highlights { justify-content: center; }
+            .hero-cta { justify-content: center; }
+            .hero-visual { margin-top: 60px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-item:nth-child(2) { border-right: none; }
+            .stat-item { padding: 20px 0; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions .btn { display: none; }
+            .mobile-menu-btn { display: block; }
+            
+            .why-grid, .benefits-grid, .instructor-grid { grid-template-columns: 1fr; }
+            
+            .timeline-item, .timeline-item:nth-child(even) {
+                justify-content: flex-end;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .timeline-content { width: 90%; }
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content { text-align: left; margin-left: auto; }
+            .method-timeline::before { left: 0; transform: none; }
+            .timeline-dot { left: -10px !important; right: auto; }
+
+            .footer-grid { grid-template-columns: 1fr; }
+            
+            .cta-box h2 { font-size: 2rem; }
+            .cta-box .hero-cta { flex-direction: column; }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stat-item { border-right: none; border-bottom: 1px solid var(--border-color); }
+            .stat-item:last-child { border-bottom: none; }
+            .hero-highlights { grid-template-columns: 1fr; }
+            .carousel-container { scroll-snap-type: none; }
+            .feedback-card { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                EduMOOC
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#">Trang chủ</a></li>
+                <li><a href="#why">Lợi ích</a></li>
+                <li><a href="#roadmap">Lộ trình</a></li>
+                <li><a href="#instructors">Giảng viên</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <a href="#cta" class="btn btn-primary">Đăng ký</a>
+    
+                <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-bg">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+        </div>
+        
+        <div class="container hero-grid">
+            <div class="hero-content" data-aos="fade-right">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-bolt"></i> MOOCs Miễn Phí 100%
+                </div>
+                <h1><span class="gradient-text">Kỹ năng Tự học</span><br>Trong Thời Đại Số</h1>
+                <p class="hero-subtitle">Self-directed Learning Skills in the Digital Age</p>
+                <p class="hero-desc">Làm chủ công nghệ, xây dựng tư duy học tập suốt đời và khám phá tiềm năng không giới hạn của bản thân với sự hỗ trợ từ AI.</p>
+                
+                <div class="hero-highlights">
+                    <div class="highlight-item"><i class="fa-solid fa-check"></i> Học mọi lúc, mọi nơi</div>
+                    <div class="highlight-item"><i class="fa-solid fa-check"></i> Có chứng nhận quốc tế</div>
+                    <div class="highlight-item"><i class="fa-solid fa-check"></i> Tương tác AI 24/7</div>
+                    <div class="highlight-item"><i class="fa-solid fa-check"></i> Cộng đồng toàn cầu</div>
+                </div>
+
+                <div class="hero-cta">
+                    <a href="#roadmap" class="btn btn-primary">Bắt đầu học ngay <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="#method" class="btn btn-outline">Tìm hiểu thêm</a>
+                </div>
+            </div>
+
+            <div class="hero-visual" data-aos="fade-left" data-aos-delay="200">
+                
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Laptop Learning" class="mockup-laptop">
+                
+            </div>
+        </div>
+    </header>
+
+    <section class="stats-section container" id="stats">
+        <div class="stats-grid glass-card" data-aos="fade-up">
+            <div class="stat-item">
+                <div class="stat-number" data-target="15000">0</div>
+                <div class="stat-label">Học viên đăng ký</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="95">0</div>
+                <div class="stat-label">% Tỷ lệ hoàn thành</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="50">0</div>
+                <div class="stat-label">Video bài giảng</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="9">0</div>
+                <div class="stat-label">Modules chuyên sâu</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="why">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Tại sao chọn khóa học này?</h2>
+                <p>Khóa học được thiết kế đặc biệt giúp bạn thích ứng và bứt phá trong kỷ nguyên trí tuệ nhân tạo.</p>
+            </div>
+            
+            <div class="why-grid">
+                <div class="glass-card why-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="why-icon"><i class="fa-solid fa-rocket"></i></div>
+                    <h3>Hiệu quả Tối đa</h3>
+                    <p>Phương pháp Microlearning giúp tối ưu thời gian tiếp thu, chia nhỏ kiến thức để bạn dễ dàng học mọi lúc.</p>
+                </div>
+                
+                <div class="glass-card why-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="why-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3>AI Learning</h3>
+                    <p>Tích hợp các công cụ AI (ChatGPT, Gemini) như một trợ giảng cá nhân 24/7 giúp giải đáp mọi thắc mắc.</p>
+                </div>
+                
+                <div class="glass-card why-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="why-icon"><i class="fa-solid fa-infinity"></i></div>
+                    <h3>Học tập Suốt đời</h3>
+                    <p>Hình thành tư duy Growth Mindset, trang bị kỹ năng để bạn tự cập nhật kiến thức trong thế giới thay đổi nhanh chóng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding benefits-section" id="benefits">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Bạn Sẽ Nhận Được Gì?</h2>
+                <p>Hành trang toàn diện để làm chủ kỹ năng tự học</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="benefit-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="benefit-content">
+                        <h4>Thiết lập mục tiêu chuẩn xác</h4>
+                        <p>Ứng dụng framework SMART và OKRs để lên kế hoạch học tập cá nhân hóa.</p>
+                    </div>
+                </div>
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="benefit-icon"><i class="fa-solid fa-filter"></i></div>
+                    <div class="benefit-content">
+                        <h4>Kỹ năng lọc thông tin</h4>
+                        <p>Biết cách đánh giá độ tin cậy của nguồn tài liệu trên Internet.</p>
+                    </div>
+                </div>
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="benefit-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                    <div class="benefit-content">
+                        <h4>Ghi chép thông minh</h4>
+                        <p>Thành thạo phương pháp Cornell, Mindmap và Zettelkasten.</p>
+                    </div>
+                </div>
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="benefit-icon"><i class="fa-solid fa-clock"></i></div>
+                    <div class="benefit-content">
+                        <h4>Quản lý thời gian</h4>
+                        <p>Khắc phục trì hoãn với kỹ thuật Pomodoro và Time Blocking.</p>
+                    </div>
+                </div>
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="benefit-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <div class="benefit-content">
+                        <h4>Thành thạo Công nghệ</h4>
+                        <p>Biết cách prompt AI để tạo ra lộ trình học và tóm tắt kiến thức.</p>
+                    </div>
+                </div>
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="350">
+                    <div class="benefit-icon"><i class="fa-solid fa-certificate"></i></div>
+                    <div class="benefit-content">
+                        <h4>Chứng nhận hoàn thành</h4>
+                        <p>Nhận chứng chỉ điện tử có giá trị xác thực, dễ dàng thêm vào LinkedIn/CV.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="method">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Phương Pháp Tiếp Cận Đa Chiều</h2>
+                <p>Khóa học ứng dụng mô hình Blended Learning và Flipped Classroom</p>
+            </div>
+            
+            <div class="method-timeline">
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <i class="fa-solid fa-video timeline-icon"></i>
+                        <h3>1. Video Bài Giảng Trực Quan</h3>
+                        <p>Các video ngắn (5-10 phút) tập trung vào cốt lõi vấn đề, kết hợp animation sinh động giúp não bộ ghi nhớ tốt hơn.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <i class="fa-solid fa-gamepad timeline-icon"></i>
+                        <h3>2. Interactive Quiz</h3>
+                        <p>Kiểm tra kiến thức ngay sau mỗi video với ngân hàng câu hỏi đa dạng, củng cố trí nhớ ngắn hạn.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <i class="fa-solid fa-comments timeline-icon"></i>
+                        <h3>3. Thảo Luận & Reflection</h3>
+                        <p>Viết nhật ký học tập (Reflection) và tương tác với cộng đồng học viên trên diễn đàn khóa học.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <i class="fa-solid fa-laptop-code timeline-icon"></i>
+                        <h3>4. Assignment & AI Feedback</h3>
+                        <p>Thực hiện các bài tập thực tế. Hệ thống AI tự động chấm điểm và đưa ra gợi ý cải thiện mang tính cá nhân hóa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding roadmap-section" id="roadmap">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Lộ Trình Khóa Học (9 Modules)</h2>
+                <p>Kéo để xem toàn bộ hành trình chinh phục kỹ năng tự học</p>
+            </div>
+            
+            <div class="roadmap-wrapper">
+                <div class="module-card">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge">Khởi động</div>
+                        <h4>Module 0: Mindset Shift</h4>
+                        <p>Thay đổi tư duy từ học thụ động sang chủ động.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Hiểu về Growth Mindset</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Vượt qua nỗi sợ sai</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-card">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge">Tuần 1</div>
+                        <h4>Module 1: Goal Setting</h4>
+                        <p>Xác định mục tiêu học tập rõ ràng, thực tế.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Nguyên tắc SMART</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Xây dựng OKRs cá nhân</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-card">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge">Tuần 2</div>
+                        <h4>Module 2: Nguồn Tài Nguyên</h4>
+                        <p>Khai thác triệt để MOOCs, OER và thư viện số.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Tìm kiếm Google nâng cao</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Tận dụng Coursera, edX</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-card">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge">Tuần 3</div>
+                        <h4>Module 3: Thẩm Định Nguồn</h4>
+                        <p>Lọc tin giả, chọn lọc tài liệu chất lượng cao.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Phương pháp CRAAP</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Đọc hiểu tài liệu học thuật</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-card">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge">Tuần 4</div>
+                        <h4>Module 4: Ghi Chép & Tổ Chức</h4>
+                        <p>Hệ thống hóa kiến thức để não bộ lưu trữ lâu.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Sử dụng Notion/Obsidian</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Phương pháp Zettelkasten</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-card">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge" style="background: var(--gradient-accent)">Trọng tâm</div>
+                        <h4>Module 6: AI for Learning</h4>
+                        <p>Biến AI thành gia sư riêng biệt của bạn.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Nghệ thuật Prompting</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Ứng dụng NotebookLM</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="module-card">
+                    <div class="glass-card module-inner" style="border: 2px solid var(--success)">
+                        <div class="module-badge" style="background: var(--success)">Đích đến</div>
+                        <h4>Final Project</h4>
+                        <p>Áp dụng toàn bộ kiến thức vào dự án cá nhân.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Báo cáo tổng kết</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Nhận chứng chỉ hoàn thành</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="tech">
+        <div class="container text-center">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Công Cụ & Công Nghệ</h2>
+                <p>Thành thạo các công cụ số mạnh mẽ nhất để bứt phá hiệu suất học tập</p>
+            </div>
+            
+            <div class="tech-grid" data-aos="fade-up" data-aos-delay="200">
+                <div class="tech-item"><i class="fa-solid fa-robot"></i> ChatGPT</div>
+                <div class="tech-item"><i class="fa-brands fa-google"></i> Google Gemini</div>
+                <div class="tech-item"><i class="fa-solid fa-book-open"></i> NotebookLM</div>
+                <div class="tech-item"><i class="fa-brands fa-microsoft"></i> Copilot</div>
+                <div class="tech-item"><i class="fa-solid fa-magnifying-glass"></i> Perplexity AI</div>
+                <div class="tech-item"><i class="fa-solid fa-graduation-cap"></i> Google Scholar</div>
+                <div class="tech-item"><i class="fa-solid fa-laptop-code"></i> MOOCs Platforms</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding instructor-section" id="instructors">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Đội Ngũ Chuyên Gia</h2>
+                <p>Học hỏi từ những chuyên gia hàng đầu về Công nghệ Giáo dục (EdTech)</p>
+            </div>
+            
+            <div class="instructor-grid">
+                <div class="glass-card instructor-card" data-aos="fade-up" data-aos-delay="100">
+                    <img src="cHa.jpg" alt="Giảng viên" class="instructor-img">
+                    <h4>GS. TS. Nguyễn Thị Ngọc Hà</h4>
+                    <div class="instructor-title">Giáo sư ngành EdTech</div>
+                    <p>20 năm kinh nghiệm thiết kế các khóa học MOOCs chuẩn quốc tế, nguyên trưởng khoa Công nghệ Giáo dục.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="glass-card instructor-card" data-aos="fade-up" data-aos-delay="200">
+                    <img src="vanThanh.jpg" alt="Giảng viên" class="instructor-img">
+                    <h4>GS. TS. Phan Văn Thanh</h4>
+                    <div class="instructor-title">Chuyên gia AI & Learning Design</div>
+                    <p>Cố vấn phát triển chương trình học tập ứng dụng Trí tuệ Nhân tạo cho nhiều tập đoàn công nghệ lớn.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fa-solid fa-globe"></i></a>
+                    </div>
+                </div>
+                <div class="glass-card instructor-card" data-aos="fade-up" data-aos-delay="300">
+                    <img src="tanDat.jpg" alt="Giảng viên" class="instructor-img">
+                    <h4>GS. TS. Lưu Phùng Tấn Đạt</h4>
+                    <div class="instructor-title">Instructional Designer</div>
+                    <p>Sở hữu chứng chỉ chuyên sâu về thiết kế trải nghiệm học tập từ ĐH Stanford. Host của podcast "Học Tập Chủ Động".</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="certificate">
+        <div class="container cert-container">
+            <div data-aos="fade-right">
+                <h2>Chứng nhận có giá trị</h2>
+                <p style="margin-bottom: 24px; color: var(--text-secondary); font-size: 1.1rem;">
+                    Hoàn thành khóa học, bạn sẽ nhận được chứng chỉ điện tử xác thực kỹ năng tự học trong kỷ nguyên số.
+                </p>
+                <ul class="module-list" style="margin-bottom: 32px;">
+                    <li><i class="fa-solid fa-check text-success"></i> Tích hợp mã QR xác thực toàn cầu</li>
+                    <li><i class="fa-solid fa-check text-success"></i> Dễ dàng đính kèm vào LinkedIn, CV</li>
+                    <li><i class="fa-solid fa-check text-success"></i> Chứng nhận bởi hệ thống uy tín</li>
+                </ul>
+                <a href="#cta" class="btn btn-outline">Xem mẫu chi tiết</a>
+            </div>
+            
+            <div class="cert-mockup" data-aos="fade-left">
+                <h3 style="color:#0F172A;">CERTIFICATE</h3>
+                <p style="color:#475569;">OF COMPLETION</p>
+                <div style="font-size: 0.9rem; margin-top:20px; color:#475569;">This is to certify that</div>
+                <div class="cert-name">Tên Học Viên</div>
+                <div style="font-size: 0.9rem; color:#475569; margin-bottom: 20px;">has successfully completed the course</div>
+                <div style="font-weight: bold; color:#0F172A;">Kỹ năng Tự học trong Thời đại Số</div>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 40px; text-align: left;">
+                    <div>
+                        <div style="border-bottom: 1px solid #000; width: 100px; margin-bottom: 5px;"></div>
+                        <span style="font-size: 0.8rem; color:#475569;">Date</span>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-qrcode" style="font-size: 3rem; color: #0F172A;"></i>
+                    </div>
+                    <div>
+                        <div style="border-bottom: 1px solid #000; width: 100px; margin-bottom: 5px; font-family: 'Great Vibes', cursive;">Signature</div>
+                        <span style="font-size: 0.8rem; color:#475569;">Instructor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding feedback-section" id="feedback">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Cộng Đồng Nói Gì Về Chúng Tôi</h2>
+                <p>Hàng ngàn học viên đã thay đổi tư duy và cải thiện hiệu suất nhờ khóa học</p>
+            </div>
+            
+            <div class="carousel-container" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-card feedback-card">
+                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="feedback-text">"Khóa học mở ra cho tôi một góc nhìn hoàn toàn mới về cách tự học. Giờ đây tôi có thể tận dụng ChatGPT để tóm tắt tài liệu nhanh gấp 5 lần."</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Avatar" class="user-avatar">
+                        <div>
+                            <h4 style="font-size: 1rem;">Minh Tuấn</h4>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">Sinh viên CNTT</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card feedback-card">
+                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="feedback-text">"Giao diện học mượt mà, nội dung chia nhỏ dễ hiểu. Thích nhất là Module về quản lý thời gian và vượt qua sự trì hoãn."</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Avatar" class="user-avatar">
+                        <div>
+                            <h4 style="font-size: 1rem;">Hương Giang</h4>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">Nhân viên Văn phòng</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card feedback-card">
+                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                    <p class="feedback-text">"Chất lượng chuẩn MOOCs quốc tế nhưng ngôn ngữ lại rất gần gũi. Rất đáng để đầu tư thời gian học."</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Avatar" class="user-avatar">
+                        <div>
+                            <h4 style="font-size: 1rem;">Quốc Bảo</h4>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">Freelancer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="faq">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Câu Hỏi Thường Gặp</h2>
+                <p>Giải đáp những thắc mắc của bạn trước khi bắt đầu</p>
+            </div>
+            
+            <div class="faq-container" data-aos="fade-up" data-aos-delay="200">
+                <details>
+                    <summary>Khóa học này dành cho ai?</summary>
+                    <div class="faq-content">
+                        Khóa học thiết kế cho bất kỳ ai muốn nâng cao năng lực tự học: từ học sinh, sinh viên đại học cho đến người đi làm muốn cập nhật kiến thức liên tục trong kỷ nguyên số.
+                    </div>
+                </details>
+                <details>
+                    <summary>Tôi có cần kiến thức nền tảng về CNTT không?</summary>
+                    <div class="faq-content">
+                        Không. Khóa học hướng dẫn bạn từ những bước cơ bản nhất. Bạn chỉ cần kỹ năng sử dụng máy tính và duyệt web thông thường.
+                    </div>
+                </details>
+                <details>
+                    <summary>Thời gian hoàn thành khóa học là bao lâu?</summary>
+                    <div class="faq-content">
+                        Với lộ trình 9 modules, học viên thường mất khoảng 4-6 tuần để hoàn thành nếu dành 3-4 giờ học mỗi tuần. Tuy nhiên, bạn hoàn toàn có thể tự điều chỉnh tốc độ học (Self-paced).
+                    </div>
+                </details>
+                <details>
+                    <summary>Chứng chỉ có được công nhận không?</summary>
+                    <div class="faq-content">
+                        Có. Chứng chỉ được cấp bởi nền tảng EduMOOC có tích hợp mã QR xác thực, có thể chia sẻ trực tiếp lên LinkedIn và sử dụng trong hồ sơ xin việc.
+                    </div>
+                </details>
+                <details>
+                    <summary>Khóa học có miễn phí hoàn toàn không?</summary>
+                    <div class="faq-content">
+                        Toàn bộ tài liệu, video bài giảng và quiz đều miễn phí (OER). Tuy nhiên, để nhận chứng chỉ chính thức sau Final Project, bạn có thể cần thanh toán một khoản phí nhỏ hỗ trợ nền tảng.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section container" id="cta" data-aos="zoom-in">
+        <div class="cta-box">
+            <h2>Sẵn Sàng Làm Chủ Tương Lai?</h2>
+            <p>Tham gia cùng 15,000+ học viên khác và bắt đầu hành trình nâng cấp bản thân ngay hôm nay.</p>
+            <div class="hero-cta" style="justify-content: center;">
+                <a href="register.html" class="btn btn-primary">Đăng ký ngay</a>
+                <a href="module0.html" class="btn btn-primary">Đã đăng ký</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo footer-logo">
+                        <i class="fa-solid fa-graduation-cap"></i> EduMOOC
+                    </div>
+                    <p style="margin-bottom: 20px;">Nền tảng học tập trực tuyến chuẩn quốc tế, mang tri thức đến với mọi người thông qua công nghệ hiện đại.</p>
+                    <div class="social-links" style="justify-content: flex-start;">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Liên Kết Nhanh</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#roadmap">Lộ trình học</a></li>
+                        <li><a href="#">Blog giáo dục</a></li>
+                        <li><a href="#">Điều khoản sử dụng</a></li>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Cộng Đồng</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Diễn đàn học viên</a></li>
+                        <li><a href="#">Sự kiện trực tuyến</a></li>
+                        <li><a href="#">Chương trình đối tác</a></li>
+                        <li><a href="#">Trở thành giảng viên</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Liên Hệ</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fa-solid fa-envelope"></i> contact@edumooc.vn</li>
+                        <li><i class="fa-solid fa-phone"></i> +84 (123) 456-789</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Đại học Cần Thơ, Cần Thơ, VN</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 EduMOOC. Thiết kế & Phát triển bởi Senior FE Engineer. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTop" aria-label="Lên đầu trang"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initialize AOS Animation
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+            });
+
+            // 2. Sticky Navbar
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.add('scrolled'); // keep transparent on top? Request asks for Sticky, we apply glass effect
+                    if(window.scrollY === 0) navbar.classList.remove('scrolled');
+                }
+            });
+
+            // 3. Dark Mode Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            
+            // Check local storage or system pref
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.body.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.body.removeAttribute('data-theme');
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.setAttribute('data-theme', 'dark');
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // 4. Number Counter Animation (Intersection Observer)
+            const counters = document.querySelectorAll('.stat-number');
+            let hasCounted = false;
+
+            const animateCounters = () => {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 2000; // ms
+                    const stepTime = Math.abs(Math.floor(duration / target));
+                    
+                    let current = 0;
+                    const increment = target > 100 ? Math.ceil(target / 100) : 1;
+
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.innerText = target + (target > 50 ? '+' : '');
+                            if(target === 95) counter.innerText = target + '%';
+                            clearInterval(timer);
+                        } else {
+                            counter.innerText = current;
+                        }
+                    }, stepTime);
+                });
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !hasCounted) {
+                    animateCounters();
+                    hasCounted = true;
+                }
+            }, { threshold: 0.5 });
+
+            const statsSection = document.getElementById('stats');
+            if(statsSection) observer.observe(statsSection);
+
+            // 5. Button Ripple Effect
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // Prevent for anchor links to allow smooth scroll, but keep ripple visually
+                    const x = e.clientX - e.target.getBoundingClientRect().left;
+                    const y = e.clientY - e.target.getBoundingClientRect().top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    
+                    this.appendChild(ripple);
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // 6. Back To Top Button
+            const bttBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    bttBtn.classList.add('show');
+                } else {
+                    bttBtn.classList.remove('show');
+                }
+            });
+
+            bttBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // 7. Mobile Menu Toggle
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            // Simplified mobile logic for single file without extra heavy CSS
+            mobileBtn.addEventListener('click', () => {
+                if(navLinks.style.display === 'flex') {
+                    navLinks.style.display = 'none';
+                } else {
+                    navLinks.style.display = 'flex';
+                    navLinks.style.flexDirection = 'column';
+                    navLinks.style.position = 'absolute';
+                    navLinks.style.top = '100%';
+                    navLinks.style.left = '0';
+                    navLinks.style.width = '100%';
+                    navLinks.style.background = 'var(--surface-color)';
+                    navLinks.style.padding = '20px';
+                    navLinks.style.boxShadow = 'var(--shadow-md)';
+                }
+            });
+            
+            // Handle window resize to fix nav links display
+            window.addEventListener('resize', () => {
+                if(window.innerWidth > 768) {
+                    navLinks.style.display = 'flex';
+                    navLinks.style.flexDirection = 'row';
+                    navLinks.style.position = 'static';
+                    navLinks.style.width = 'auto';
+                    navLinks.style.padding = '0';
+                    navLinks.style.boxShadow = 'none';
+                    navLinks.style.background = 'transparent';
+                } else {
+                    navLinks.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    // BEGIN NEW CODE
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tìm tất cả các nút có khả năng là nút đăng ký
+            const actionButtons = document.querySelectorAll('.btn-primary, .btn-outline');
+            actionButtons.forEach(btn => {
+                if (btn.innerText.trim().toLowerCase() === 'Đăng ký ngay') {
+                    btn.href = 'register.html';
+                }
+            });
+        });
+    </script>
+    // END NEW CODE
+
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn Dự án Cuối khóa - Kế hoạch Tự học</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar for tables */
+        .table-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .table-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        .table-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .table-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Smooth transitions for accordion */
+        .accordion-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.active {
+            max-height: 500px; /* Adjust if content is very long */
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900">
+
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-r from-brand-700 to-brand-500 text-white py-16 px-4 md:px-8 shadow-lg relative overflow-hidden">
+        <!-- Abstract background pattern (optional) -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+        
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-6 backdrop-blur-sm">
+                <i class="fa-solid fa-book-open-reader text-3xl"></i>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight tracking-tight">HƯỚNG DẪN DỰ ÁN CUỐI KHÓA</h1>
+            <p class="text-lg md:text-xl font-medium text-brand-50 uppercase tracking-widest mb-2">Chi Tiết & Cụ Thể</p>
+            
+            <div class="mt-8 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 max-w-2xl mx-auto text-left shadow-2xl">
+                <blockquote class="border-l-4 border-brand-300 pl-4">
+                    <p class="text-xl font-semibold text-white">Kế hoạch Tự học Cá nhân trong Thời đại Số</p>
+                    <p class="text-brand-100 italic mt-1">(Personal Self‑Learning Plan for the Digital Age)</p>
+                </blockquote>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-10 md:py-16 space-y-8 md:space-y-12">
+
+        <!-- 1. MỤC TIÊU DỰ ÁN -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-blue-100 text-brand-600 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-bullseye"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">1. MỤC TIÊU DỰ ÁN</h2>
+            </div>
+            
+            <p class="text-slate-600 leading-relaxed mb-6">
+                Sau khi hoàn thành 8 module học, bạn sẽ tổng hợp và ứng dụng tất cả kỹ năng đã học để xây dựng 
+                <strong class="text-brand-700 bg-brand-50 px-1 rounded">một bản kế hoạch tự học hoàn chỉnh, khả thi và cá nhân hóa</strong> 
+                cho chính mình. Đây là sản phẩm chính của khóa học, phản ánh rõ ràng năng lực tự học của bạn.
+            </p>
+
+            <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-check-double text-green-500"></i> Bạn sẽ đạt được:
+            </h3>
+            <ul class="space-y-3 pl-2">
+                <li class="flex items-start gap-3">
+                    <i class="fa-solid fa-check text-brand-500 mt-1"></i>
+                    <span class="text-slate-600">Thiết lập được mục tiêu học tập theo chuẩn <strong class="text-slate-800">SMART</strong>.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fa-solid fa-check text-brand-500 mt-1"></i>
+                    <span class="text-slate-600">Lập được thời khóa biểu học tập áp dụng kỹ thuật <strong class="text-slate-800">Time Blocking</strong>.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fa-solid fa-check text-brand-500 mt-1"></i>
+                    <span class="text-slate-600">Lựa chọn và mô tả được các <strong class="text-slate-800">công cụ, nguồn học liệu số</strong> phù hợp.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fa-solid fa-check text-brand-500 mt-1"></i>
+                    <span class="text-slate-600">Xây dựng được <strong class="text-slate-800">kế hoạch sử dụng AI</strong> hiệu quả trong học tập.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fa-solid fa-check text-brand-500 mt-1"></i>
+                    <span class="text-slate-600">Tự thiết kế <strong class="text-slate-800">bảng tiêu chí đánh giá (Rubric)</strong> để theo dõi tiến độ của chính mình.</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- 2. SẢN PHẨM YÊU CẦU -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-file-invoice"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">2. SẢN PHẨM YÊU CẦU</h2>
+            </div>
+
+            <p class="text-slate-600 leading-relaxed mb-6">
+                Bạn sẽ nộp một <strong class="text-slate-800">hồ sơ kế hoạch tự học</strong> dưới dạng 
+                <span class="bg-red-50 text-red-600 px-2 py-0.5 rounded font-medium"><i class="fa-regular fa-file-pdf mr-1"></i>file PDF</span> hoặc 
+                <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-medium"><i class="fa-brands fa-google-drive mr-1"></i>liên kết Google Docs</span> 
+                (nếu dùng tài khoản Google). Sản phẩm có thể trình bày bằng văn bản, bảng biểu, sơ đồ hoặc kết hợp (khuyến khích sử dụng Canva, Google Docs, hoặc vẽ tay chụp ảnh).
+            </p>
+
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">Cấu trúc bắt buộc (5 phần):</h3>
+            
+            <!-- Table 1 -->
+            <div class="overflow-x-auto table-scroll rounded-xl border border-slate-200 shadow-sm mb-6">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="bg-brand-50 border-b border-brand-200">
+                            <th class="p-4 font-semibold text-brand-900 w-1/4">Phần</th>
+                            <th class="p-4 font-semibold text-brand-900 w-1/2">Nội dung</th>
+                            <th class="p-4 font-semibold text-brand-900 w-1/4">Hình thức tối ưu</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr class="even:bg-slate-50 hover:bg-brand-50/50 transition-colors">
+                            <td class="p-4 font-medium text-slate-800">1. Mục tiêu SMART</td>
+                            <td class="p-4 text-slate-600 text-sm">1 mục tiêu học tập cụ thể, đo lường được, khả thi, liên quan và có thời hạn.</td>
+                            <td class="p-4 text-slate-600 text-sm">Viết đoạn văn hoặc dạng bảng S-M-A-R-T</td>
+                        </tr>
+                        <tr class="even:bg-slate-50 hover:bg-brand-50/50 transition-colors">
+                            <td class="p-4 font-medium text-slate-800">2. Thời khóa biểu Time Blocking</td>
+                            <td class="p-4 text-slate-600 text-sm">Lịch học 1 tuần (hoặc 21 ngày) chi tiết từng khung giờ, có buffer và phù hợp với nhịp sinh học.</td>
+                            <td class="p-4 text-slate-600 text-sm">Bảng (Google Sheets hoặc vẽ tay)</td>
+                        </tr>
+                        <tr class="even:bg-slate-50 hover:bg-brand-50/50 transition-colors">
+                            <td class="p-4 font-medium text-slate-800">3. Công cụ hỗ trợ học tập</td>
+                            <td class="p-4 text-slate-600 text-sm">Liệt kê tối thiểu <strong class="text-slate-800">3 công cụ/nền tảng</strong> bạn sẽ dùng, giải thích cách dùng và lý do chọn.</td>
+                            <td class="p-4 text-slate-600 text-sm">Danh sách kèm mô tả ngắn (có thể dùng bảng)</td>
+                        </tr>
+                        <tr class="even:bg-slate-50 hover:bg-brand-50/50 transition-colors">
+                            <td class="p-4 font-medium text-slate-800">4. Kế hoạch sử dụng AI</td>
+                            <td class="p-4 text-slate-600 text-sm">Ít nhất <strong class="text-slate-800">3 Prompt</strong> dành riêng cho việc học của bạn (theo cấu trúc RCTF), kèm theo minh chứng bạn đã chạy thử và tinh chỉnh.</td>
+                            <td class="p-4 text-slate-600 text-sm">Bảng hiển thị Prompt, kết quả thử, điều chỉnh</td>
+                        </tr>
+                        <tr class="even:bg-slate-50 hover:bg-brand-50/50 transition-colors">
+                            <td class="p-4 font-medium text-slate-800">5. Rubric tự đánh giá cá nhân</td>
+                            <td class="p-4 text-slate-600 text-sm">Bảng tiêu chí đánh giá tiến độ học tập của riêng bạn (ít nhất 3 tiêu chí, mỗi tiêu chí có 3 mức độ).</td>
+                            <td class="p-4 text-slate-600 text-sm">Bảng (Google Docs / Canva)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg text-amber-800 text-sm">
+                <p><i class="fa-solid fa-lightbulb mr-2 text-amber-500"></i><strong>Lưu ý:</strong> Tổng dung lượng sản phẩm không quá 5 trang A4 (hoặc tương đương). Bạn có thể thêm ảnh chụp màn hình, biểu đồ, sơ đồ tư duy để tăng tính trực quan.</p>
+            </div>
+        </section>
+
+        <!-- 3. HƯỚNG DẪN CHI TIẾT TỪNG PHẦN -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 mb-8 border-b border-slate-100 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">3. HƯỚNG DẪN CHI TIẾT TỪNG PHẦN</h2>
+            </div>
+
+            <div class="space-y-8">
+                <!-- 3.1 -->
+                <div class="relative pl-6 border-l-2 border-slate-200">
+                    <div class="absolute w-3 h-3 bg-brand-500 rounded-full -left-[7px] top-2 shadow-[0_0_0_4px_white]"></div>
+                    <h3 class="text-xl font-bold text-brand-700 mb-3">3.1. Mục tiêu SMART</h3>
+                    <ul class="space-y-2 text-slate-600 text-sm md:text-base">
+                        <li><strong class="text-slate-800">Yêu cầu:</strong> Viết <strong>MỘT (01)</strong> mục tiêu học tập cụ thể cho giai đoạn tiếp theo (có thể là 1 tháng, 1 học kỳ hoặc 1 khóa học cụ thể).</li>
+                        <li><strong class="text-slate-800">Cấu trúc bắt buộc:</strong> Trình bày mục tiêu dưới dạng một đoạn văn hoàn chỉnh, sau đó phân tích rõ ràng từng thành phần <strong>S-M-A-R-T</strong> bên dưới.</li>
+                        <li><strong class="text-slate-800">Hành động cụ thể:</strong>
+                            <ul class="list-disc pl-6 mt-2 space-y-1 text-slate-500">
+                                <li>Xác định rõ <strong>hành động</strong> bạn sẽ làm (Specific).</li>
+                                <li>Đưa ra <strong>con số/chỉ số</strong> đo lường cụ thể (Measurable).</li>
+                                <li>Giải thích ngắn gọn tại sao mục tiêu này <strong>khả thi</strong> với quỹ thời gian hiện tại (Achievable).</li>
+                                <li>Chỉ ra sự <strong>liên quan</strong> đến nhu cầu học tập dài hạn của bạn (Relevant).</li>
+                                <li>Xác định chính xác <strong>ngày/tháng</strong> hoàn thành cụ thể (Time-bound).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3.2 -->
+                <div class="relative pl-6 border-l-2 border-slate-200">
+                    <div class="absolute w-3 h-3 bg-brand-500 rounded-full -left-[7px] top-2 shadow-[0_0_0_4px_white]"></div>
+                    <h3 class="text-xl font-bold text-brand-700 mb-3">3.2. Thời khóa biểu Time Blocking</h3>
+                    <ul class="space-y-2 text-slate-600 text-sm md:text-base">
+                        <li><strong class="text-slate-800">Yêu cầu:</strong> Lập bảng thời khóa biểu <strong>CHI TIẾT CHO 01 TUẦN</strong> (7 ngày) điển hình trong kế hoạch của bạn.</li>
+                        <li><strong class="text-slate-800">Cấu trúc bắt buộc:</strong> Bảng có cột giờ/khung giờ, các ngày trong tuần.</li>
+                        <li><strong class="text-slate-800">Hành động cụ thể:</strong>
+                            <ul class="list-disc pl-6 mt-2 space-y-1 text-slate-500">
+                                <li>Phân chia các đầu việc học tập cụ thể vào từng khung giờ cố định.</li>
+                                <li>Kẻ/đánh dấu rõ ràng các <strong>Khung giờ Buffer</strong> (thời gian đệm dự phòng) chiếm tối thiểu <strong>20%</strong> tổng thời gian học dự kiến trong ngày.</li>
+                                <li>Xác định rõ <strong>Khung giờ vàng</strong> (Golden Hours) – khoảng thời gian bạn tập trung cao độ nhất và sắp xếp việc khó nhất vào đó.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3.3 -->
+                <div class="relative pl-6 border-l-2 border-slate-200">
+                    <div class="absolute w-3 h-3 bg-brand-500 rounded-full -left-[7px] top-2 shadow-[0_0_0_4px_white]"></div>
+                    <h3 class="text-xl font-bold text-brand-700 mb-3">3.3. Công cụ hỗ trợ học tập</h3>
+                    <ul class="space-y-2 text-slate-600 text-sm md:text-base">
+                        <li><strong class="text-slate-800">Yêu cầu:</strong> Liệt kê <strong>ÍT NHẤT 03</strong> công cụ/nền tảng hỗ trợ.</li>
+                        <li><strong class="text-slate-800">Cấu trúc bắt buộc:</strong> Trình bày dưới dạng bảng (Tên công cụ – Mục đích sử dụng – Lý do chọn – Tần suất sử dụng).</li>
+                        <li><strong class="text-slate-800">Hành động cụ thể:</strong>
+                            <ul class="list-disc pl-6 mt-2 space-y-1 text-slate-500">
+                                <li>Mô tả chính xác <strong>01 tác vụ cụ thể</strong> bạn sẽ dùng công cụ đó để xử lý.</li>
+                                <li>Lý do chọn phải gắn với điều kiện thực tế của bạn (miễn phí, không cài đặt, có sẵn trên điện thoại, v.v.).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3.4 -->
+                <div class="relative pl-6 border-l-2 border-slate-200">
+                    <div class="absolute w-3 h-3 bg-brand-500 rounded-full -left-[7px] top-2 shadow-[0_0_0_4px_white]"></div>
+                    <h3 class="text-xl font-bold text-brand-700 mb-3">3.4. Kế hoạch sử dụng AI</h3>
+                    <ul class="space-y-2 text-slate-600 text-sm md:text-base">
+                        <li><strong class="text-slate-800">Yêu cầu:</strong> Thiết kế <strong>ÍT NHẤT 03 Prompt</strong> (câu lệnh) cho AI.</li>
+                        <li><strong class="text-slate-800">Cấu trúc bắt buộc:</strong> Mỗi Prompt phải được cấu trúc theo đúng mô hình <strong>RCTF</strong>: <strong>R</strong> (Role – Vai trò AI đảm nhận), <strong>C</strong> (Context – Bối cảnh học tập của bạn), <strong>T</strong> (Task – Nhiệm vụ cụ thể AI cần làm), <strong>F</strong> (Format – Định dạng đầu ra yêu cầu).</li>
+                        <li><strong class="text-slate-800">Hành động cụ thể:</strong>
+                            <ul class="list-disc pl-6 mt-2 space-y-1 text-slate-500">
+                                <li>Ghi lại <strong>nguyên văn</strong> Prompt bạn sẽ gửi cho AI.</li>
+                                <li>Ghi lại <strong>tóm tắt kết quả</strong> AI trả về sau khi bạn chạy thử.</li>
+                                <li>Ghi lại <strong>1 lần điều chỉnh</strong> (tinh chỉnh) bạn đã thực hiện để cải thiện câu trả lời.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3.5 -->
+                <div class="relative pl-6 border-l-2 border-slate-200">
+                    <div class="absolute w-3 h-3 bg-brand-500 rounded-full -left-[7px] top-2 shadow-[0_0_0_4px_white]"></div>
+                    <h3 class="text-xl font-bold text-brand-700 mb-3">3.5. Rubric tự đánh giá</h3>
+                    <ul class="space-y-2 text-slate-600 text-sm md:text-base">
+                        <li><strong class="text-slate-800">Yêu cầu:</strong> Xây dựng <strong>01 bảng Rubric</strong> để tự đánh giá quá trình học tập của riêng bạn.</li>
+                        <li><strong class="text-slate-800">Cấu trúc bắt buộc:</strong> Bảng gồm <strong>cột tiêu chí</strong>, <strong>các mức độ</strong> (tối thiểu 3 mức: Cần cải thiện – Đạt yêu cầu – Tốt).</li>
+                        <li><strong class="text-slate-800">Hành động cụ thể:</strong>
+                            <ul class="list-disc pl-6 mt-2 space-y-1 text-slate-500">
+                                <li>Xác định tối thiểu <strong>03 tiêu chí</strong> đánh giá khác nhau.</li>
+                                <li>Với mỗi tiêu chí, phải có <strong>mô tả hành vi cụ thể, có thể quan sát được</strong> cho từng mức độ (không được dùng từ mơ hồ như "tốt", "kém").</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. HƯỚNG DẪN NỘP BÀI -->
+        <section class="bg-gradient-to-br from-brand-50 to-white rounded-2xl shadow-sm border border-brand-100 p-6 md:p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+                <i class="fa-solid fa-cloud-arrow-up text-9xl text-brand-900"></i>
+            </div>
+            
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-6 border-b border-brand-200 pb-4">
+                    <div class="w-10 h-10 rounded-lg bg-brand-600 text-white flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-upload"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">4. HƯỚNG DẪN NỘP BÀI</h2>
+                </div>
+
+                <p class="text-slate-600 mb-6">Bạn sẽ nộp dự án qua <strong>cổng nộp bài trên website chính thức</strong> theo các bước sau:</p>
+
+                <ol class="list-decimal pl-5 space-y-3 text-slate-700 font-medium mb-8">
+                    <li><strong class="text-slate-900">Tạo sản phẩm</strong> của bạn bằng công cụ yêu thích (Google Docs, Canva, Word, v.v.) và <strong class="text-slate-900">xuất ra file PDF</strong> (ưu tiên) hoặc chia sẻ link có quyền xem (nếu dùng Google Docs).</li>
+                    <li><strong class="text-slate-900">Truy cập trang Dự án Cuối khóa</strong> trên website khóa học.</li>
+                    <li><strong class="text-slate-900">Điền thông tin</strong>: Họ tên, email, và tải lên file PDF hoặc dán link.</li>
+                    <li><strong class="text-slate-900">Xác nhận</strong> rằng bạn đã đọc và đồng ý với tiêu chí chấm điểm.</li>
+                    <li><strong class="text-slate-900">Nhấn "Gửi"</strong> và đợi thông báo xác nhận thành công.</li>
+                </ol>
+
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg text-red-800 text-sm mb-8">
+                    <p><i class="fa-solid fa-clock mr-2 text-red-600"></i><strong>Hạn chót nộp:</strong> 23:59 ngày Chủ nhật cuối cùng của tuần 4 (xem lịch khóa học cụ thể). Không chấp nhận bài nộp sau hạn trừ khi có lý do chính đáng được thông báo trước.</p>
+                </div>
+
+                <!-- CTA BUTTON -->
+                <div class="text-center mt-8">
+                    <a href="#" class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-orange-500/30 transition transform hover:-translate-y-1">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> NỘP BÀI DỰ ÁN NGAY
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TIÊU CHÍ CHẤM ĐIỂM -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">5. TIÊU CHÍ CHẤM ĐIỂM</h2>
+            </div>
+
+            <p class="text-slate-500 text-sm italic mb-6">
+                <strong>Lưu ý:</strong> Dự án chiếm <strong>40%</strong> tổng điểm cuối khóa. Mỗi tiêu chí được đánh giá theo thang điểm 0–10, tổng tối đa 50 điểm, sau đó quy đổi sang thang 100 và nhân hệ số 0,4.
+            </p>
+
+            <!-- Table 2 -->
+            <div class="overflow-x-auto table-scroll rounded-xl border border-slate-200 shadow-sm">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="bg-slate-800 text-white border-b border-slate-300">
+                            <th class="p-4 font-semibold w-1/4">Tiêu chí (Trọng số)</th>
+                            <th class="p-4 font-semibold w-1/4 bg-red-600/20 text-red-100">Chưa đạt (0–4đ)</th>
+                            <th class="p-4 font-semibold w-1/4 bg-yellow-600/20 text-yellow-100">Đạt (5–7đ)</th>
+                            <th class="p-4 font-semibold w-1/4 bg-green-600/20 text-green-100">Xuất sắc (8–10đ)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 text-sm">
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4 font-bold text-slate-800 bg-slate-50/50">1. Mục tiêu SMART (20%)</td>
+                            <td class="p-4 text-slate-600">Thiếu từ 3 tiêu chí SMART trở lên.</td>
+                            <td class="p-4 text-slate-600">Đủ 5 tiêu chí nhưng mô tả chung chung, số liệu chưa rõ.</td>
+                            <td class="p-4 text-slate-600 font-medium text-green-700">Đủ 5 tiêu chí, hành động rõ ràng, số liệu cụ thể, có deadline và khả thi.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4 font-bold text-slate-800 bg-slate-50/50">2. Time Blocking (20%)</td>
+                            <td class="p-4 text-slate-600">Không có hoặc không chia khung giờ cụ thể.</td>
+                            <td class="p-4 text-slate-600">Có bảng cho 5 ngày, Buffer &lt;20%, chưa có giờ vàng.</td>
+                            <td class="p-4 text-slate-600 font-medium text-green-700">Đủ 7 ngày, Buffer ≥20%, xác định rõ giờ vàng và gán việc khó, nhiệm vụ cụ thể.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4 font-bold text-slate-800 bg-slate-50/50">3. Công cụ hỗ trợ (20%)</td>
+                            <td class="p-4 text-slate-600">&lt;3 công cụ, hoặc thiếu mô tả/lý do.</td>
+                            <td class="p-4 text-slate-600">3 công cụ, thiếu lý do chọn hoặc tần suất.</td>
+                            <td class="p-4 text-slate-600 font-medium text-green-700">≥3 công cụ, đủ 4 thông tin (tên, mục đích, lý do thực tế, tần suất), có tác vụ rõ ràng.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4 font-bold text-slate-800 bg-slate-50/50">4. Kế hoạch dùng AI (20%)</td>
+                            <td class="p-4 text-slate-600">&lt;3 Prompt, không có cấu trúc RCTF.</td>
+                            <td class="p-4 text-slate-600">3 Prompt, có RCTF nhưng thiếu 1-2 thành phần, không có điều chỉnh.</td>
+                            <td class="p-4 text-slate-600 font-medium text-green-700">≥3 Prompt, chuẩn RCTF, có kết quả chạy thử và ít nhất 1 lần điều chỉnh hiệu quả.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4 font-bold text-slate-800 bg-slate-50/50">5. Rubric đánh giá (20%)</td>
+                            <td class="p-4 text-slate-600">&lt;3 tiêu chí, dùng từ ngữ mơ hồ.</td>
+                            <td class="p-4 text-slate-600">3 tiêu chí, 3 mức độ, một số mô tả còn mơ hồ.</td>
+                            <td class="p-4 text-slate-600 font-medium text-green-700">≥3 tiêu chí, ≥3 mức độ, 100% mô tả là hành vi cụ thể, đếm/đo lường được.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 6. LƯU Ý QUAN TRỌNG -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8">
+            <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> 6. MỘT SỐ LƯU Ý QUAN TRỌNG
+            </h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="flex gap-3 p-4 bg-slate-50 rounded-lg border border-slate-100">
+                    <i class="fa-solid fa-user-tag text-brand-500 mt-1"></i>
+                    <div>
+                        <strong class="block text-slate-800 mb-1">Tính cá nhân</strong>
+                        <span class="text-slate-600 text-sm">Thể hiện hiểu biết về chính mình. Tránh sao chép.</span>
+                    </div>
+                </div>
+                <div class="flex gap-3 p-4 bg-slate-50 rounded-lg border border-slate-100">
+                    <i class="fa-solid fa-rocket text-brand-500 mt-1"></i>
+                    <div>
+                        <strong class="block text-slate-800 mb-1">Tính ứng dụng</strong>
+                        <span class="text-slate-600 text-sm">Có thể sử dụng thực tế ngay sau khóa học.</span>
+                    </div>
+                </div>
+                <div class="flex gap-3 p-4 bg-slate-50 rounded-lg border border-slate-100">
+                    <i class="fa-solid fa-palette text-brand-500 mt-1"></i>
+                    <div>
+                        <strong class="block text-slate-800 mb-1">Sáng tạo</strong>
+                        <span class="text-slate-600 text-sm">Khuyến khích dùng sơ đồ, màu sắc, hình ảnh.</span>
+                    </div>
+                </div>
+                <div class="flex gap-3 p-4 bg-slate-50 rounded-lg border border-slate-100">
+                    <i class="fa-solid fa-stopwatch text-brand-500 mt-1"></i>
+                    <div>
+                        <strong class="block text-slate-800 mb-1">Đúng thời hạn</strong>
+                        <span class="text-slate-600 text-sm">Nộp đúng hạn, trễ sẽ bị trừ điểm theo quy định.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. FAQ (ACCORDION) -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8 mb-12">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-circle-question"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">7. CÂU HỎI THƯỜNG GẶP (FAQ)</h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden bg-slate-50/50">
+                    <button class="faq-btn w-full text-left px-5 py-4 flex justify-between items-center font-semibold text-slate-800 hover:bg-slate-100 focus:outline-none transition-colors">
+                        <span>Tôi có thể làm dự án theo nhóm không?</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content bg-white px-5 border-t border-slate-100">
+                        <p class="py-4 text-slate-600">Không, đây là dự án cá nhân, yêu cầu thể hiện kế hoạch riêng của từng người.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden bg-slate-50/50">
+                    <button class="faq-btn w-full text-left px-5 py-4 flex justify-between items-center font-semibold text-slate-800 hover:bg-slate-100 focus:outline-none transition-colors">
+                        <span>Tôi có thể nộp dưới dạng video hoặc slide không?</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content bg-white px-5 border-t border-slate-100">
+                        <p class="py-4 text-slate-600">Có, nhưng cần đảm bảo đầy đủ 5 phần yêu cầu. Ưu tiên file PDF hoặc Google Docs để dễ chấm điểm.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden bg-slate-50/50">
+                    <button class="faq-btn w-full text-left px-5 py-4 flex justify-between items-center font-semibold text-slate-800 hover:bg-slate-100 focus:outline-none transition-colors">
+                        <span>Nếu tôi chưa có AI nào để thử prompt thì sao?</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content bg-white px-5 border-t border-slate-100">
+                        <p class="py-4 text-slate-600">Bạn có thể sử dụng các công cụ miễn phí như ChatGPT, Gemini (Google) hoặc Claude.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden bg-slate-50/50">
+                    <button class="faq-btn w-full text-left px-5 py-4 flex justify-between items-center font-semibold text-slate-800 hover:bg-slate-100 focus:outline-none transition-colors">
+                        <span>Điểm tối đa của dự án là bao nhiêu?</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content bg-white px-5 border-t border-slate-100">
+                        <p class="py-4 text-slate-600">Dự án chiếm 40% tổng điểm cuối khóa. Tổng điểm Rubric là 50, quy đổi sang thang 10 và nhân hệ số 0.4.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+        <p>&copy; 2024 Nền tảng Học tập EdTech. All rights reserved.</p>
+        <p class="mt-2 text-slate-500 italic">Chúc bạn hoàn thành xuất sắc Dự án Cuối khóa!</p>
+    </footer>
+
+    <!-- Accordion Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqButtons = document.querySelectorAll('.faq-btn');
+            
+            faqButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('i');
+                    
+                    // Close all other accordions (optional, remove if you want multiple open)
+                    document.querySelectorAll('.accordion-content').forEach(item => {
+                        if (item !== content) {
+                            item.classList.remove('active');
+                            item.previousElementSibling.querySelector('i').classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle current accordion
+                    content.classList.toggle('active');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

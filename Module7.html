@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7: Tự đánh giá Kết quả Học tập</title>
+    <style>
+        /* ========== CSS VARIABLES (đồng bộ Module 8) ========== */
+        :root {
+            --primary-color: #0A4B7C;
+            --primary-light: #16609a;
+            --secondary-color: #E8F4FD;
+            --text-color: #1E293B;
+            --text-light: #475569;
+            --accent-color: #F59E0B;
+            --accent-hover: #d98604;
+            --bg-color: #FFFFFF;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+            --ai-accent: #6366F1;
+            --ai-accent-light: #EEF2FF;
+            --ai-accent-dark: #4338CA;
+        }
+
+        /* ========== DARK MODE (độ tương phản cao) ========== */
+        body.dark-mode {
+            --primary-color: #6fb3d9;
+            --primary-light: #4d9ac7;
+            --secondary-color: #1a3a4e;
+            --text-color: #ffffff;
+            --text-light: #e0e0e0;
+            --accent-color: #ffc107;
+            --accent-hover: #e0a800;
+            --bg-color: #121212;
+            --gray-100: #1e1e2f;
+            --gray-200: #2a2a3c;
+            --gray-300: #3a3a4e;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --ai-accent: #8e8eff;
+            --ai-accent-light: #2a2a4a;
+            --ai-accent-dark: #6a6aff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-color);
+            background-color: var(--gray-100);
+            line-height: 1.6;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .progress-bar-container {
+            width: 100%; height: 4px;
+            background-color: var(--gray-200);
+            position: fixed; top: 0; left: 0; z-index: 1000;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--accent-color);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: var(--bg-color);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .breadcrumb { font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px; }
+        .breadcrumb span { color: var(--primary-color); font-weight: 500; }
+
+        h1 { color: var(--primary-color); font-size: 2rem; margin-bottom: 10px; }
+        h2 { color: var(--primary-color); font-size: 1.5rem; margin: 30px 0 15px; }
+        h3 { color: var(--text-color); font-size: 1.2rem; margin: 20px 0 10px; }
+
+        .course-header { border-bottom: 2px solid var(--gray-200); padding-bottom: 20px; margin-bottom: 30px; }
+        .course-meta { display: flex; gap: 15px; font-size: 0.9rem; color: var(--text-light); margin-bottom: 10px; font-weight: 500; }
+        .course-meta span { background-color: var(--secondary-color); padding: 4px 10px; border-radius: 20px; color: var(--primary-color); }
+
+        .objectives-box {
+            background-color: var(--secondary-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px; border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin-bottom: 30px;
+        }
+        .objectives-box h3 { margin-top: 0; color: var(--primary-color); }
+        .objectives-list { list-style: none; }
+        .objectives-list li { margin-bottom: 10px; position: relative; padding-left: 30px; }
+        .objectives-list li::before { content: '🎯'; position: absolute; left: 0; top: 0; }
+
+        /* Accordion */
+        .accordion { margin-bottom: 30px; }
+        .accordion-item { border: 1px solid var(--gray-200); border-radius: var(--border-radius); margin-bottom: 15px; overflow: hidden; background: var(--bg-color); }
+        .accordion-header { background: var(--gray-100); padding: 18px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--primary-color); transition: var(--transition); user-select: none; }
+        .accordion-header:hover { background-color: var(--secondary-color); }
+        .accordion-header::after { content: '+'; font-size: 1.5rem; transition: transform 0.3s ease; }
+        .accordion-item.active .accordion-header::after { content: '−'; transform: rotate(180deg); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: var(--bg-color); }
+        .accordion-item.active .accordion-content { border-top: 1px solid var(--gray-200); }
+        .accordion-body { padding: 20px; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 20px; background-color: var(--primary-color); color: white;
+            border: none; border-radius: var(--border-radius); cursor: pointer;
+            font-size: 1rem; font-weight: 500; transition: var(--transition); text-decoration: none;
+        }
+        .btn:hover { background-color: var(--primary-light); transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn:disabled { background-color: var(--gray-300); color: var(--text-light); cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-outline { background: var(--bg-color); color: var(--primary-color); border: 2px solid var(--primary-color); }
+        .btn-outline:hover { background: var(--secondary-color); }
+        .btn-accent { background: var(--accent-color); color: #000; }
+        .btn-accent:hover:not(:disabled) { background: var(--accent-hover); }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center; align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: var(--bg-color); border-radius: 12px;
+            max-width: 900px; width: 100%; max-height: 90vh;
+            overflow-y: auto; position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+        .modal-header {
+            padding: 15px 20px; border-bottom: 1px solid var(--gray-200);
+            display: flex; justify-content: space-between; align-items: center;
+            color: var(--text-color);
+        }
+        .modal-body { padding: 20px; text-align: center; }
+        .modal-body img, .modal-body video {
+            max-width: 100%; height: auto; border-radius: var(--border-radius);
+        }
+        .close-modal {
+            background: none; border: none; font-size: 1.5rem;
+            cursor: pointer; color: var(--text-light);
+        }
+        .close-modal:hover { color: var(--danger); }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Quiz */
+        .quiz-container { margin-bottom: 30px; }
+        .question { background: var(--bg-color); border: 1px solid var(--gray-200); padding: 25px; border-radius: var(--border-radius); margin-bottom: 25px; }
+        .question h4 { color: var(--text-color); font-size: 1.1rem; margin-bottom: 15px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 2px solid var(--gray-200); border-radius: var(--border-radius); cursor: pointer; transition: var(--transition); background: var(--gray-100); text-align: left; font-family: inherit; font-size: 0.95rem; color: var(--text-color); }
+        .option:hover:not(.disabled) { background: var(--gray-200); border-color: var(--gray-300); }
+        .option.disabled { cursor: not-allowed; opacity: 0.7; }
+        .option.correct { background: #d1fae5; border-color: var(--success); color: #065f46; }
+        .option.incorrect { background: #fee2e2; border-color: var(--danger); color: #991b1b; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: var(--border-radius); display: none; font-size: 0.95rem; }
+        .feedback.show { display: block; }
+        .feedback-correct { background: #d1fae5; color: #065f46; border-left: 4px solid var(--success); }
+        .feedback-incorrect { background: #fee2e2; color: #991b1b; border-left: 4px solid var(--danger); }
+
+        /* Toast */
+        .toast {
+            visibility: hidden; min-width: 250px;
+            background-color: var(--success); color: #fff;
+            text-align: center; border-radius: var(--border-radius);
+            padding: 16px; position: fixed; z-index: 3000;
+            left: 50%; bottom: 30px; transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-weight: 500;
+        }
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        .lesson-section { display: none; }
+        .lesson-section.active-lesson { display: block; }
+
+        /* Rubric table */
+        .rubric-table-wrapper { overflow-x: auto; border: 1px solid var(--gray-200); border-radius: var(--border-radius); margin-top: 12px; }
+        .rubric-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+        .rubric-table th, .rubric-table td { padding: 12px 16px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+        .rubric-table th { background-color: var(--secondary-color); color: var(--primary-color); font-weight: 700; }
+        .rubric-table td { color: var(--text-color); }
+
+        footer { text-align: center; padding: 20px; color: var(--text-light); font-size: 0.9rem; border-top: 1px solid var(--gray-200); margin-top: 40px; }
+
+        .hidden { display: none !important; }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+
+        .builder-table-wrapper { overflow-x: auto; margin: 16px 0; }
+        .builder-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .builder-table th, .builder-table td { border: 1px solid var(--gray-200); padding: 10px; vertical-align: top; }
+        .builder-table th { background-color: var(--secondary-color); color: var(--primary-color); }
+        .builder-table td { color: var(--text-color); }
+        .table-textarea { width: 100%; height: 90px; border: 1px solid var(--gray-300); border-radius: 4px; padding: 8px; font-family: inherit; font-size: 0.85rem; resize: vertical; background: var(--bg-color); color: var(--text-color); }
+        .table-textarea:focus { outline: none; border-color: var(--primary-color); }
+
+        #theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Dark mode specific overrides */
+        body.dark-mode .accordion-header { color: #ffffff; }
+        body.dark-mode .rubric-table th, body.dark-mode .builder-table th { color: #ffffff; }
+        body.dark-mode .tab-btn { color: #ffffff; background: var(--gray-200); border-color: var(--gray-300); }
+        body.dark-mode .tab-btn.active { background: var(--primary-color); color: #000; }
+        body.dark-mode .option { background: var(--gray-100); color: var(--text-color); border-color: var(--gray-300); }
+        body.dark-mode .option:hover:not(.disabled) { background: var(--gray-200); }
+        body.dark-mode textarea, body.dark-mode input[type="text"] {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border-color: var(--gray-300);
+        }
+        body.dark-mode .reflection-area {
+            background: var(--gray-100) !important;
+        }
+        body.dark-mode .pitfall-box {
+            background: var(--gray-100) !important;
+            color: var(--text-color);
+        }
+        body.dark-mode .pitfall-box.danger {
+            background: var(--gray-100) !important;
+        }
+        body.dark-mode #roleplay-section {
+            background: var(--gray-100) !important;
+            color: var(--text-color);
+        }
+        body.dark-mode .btn-accent { color: #000; }
+
+        /* Tăng cường tương phản cho các vùng lưu phản hồi trong dark mode */
+        body.dark-mode #reflection71-saved,
+        body.dark-mode #roleplay71-saved,
+        body.dark-mode #rubric72-saved {
+            background: #1a3a2a !important;
+            border-left-color: #2ecc71 !important;
+            color: #e0ffe0 !important;
+        }
+        body.dark-mode #reflection71-saved p,
+        body.dark-mode #roleplay71-saved p,
+        body.dark-mode #rubric72-saved p,
+        body.dark-mode #reflection71-saved strong,
+        body.dark-mode #roleplay71-saved strong,
+        body.dark-mode #rubric72-saved strong {
+            color: #ffffff !important;
+        }
+        body.dark-mode #reflection71-saved .btn-outline,
+        body.dark-mode #roleplay71-saved .btn-outline,
+        body.dark-mode #rubric72-saved .btn-outline {
+            background: #2a2a3c !important;
+            color: #ffffff !important;
+            border-color: #6fb3d9 !important;
+        }
+        body.dark-mode #reflection71-saved .btn-outline:hover,
+        body.dark-mode #roleplay71-saved .btn-outline:hover,
+        body.dark-mode #rubric72-saved .btn-outline:hover {
+            background: #3a4a5e !important;
+        }
+        body.dark-mode #rubric72-saved table,
+        body.dark-mode #rubric72-saved th,
+        body.dark-mode #rubric72-saved td {
+            border-color: #4a5568 !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode #rubric72-saved th {
+            background-color: #2a3a4e !important;
+        }
+
+        @media (max-width: 768px) {
+            .container { margin: 20px 15px; padding: 20px; }
+            #theme-toggle { top: 10px; right: 10px; padding: 8px 12px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
+
+    <button id="theme-toggle" class="btn btn-outline" onclick="toggleTheme()">🌓 Chế độ tối</button>
+
+    <main class="container">
+        <div class="breadcrumb">
+            Trang chủ / Module 7 / <span id="breadcrumb-active">Bài 7.1 - Tự đánh giá là gì?</span>
+        </div>
+
+        <!-- ==================== BÀI 7.1 ==================== -->
+        <div id="lesson-71" class="lesson-section active-lesson">
+            <section class="course-header">
+                <div class="course-meta">
+                    <span>Module 7: Tự Đánh Giá Kết Quả</span>
+                    <span>⏱ 10 phút</span>
+                </div>
+                <h1>Bài 7.1 – Tự đánh giá là gì?</h1>
+                <p style="color: var(--text-light);">Phân biệt các hình thức kiểm nghiệm kết quả học tập và hiểu tầm quan trọng của siêu nhận thức.</p>
+            </section>
+
+            <section class="objectives-box">
+                <h3>Mục tiêu bài học</h3>
+                <ul class="objectives-list">
+                    <li>Giải thích được sự khác biệt giữa Assessment of Learning, Assessment for Learning, Assessment as Learning.</li>
+                </ul>
+            </section>
+
+            <!-- Accordion nội dung -->
+            <div class="accordion">
+                <div class="accordion-item active" id="a71-1">
+                    <div class="accordion-header" onclick="toggleAccordion('a71-1')">
+                        <span>1. Phân biệt 3 loại hình đánh giá</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>Trong giáo dục hiện đại, các hoạt động đánh giá được tổ chức thành 3 loại hình:</p>
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:12px;">
+                                <div style="border:1px solid var(--gray-200); padding:16px; border-radius:8px;">
+                                    <h4 style="color:var(--primary-color);">📊 Assessment of Learning</h4>
+                                    <p>Đánh giá tổng kết, xếp loại, thường diễn ra ở cuối kỳ.</p>
+                                </div>
+                                <div style="border:1px solid var(--gray-200); padding:16px; border-radius:8px;">
+                                    <h4 style="color:var(--primary-color);">💡 Assessment for Learning</h4>
+                                    <p>Đánh giá vì học tập, phản hồi liên tục để cải thiện.</p>
+                                </div>
+                                <div style="border:1px solid var(--primary-color); background: var(--secondary-color); padding:16px; border-radius:8px;">
+                                    <h4 style="color:var(--primary-color);">🎯 Assessment as Learning</h4>
+                                    <p>Người học tự soi chiếu, phát triển siêu nhận thức.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item" id="a71-2">
+                    <div class="accordion-header" onclick="toggleAccordion('a71-2')">2. Vòng tròn tự điều chỉnh học tập</div>
+                    <div class="accordion-content"><div class="accordion-body">
+                        <p>Tự điều chỉnh học tập hoạt động theo chu kỳ 4 bước:</p>
+                        <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:12px; text-align:center; margin-top:12px;">
+                            <div><div style="background:var(--primary-color);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:4px;">1</div><strong>Lập kế hoạch</strong></div>
+                            <div><div style="background:var(--primary-color);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:4px;">2</div><strong>Thực hiện</strong></div>
+                            <div><div style="background:var(--primary-color);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:4px;">3</div><strong>Theo dõi</strong></div>
+                            <div><div style="background:var(--primary-color);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:4px;">4</div><strong>Phản ánh</strong></div>
+                        </div>
+                    </div></div>
+                </div>
+                <div class="accordion-item" id="a71-3">
+                    <div class="accordion-header" onclick="toggleAccordion('a71-3')">3. Bẫy lệch lạc tâm lý khi tự đánh giá</div>
+                    <div class="accordion-content"><div class="accordion-body">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                            <div style="background:#FFFBEB; border-left:4px solid var(--accent-color); padding:16px; border-radius:4px;" class="pitfall-box">
+                                <h4>📈 Dunning-Kruger</h4>
+                                <p>Biết ít nhưng tưởng mình giỏi.</p>
+                            </div>
+                            <div style="background:#FEF2F2; border-left:4px solid var(--danger); padding:16px; border-radius:4px;" class="pitfall-box danger">
+                                <h4>📉 Impostor</h4>
+                                <p>Giỏi nhưng luôn nghi ngờ bản thân.</p>
+                            </div>
+                        </div>
+                    </div></div>
+                </div>
+                <div class="accordion-item" id="a71-4">
+                    <div class="accordion-header" onclick="toggleAccordion('a71-4')">4. Công cụ tự đánh giá thực tiễn</div>
+                    <div class="accordion-content"><div class="accordion-body">
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:16px;">
+                            <div style="text-align:center; padding:16px; border:1px solid var(--gray-200); border-radius:8px;">📓 Nhật ký học tập</div>
+                            <div style="text-align:center; padding:16px; border:1px solid var(--gray-200); border-radius:8px;">📋 Bảng Rubric</div>
+                            <div style="text-align:center; padding:16px; border:1px solid var(--gray-200); border-radius:8px;">🎟️ Phiếu ra về</div>
+                        </div>
+                    </div></div>
+                </div>
+            </div>
+
+            <!-- Tài nguyên học tập Bài 7.1 -->
+            <h2>Tài nguyên học tập</h2>
+            <section class="resources-grid">
+                <button class="btn btn-outline" onclick="openModal('modal-infographic-71')">📊 Xem Infographic bài 7.1</button>
+                <button class="btn btn-outline" onclick="openModal('modal-mindmap-71')">🧠 Xem Mind Map 7.1</button>
+                <button class="btn btn-outline" onclick="openModal('modal-video-71')">🎥 Xem Video bài giảng 7.1</button>
+            </section>
+
+            <!-- Phản ánh 3-2-1 -->
+            <h2>Hoạt động: Phản ánh 3-2-1</h2>
+            <div class="reflection-area" style="background:#f8fafc; padding:25px; border-radius:8px; margin-bottom:40px;">
+                <p style="margin-bottom:8px;">3 điều hiểu rõ, 2 điều mơ hồ, 1 hành động cải thiện.</p>
+                <!-- Vùng nhập liệu -->
+                <div id="reflection71-input-area">
+                    <textarea id="reflectionText71" style="width:100%; height:150px; border:1px solid var(--gray-300); border-radius:8px; padding:12px; font-family:inherit; resize:vertical;" placeholder="Nhập phản ánh của bạn..." oninput="updateCount71()"></textarea>
+                    <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+                        <button class="btn btn-accent" id="saveRefBtn71" onclick="saveReflection71()">Lưu phản ánh</button>
+                    </div>
+                </div>
+                <!-- Vùng hiển thị đã lưu -->
+                <div id="reflection71-saved" style="display:none; margin-top:12px; padding:12px; background:#e6fffa; border-radius:8px; border-left:4px solid var(--success);">
+                    <p><strong>Phản ánh đã lưu:</strong></p>
+                    <p id="reflection71-content" style="white-space:pre-wrap;"></p>
+                    <button class="btn btn-outline" onclick="deleteReflection71()">🗑️ Xóa phản ánh</button>
+                </div>
+            </div>
+
+            <!-- Trò chơi nhập vai siêu nhận thức -->
+            <h2>✨ Trò chơi nhập vai siêu nhận thức</h2>
+            <div id="roleplay-section" style="background: linear-gradient(135deg, #EEF2FF 0%, #FFFFFF 100%); border: 2px solid var(--ai-accent); padding:25px; border-radius:12px; margin-bottom:40px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                    <span style="font-size:1.5rem;">🎭</span>
+                    <h3 style="margin:0; color:var(--ai-accent-dark);">Nhập vai Cố vấn Siêu nhận thức</h3>
+                </div>
+                <p style="margin-bottom:15px; font-size:0.95rem; color:var(--text-light);">
+                    <strong>Tình huống:</strong> Nam là một sinh viên năm nhất đang cảm thấy cực kỳ quá tải trước mùa thi. Cậu ấy chia sẻ: <i>"Mình học ngày học đêm, không ngủ để đọc sách nhưng thi thử điểm vẫn lẹt đẹt. Mình nghĩ mình không đủ thông minh để học đại học."</i>
+                </p>
+                <p style="margin-bottom:12px; font-weight:600; font-size:0.95rem;">
+                    Nhiệm vụ của bạn: Hãy đưa ra lời khuyên (gợi ý giải pháp) dựa trên chu kỳ tự điều chỉnh học tập (Metacognition Cycle) để giúp Nam thay đổi phương pháp học.
+                </p>
+                <!-- Vùng nhập -->
+                <div id="roleplay71-input-area">
+                    <textarea id="roleplayInput71" style="width:100%; height:110px; border:1px solid var(--gray-300); border-radius:8px; padding:12px; font-family:inherit; resize:vertical; margin-bottom:12px;" placeholder="Ví dụ: Chào Nam, thay vì cố gắng đọc sách không ngủ, bạn nên dừng lại để lập kế hoạch cụ thể..."></textarea>
+                    <button class="btn btn-accent" id="saveRoleplayBtn71" onclick="saveRoleplay71()">Lưu câu trả lời</button>
+                </div>
+                <!-- Vùng đã lưu -->
+                <div id="roleplay71-saved" style="display:none; margin-top:12px; padding:12px; background:#e6fffa; border-radius:8px; border-left:4px solid var(--success);">
+                    <p><strong>Câu trả lời đã lưu:</strong></p>
+                    <p id="roleplay71-content" style="white-space:pre-wrap;"></p>
+                    <button class="btn btn-outline" onclick="deleteRoleplay71()">🗑️ Xóa câu trả lời</button>
+                </div>
+            </div>
+
+            <!-- Quiz 7.1 -->
+            <h2>Kiểm tra nhanh</h2>
+            <div class="quiz-container">
+                <div class="question" id="q71-1">
+                    <h4>Câu 1: Cô giáo cho điểm bài luận cuối kỳ, đây là loại đánh giá nào?</h4>
+                    <div class="options">
+                        <button class="option" onclick="checkQuiz71(1,'A')">A. Assessment for Learning</button>
+                        <button class="option" onclick="checkQuiz71(1,'B')">B. Assessment as Learning</button>
+                        <button class="option" id="q71-1-correct" onclick="checkQuiz71(1,'C')">C. Assessment of Learning</button>
+                        <button class="option" onclick="checkQuiz71(1,'D')">D. Assessment in Learning</button>
+                    </div>
+                    <div id="q71-1-feedback" class="feedback"></div>
+                </div>
+                <div class="question" id="q71-2">
+                    <h4>Câu 2: Sinh viên tự hỏi "Mình sai ở đâu?" sau buổi học thuộc loại đánh giá nào?</h4>
+                    <div class="options">
+                        <button class="option" onclick="checkQuiz71(2,'A')">A. Of Learning – Bước Thực hiện</button>
+                        <button class="option" id="q71-2-correct" onclick="checkQuiz71(2,'B')">B. As Learning – Bước Phản ánh</button>
+                        <button class="option" onclick="checkQuiz71(2,'C')">C. For Learning – Bước Theo dõi</button>
+                        <button class="option" onclick="checkQuiz71(2,'D')">D. Of Learning – Bước Lập kế hoạch</button>
+                    </div>
+                    <div id="q71-2-feedback" class="feedback"></div>
+                </div>
+                
+                <!-- Nút chuyển tiếp Bài 7.1 ➔ 7.2 -->
+                <div style="text-align: center; margin: 30px 0;">
+                    <button id="complete-btn-71" class="btn btn-accent" onclick="completeBai7_1()" disabled>
+                        ✅ Hoàn thành Bài 7.1 & Chuyển sang Bài 7.2
+                    </button>
+                    <p id="quiz-reminder-71" style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">
+                        ⚠️ Vui lòng trả lời cả 2 câu hỏi và lưu phản ánh để mở khóa nút chuyển tiếp.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== BÀI 7.2 ==================== -->
+        <div id="lesson-72" class="lesson-section">
+            <section class="course-header">
+                <div class="course-meta">
+                    <span>Module 7: Tự Đánh Giá Kết Quả</span>
+                    <span>⏱ 15 phút</span>
+                </div>
+                <h1>Bài 7.2 – Xây dựng Rubric Cá nhân</h1>
+                <p style="color: var(--text-light);">Tự thiết lập bảng tiêu chuẩn phân tích để cải thiện kỹ năng.</p>
+            </section>
+
+            <section class="objectives-box">
+                <h3>Mục tiêu bài học</h3>
+                <ul class="objectives-list">
+                    <li>Hiểu cấu tạo rubric phân tích và rubric tổng thể.</li>
+                    <li>Tự xây dựng rubric 3 tiêu chí cho một kỹ năng tự chọn.</li>
+                </ul>
+            </section>
+
+            <div class="accordion">
+                <div class="accordion-item" id="a72-1">
+                    <div class="accordion-header" onclick="toggleAccordion('a72-1')">1. Rubric là gì?</div>
+                    <div class="accordion-content"><div class="accordion-body">
+                        <p>Rubric là bảng mô tả các mức độ thực hiện khác nhau cho từng tiêu chí của một kỹ năng, giúp tự đánh giá khách quan.</p>
+                    </div></div>
+                </div>
+                <div class="accordion-item" id="a72-2">
+                    <div class="accordion-header" onclick="toggleAccordion('a72-2')">2. Ba thành phần cấu thành Rubric</div>
+                    <div class="accordion-content"><div class="accordion-body">
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:12px;">
+                            <div style="border:1px solid var(--gray-200); padding:16px; border-radius:8px;"><strong>🎯 Tiêu chí</strong><br>Yếu tố cần đánh giá</div>
+                            <div style="border:1px solid var(--gray-200); padding:16px; border-radius:8px;"><strong>📊 Mức độ</strong><br>Thang điểm (Chưa đạt, Đạt, Vượt trội)</div>
+                            <div style="border:1px solid var(--gray-200); padding:16px; border-radius:8px;"><strong>📝 Mô tả hành vi</strong><br>Hành động cụ thể quan sát được</div>
+                        </div>
+                    </div></div>
+                </div>
+                <div class="accordion-item" id="a72-3">
+                    <div class="accordion-header" onclick="toggleAccordion('a72-3')">3. Rubric tổng thể vs Rubric phân tích</div>
+                    <div class="accordion-content"><div class="accordion-body">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                            <div style="border:1px solid var(--gray-200); padding:16px; border-radius:8px;">
+                                <h4>🔍 Tổng thể</h4>
+                                <p>Một thang điểm chung cho tất cả. Nhanh nhưng ít chi tiết.</p>
+                            </div>
+                            <div style="border:1px solid var(--primary-color); background:var(--secondary-color); padding:16px; border-radius:8px;">
+                                <h4>🧩 Phân tích</h4>
+                                <p>Chấm riêng từng tiêu chí, rất hữu ích cho tự học.</p>
+                            </div>
+                        </div>
+                    </div></div>
+                </div>
+                <div class="accordion-item" id="a72-4">
+                    <div class="accordion-header" onclick="toggleAccordion('a72-4')">4. Quy trình 5 bước kiến tạo Rubric</div>
+                    <div class="accordion-content"><div class="accordion-body">
+                        <ol>
+                            <li>Chọn một kỹ năng cụ thể.</li>
+                            <li>Liệt kê 3–5 tiêu chí quan trọng.</li>
+                            <li>Mô tả mức "Đạt" trước.</li>
+                            <li>Phát triển mức "Chưa đạt" và "Vượt trội".</li>
+                            <li>Thử nghiệm và tinh chỉnh.</li>
+                        </ol>
+                    </div></div>
+                </div>
+            </div>
+
+            <!-- Tài nguyên học tập Bài 7.2 -->
+            <h2>Tài nguyên học tập</h2>
+            <section class="resources-grid">
+                <button class="btn btn-outline" onclick="openModal('modal-infographic-72')">📊 Xem Infographic bài 7.2</button>
+                <button class="btn btn-outline" onclick="openModal('modal-mindmap-72')">🧠 Xem Mind Map 7.2</button>
+                <button class="btn btn-outline" onclick="openModal('modal-video-72')">🎥 Xem Video bài giảng 7.2</button>
+            </section>
+
+            <!-- Ví dụ Rubric mẫu -->
+            <h2>Ví dụ Rubric tham khảo</h2>
+            <div class="tab-buttons" style="display:flex; gap:8px; margin-bottom:16px;">
+                <button class="tab-btn active" onclick="switchExampleTab('tab-reading', event)">📖 Đọc sách</button>
+                <button class="tab-btn" onclick="switchExampleTab('tab-presentation', event)">🗣️ Thuyết trình</button>
+                <button class="tab-btn" onclick="switchExampleTab('tab-time', event)">⏰ Quản lý thời gian</button>
+            </div>
+            <div id="tab-reading" class="tab-pane active">
+                <div class="rubric-table-wrapper">
+                    <table class="rubric-table">
+                        <thead><tr><th>Tiêu chí</th><th>Chưa đạt</th><th>Đạt</th><th>Vượt trội</th></tr></thead>
+                        <tbody>
+                            <tr><td>Đặt câu hỏi trước khi đọc</td><td>Mở sách đọc ngay</td><td>Xem mục lục, đặt 1-2 câu hỏi</td><td>Tạo bản đồ tư duy nghi vấn</td></tr>
+                            <tr><td>Ghi chú có chọn lọc</td><td>Tô vẽ vô tội vạ</td><td>Ghi chép định nghĩa cốt lõi</td><td>Dùng Cornell hoặc sơ đồ tư duy</td></tr>
+                            <tr><td>Tóm tắt & Kết nối</td><td>Không ghi nhớ gì</td><td>Tóm tắt nội dung chính</td><td>Phản biện và liên hệ đa nguồn</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tab-presentation" class="tab-pane">
+                <div class="rubric-table-wrapper">
+                    <table class="rubric-table">
+                        <thead><tr><th>Tiêu chí</th><th>Chưa đạt</th><th>Đạt</th><th>Vượt trội</th></tr></thead>
+                        <tbody>
+                            <tr><td>Cấu trúc nội dung</td><td>Lộn xộn</td><td>Rõ ràng 3 phần</td><td>Mở đầu ấn tượng, lập luận sắc bén</td></tr>
+                            <tr><td>Tương tác khán giả</td><td>Đọc slide, giọng đều</td><td>Giao tiếp mắt, âm lượng tốt</td><td>Làm chủ ngôn ngữ cơ thể, phản biện tự nhiên</td></tr>
+                            <tr><td>Tài liệu trực quan</td><td>Slide quá tải chữ</td><td>Slide sạch, ảnh minh họa</td><td>Thiết kế tối giản, biểu đồ sáng tạo</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tab-time" class="tab-pane">
+                <div class="rubric-table-wrapper">
+                    <table class="rubric-table">
+                        <thead><tr><th>Tiêu chí</th><th>Chưa đạt</th><th>Đạt</th><th>Vượt trội</th></tr></thead>
+                        <tbody>
+                            <tr><td>Xác định ưu tiên</td><td>Làm việc ngẫu hứng</td><td>Phân chia theo Eisenhower</td><td>Tập trung hoàn thành "Một việc quan trọng nhất"</td></tr>
+                            <tr><td>Lập kế hoạch</td><td>Không ghi chép</td><td>Dùng Google Calendar</td><td>Time Blocking chi tiết</td></tr>
+                            <tr><td>Tuân thủ kế hoạch</td><td>Thường xuyên trì hoãn</td><td>Hoàn thành 80% kế hoạch</td><td>Cam kết 100%, ghi nhật ký lỗi</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Rubric builder -->
+            <h2>Hoạt động: Thiết kế Rubric của bạn</h2>
+            <div style="background:#f8fafc; padding:24px; border-radius:8px; margin-bottom:40px;" class="reflection-area">
+                <!-- Vùng nhập liệu -->
+                <div id="rubric72-input-area">
+                    <div style="margin-bottom:12px;">
+                        <label style="font-weight:600;">Nhập kỹ năng:</label>
+                        <input type="text" id="skillNameInput" style="width:100%; padding:8px; border:1px solid var(--gray-300); border-radius:8px; margin-top:4px; font-family:inherit;" placeholder="Ví dụ: Kỹ năng thuyết trình trực tuyến">
+                    </div>
+
+                    <div class="builder-table-wrapper">
+                        <table class="builder-table">
+                            <thead>
+                                <tr><th>Tiêu chí</th><th>Chưa đạt (1đ)</th><th>Đạt (2đ)</th><th>Vượt trội (3đ)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><textarea id="bt-c1-t" class="table-textarea" placeholder="Tiêu chí 1"></textarea></td>
+                                    <td><textarea id="bt-c1-f" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                    <td><textarea id="bt-c1-p" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                    <td><textarea id="bt-c1-e" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="bt-c2-t" class="table-textarea" placeholder="Tiêu chí 2"></textarea></td>
+                                    <td><textarea id="bt-c2-f" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                    <td><textarea id="bt-c2-p" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                    <td><textarea id="bt-c2-e" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="bt-c3-t" class="table-textarea" placeholder="Tiêu chí 3"></textarea></td>
+                                    <td><textarea id="bt-c3-f" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                    <td><textarea id="bt-c3-p" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                    <td><textarea id="bt-c3-e" class="table-textarea" placeholder="Mô tả"></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom: 24px;">
+                        <button class="btn btn-accent" id="saveRubricBtn72" onclick="saveRubric72()">Lưu Rubric Cá Nhân</button>
+                    </div>
+                </div>
+
+                <!-- Vùng hiển thị rubric đã lưu -->
+                <div id="rubric72-saved" style="display:none; margin-top:12px; padding:16px; background:#e6fffa; border-radius:8px; border-left:4px solid var(--success);">
+                    <p><strong>Rubric đã lưu:</strong></p>
+                    <div id="rubric72-content"></div>
+                    <button class="btn btn-outline" style="margin-top:12px;" onclick="deleteRubric72()">🗑️ Xóa Rubric</button>
+                </div>
+            </div>
+
+            <!-- Quiz 7.2 -->
+            <h2>Kiểm tra nhanh</h2>
+            <div class="quiz-container">
+                <div class="question" id="q72-1">
+                    <h4>Câu 1: Một Rubric tốt phục vụ tự đánh giá cần đặc điểm gì?</h4>
+                    <div class="options">
+                        <button class="option" onclick="checkQuiz72(1,'A')">A. Có thật nhiều mức điểm</button>
+                        <button class="option" id="q72-1-correct" onclick="checkQuiz72(1,'B')">B. Mô tả hành vi rõ ràng, quan sát được</button>
+                        <button class="option" onclick="checkQuiz72(1,'C')">C. Chỉ dành cho giáo viên chấm</button>
+                        <button class="option" onclick="checkQuiz72(1,'D')">D. Dùng tính từ chung chung</button>
+                    </div>
+                    <div id="q72-1-feedback" class="feedback"></div>
+                </div>
+                <div class="question" id="q72-2">
+                    <h4>Câu 2: Tự đánh giá 3 tiêu chí riêng biệt (Lập kế hoạch, Trình bày, Phản hồi) là ứng dụng Rubric loại nào?</h4>
+                    <div class="options">
+                        <button class="option" onclick="checkQuiz72(2,'A')">A. Rubric tổng thể</button>
+                        <button class="option" id="q72-2-correct" onclick="checkQuiz72(2,'B')">B. Rubric phân tích</button>
+                        <button class="option" onclick="checkQuiz72(2,'C')">C. Rubric định lượng</button>
+                        <button class="option" onclick="checkQuiz72(2,'D')">D. Rubric cảm tính</button>
+                    </div>
+                    <div id="q72-2-feedback" class="feedback"></div>
+                </div>
+            </div>
+
+            <!-- NÚT QUAY LẠI BÀI 7.1 -->
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="btn btn-outline" onclick="switchLesson('7.1')">
+                    ⬅️ Quay lại Bài 7.1
+                </button>
+            </div>
+
+            <!-- NÚT CHUYỂN ĐẾN MODULE 8 (có ràng buộc) -->
+            <div style="text-align: center; margin: 30px 0;">
+                <button id="goto-module8-btn" class="btn btn-accent" onclick="goToModule8()" disabled>
+                    🚀 Chuyển đến Module 8
+                </button>
+                <p id="module8-reminder" style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">
+                    ⚠️ Vui lòng hoàn thành tất cả hoạt động và quiz của Bài 7.2 để mở khóa.
+                </p>
+            </div>
+        </div>
+
+        <footer>© 2026 MOOCs "Kỹ năng Tự học trong Thời đại Số".</footer>
+    </main>
+
+    <!-- ========== MODALS TÀI NGUYÊN ========== -->
+    <!-- Bài 7.1 -->
+    <div id="modal-infographic-71" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-infographic-71')">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Infographic Bài 7.1</h3><button class="close-modal" onclick="closeModal('modal-infographic-71')">&times;</button></div>
+            <div class="modal-body"><img src="https://i.ibb.co/nNRszSWD/B-quy-t-l-m-ch-vi-c-h-c.png" alt="Infographic 7.1"></div>
+        </div>
+    </div>
+    <div id="modal-mindmap-71" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-mindmap-71')">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Mind Map Bài 7.1</h3><button class="close-modal" onclick="closeModal('modal-mindmap-71')">&times;</button></div>
+            <div class="modal-body"><img src="https://i.ibb.co/zVwzv31G/Notebook-LM-Mind-Map-1.png" alt="Mind Map 7.1"></div>
+        </div>
+    </div>
+    <div id="modal-video-71" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-video-71')">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Video Bài giảng 7.1</h3><button class="close-modal" onclick="closeModal('modal-video-71', true)">&times;</button></div>
+            <div class="modal-body">
+                <video id="video-71" controls><source src="https://files.catbox.moe/x6gixa.mp4" type="video/mp4"></video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bài 7.2 -->
+    <div id="modal-infographic-72" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-infographic-72')">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Infographic Bài 7.2</h3><button class="close-modal" onclick="closeModal('modal-infographic-72')">&times;</button></div>
+            <div class="modal-body"><img src="https://i.ibb.co/7xt5nsW3/X-y-d-ng-Rubric-c-nh-n.png" alt="Infographic 7.2"></div>
+        </div>
+    </div>
+    <div id="modal-mindmap-72" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-mindmap-72')">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Mind Map Bài 7.2</h3><button class="close-modal" onclick="closeModal('modal-mindmap-72')">&times;</button></div>
+            <div class="modal-body"><img src="https://i.ibb.co/bgSVLx9r/Notebook-LM-Mind-Map-3.png" alt="Mind Map 7.2"></div>
+        </div>
+    </div>
+    <div id="modal-video-72" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-video-72')">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Video Bài giảng 7.2</h3><button class="close-modal" onclick="closeModal('modal-video-72', true)">&times;</button></div>
+            <div class="modal-body">
+                <video id="video-72" controls><source src="https://files.catbox.moe/ady3uc.mp4" type="video/mp4"></video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ========== TRẠNG THÁI & BIẾN ==========
+        let currentLesson = "7.1";
+        let isReflectionSaved71 = false;
+        let reflection71Data = "";
+        let isQ71_1_Answered = false;
+        let isQ71_2_Answered = false;
+        let isRubricSaved72 = false;
+        let isQ72_1_Answered = false;
+        let isQ72_2_Answered = false;
+        let roleplay71Data = "";
+
+        // ========== CHẾ ĐỘ SÁNG/TỐI ==========
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const themeBtn = document.getElementById('theme-toggle');
+            if (document.body.classList.contains('dark-mode')) {
+                themeBtn.innerHTML = '☀️ Chế độ sáng';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeBtn.innerHTML = '🌓 Chế độ tối';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').innerHTML = '☀️ Chế độ sáng';
+            }
+        })();
+
+        // ========== KHỞI TẠO ==========
+        document.addEventListener("DOMContentLoaded", () => {
+            updateProgress();
+            document.querySelectorAll('.accordion-item.active .accordion-content').forEach(c => {
+                c.style.maxHeight = c.scrollHeight + "px";
+            });
+            document.getElementById('lesson-71').classList.add('active-lesson');
+            document.getElementById('lesson-72').classList.remove('active-lesson');
+            document.getElementById('breadcrumb-active').innerText = "Bài 7.1 - Tự đánh giá là gì?";
+        });
+
+        // ========== ĐIỀU HƯỚNG BÀI HỌC ==========
+        function switchLesson(lessonId) {
+            currentLesson = lessonId;
+            document.querySelectorAll('.lesson-section').forEach(s => s.classList.remove('active-lesson'));
+            if (lessonId === '7.1') {
+                document.getElementById('lesson-71').classList.add('active-lesson');
+                document.getElementById('breadcrumb-active').innerText = "Bài 7.1 - Tự đánh giá là gì?";
+            } else {
+                document.getElementById('lesson-72').classList.add('active-lesson');
+                document.getElementById('breadcrumb-active').innerText = "Bài 7.2 - Xây dựng Rubric Cá nhân";
+            }
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function completeBai7_1() {
+            if (isReflectionSaved71 && isQ71_1_Answered && isQ71_2_Answered) {
+                showToast("🎉 Chúc mừng bạn đã hoàn thành Bài 7.1! Đang chuyển sang Bài 7.2...");
+                setTimeout(() => { switchLesson('7.2'); }, 1000);
+            }
+        }
+
+        // ========== CHUYỂN ĐẾN MODULE 8 ==========
+        function goToModule8() {
+            if (isRubricSaved72 && isQ72_1_Answered && isQ72_2_Answered) {
+                // Thay đổi URL bên dưới thành đường dẫn thực tế của Module 8
+                window.location.href = "module8.html";
+            } else {
+                showToast("⚠️ Bạn cần hoàn thành tất cả hoạt động và quiz của Bài 7.2.", "error");
+            }
+        }
+
+        // ========== ACCORDION ==========
+        function toggleAccordion(id) {
+            const item = document.getElementById(id);
+            const content = item.querySelector('.accordion-content');
+            const isActive = item.classList.contains('active');
+            item.parentElement.querySelectorAll('.accordion-item').forEach(i => {
+                i.classList.remove('active');
+                i.querySelector('.accordion-content').style.maxHeight = null;
+            });
+            if (!isActive) {
+                item.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+
+        function switchExampleTab(tabId, evt) {
+            const tabPane = document.getElementById(tabId);
+            if (!tabPane) return;
+            const container = tabPane.parentElement;
+            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            container.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add('active');
+            }
+            tabPane.classList.add('active');
+        }
+
+        // ========== MODAL ==========
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(modalId, isVideo = false) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+            if (isVideo) {
+                const video = document.querySelector(`#${modalId} video`);
+                if (video) video.pause();
+            }
+        }
+        function closeModalOnOutsideClick(event, modalId) {
+            if (event.target.id === modalId) {
+                closeModal(modalId, modalId.includes('video'));
+            }
+        }
+
+        // ========== TOAST ==========
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.backgroundColor = type === 'error' ? 'var(--danger)' : 'var(--success)';
+            toast.className = 'toast show';
+            setTimeout(() => { toast.className = 'toast'; }, 3000);
+        }
+
+        // ========== TIẾN TRÌNH ==========
+        function updateProgress() {
+            let progress = 0;
+            if (isReflectionSaved71) progress += 20;
+            if (isQ71_1_Answered && isQ71_2_Answered) progress += 25;
+            if (isRubricSaved72) progress += 20;
+            if (isQ72_1_Answered && isQ72_2_Answered) progress += 35;
+            document.getElementById('progress-bar').style.width = Math.min(progress, 100) + '%';
+
+            // Nút hoàn thành bài 7.1
+            const completeBtn71 = document.getElementById('complete-btn-71');
+            const reminder71 = document.getElementById('quiz-reminder-71');
+            if (isReflectionSaved71 && isQ71_1_Answered && isQ71_2_Answered) {
+                completeBtn71.removeAttribute('disabled');
+                reminder71.style.color = "var(--success)";
+                reminder71.innerHTML = "✨ Đã mở khoá! Bạn có thể chuyển sang Bài 7.2 ngay bây giờ.";
+            } else {
+                completeBtn71.setAttribute('disabled', 'true');
+                reminder71.style.color = "var(--text-light)";
+                reminder71.innerHTML = "⚠️ Vui lòng trả lời cả 2 câu hỏi và lưu phản ánh để mở khóa nút chuyển tiếp.";
+            }
+
+            // Nút chuyển Module 8
+            const module8Btn = document.getElementById('goto-module8-btn');
+            const module8Reminder = document.getElementById('module8-reminder');
+            if (isRubricSaved72 && isQ72_1_Answered && isQ72_2_Answered) {
+                module8Btn.removeAttribute('disabled');
+                module8Reminder.style.color = "var(--success)";
+                module8Reminder.innerHTML = "🎉 Bạn đã sẵn sàng cho Module 8! Nhấn nút để tiếp tục.";
+            } else {
+                module8Btn.setAttribute('disabled', 'true');
+                module8Reminder.style.color = "var(--text-light)";
+                module8Reminder.innerHTML = "⚠️ Vui lòng hoàn thành tất cả hoạt động và quiz của Bài 7.2 để mở khóa.";
+            }
+        }
+
+        function updateCount71() {}
+
+        // ==================== HOẠT ĐỘNG PHẢN ÁNH 3-2-1 ====================
+        function saveReflection71() {
+            const text = document.getElementById('reflectionText71').value.trim();
+            if (!text || text.length < 50) { showToast('Hãy viết ít nhất 50 ký tự.', 'error'); return; }
+            reflection71Data = text;
+            isReflectionSaved71 = true;
+            document.getElementById('reflection71-input-area').style.display = 'none';
+            document.getElementById('reflection71-saved').style.display = 'block';
+            document.getElementById('reflection71-content').innerText = reflection71Data;
+            updateProgress();
+        }
+
+        function deleteReflection71() {
+            reflection71Data = '';
+            isReflectionSaved71 = false;
+            document.getElementById('reflection71-input-area').style.display = 'block';
+            document.getElementById('reflection71-saved').style.display = 'none';
+            document.getElementById('reflectionText71').value = '';
+            document.getElementById('saveRefBtn71').disabled = false;
+            document.getElementById('saveRefBtn71').innerHTML = 'Lưu phản ánh';
+            updateProgress();
+        }
+
+        // ==================== TRÒ CHƠI NHẬP VAI ====================
+        function saveRoleplay71() {
+            const text = document.getElementById('roleplayInput71').value.trim();
+            if (!text || text.length < 20) { showToast('Hãy viết ít nhất 20 ký tự.', 'error'); return; }
+            roleplay71Data = text;
+            document.getElementById('roleplay71-input-area').style.display = 'none';
+            document.getElementById('roleplay71-saved').style.display = 'block';
+            document.getElementById('roleplay71-content').innerText = roleplay71Data;
+        }
+
+        function deleteRoleplay71() {
+            roleplay71Data = '';
+            document.getElementById('roleplay71-input-area').style.display = 'block';
+            document.getElementById('roleplay71-saved').style.display = 'none';
+            document.getElementById('roleplayInput71').value = '';
+        }
+
+        // ==================== RUBRIC BUILDER ====================
+        function saveRubric72() {
+            const skill = document.getElementById('skillNameInput').value.trim();
+            const c1 = document.getElementById('bt-c1-t').value.trim();
+            const c2 = document.getElementById('bt-c2-t').value.trim();
+            const c3 = document.getElementById('bt-c3-t').value.trim();
+            if (!skill || !c1 || !c2 || !c3) { showToast('Điền đầy đủ tên kỹ năng và 3 tiêu chí.', 'error'); return; }
+
+            isRubricSaved72 = true;
+            document.getElementById('rubric72-input-area').style.display = 'none';
+            document.getElementById('rubric72-saved').style.display = 'block';
+
+            let html = `<p><strong>Kỹ năng:</strong> ${skill}</p>`;
+            html += '<table style="width:100%; border-collapse: collapse; margin-top:8px;">';
+            html += '<tr><th>Tiêu chí</th><th>Chưa đạt</th><th>Đạt</th><th>Vượt trội</th></tr>';
+            const rows = [
+                [c1, document.getElementById('bt-c1-f').value, document.getElementById('bt-c1-p').value, document.getElementById('bt-c1-e').value],
+                [c2, document.getElementById('bt-c2-f').value, document.getElementById('bt-c2-p').value, document.getElementById('bt-c2-e').value],
+                [c3, document.getElementById('bt-c3-f').value, document.getElementById('bt-c3-p').value, document.getElementById('bt-c3-e').value]
+            ];
+            rows.forEach(r => {
+                html += '<tr>';
+                r.forEach(cell => html += `<td style="border:1px solid #ccc; padding:6px;">${cell}</td>`);
+                html += '</tr>';
+            });
+            html += '</table>';
+            document.getElementById('rubric72-content').innerHTML = html;
+
+            updateProgress();
+        }
+
+        function deleteRubric72() {
+            isRubricSaved72 = false;
+            document.getElementById('rubric72-input-area').style.display = 'block';
+            document.getElementById('rubric72-saved').style.display = 'none';
+            document.getElementById('skillNameInput').value = '';
+            document.querySelectorAll('.table-textarea').forEach(ta => ta.value = '');
+            document.getElementById('saveRubricBtn72').disabled = false;
+            document.getElementById('saveRubricBtn72').innerHTML = 'Lưu Rubric Cá Nhân';
+            updateProgress();
+        }
+
+        // ==================== QUIZ ====================
+        function checkQuiz71(num, opt) {
+            if (num === 1) {
+                if (isQ71_1_Answered) return;
+                isQ71_1_Answered = true;
+                const card = document.getElementById('q71-1');
+                const options = card.querySelectorAll('.option');
+                const feedback = document.getElementById('q71-1-feedback');
+                options.forEach(b => b.classList.add('disabled'));
+                if (opt === 'C') {
+                    event.currentTarget.classList.add('correct');
+                    feedback.className = 'feedback feedback-correct show';
+                    feedback.innerHTML = '<strong>✓ Chính xác!</strong> Assessment of Learning là đánh giá tổng kết.';
+                } else {
+                    event.currentTarget.classList.add('incorrect');
+                    document.getElementById('q71-1-correct').classList.add('correct');
+                    feedback.className = 'feedback feedback-incorrect show';
+                    feedback.innerHTML = '<strong>✗ Chưa đúng.</strong> Đây là Assessment of Learning.';
+                }
+            } else if (num === 2) {
+                if (isQ71_2_Answered) return;
+                isQ71_2_Answered = true;
+                const card = document.getElementById('q71-2');
+                const options = card.querySelectorAll('.option');
+                const feedback = document.getElementById('q71-2-feedback');
+                options.forEach(b => b.classList.add('disabled'));
+                if (opt === 'B') {
+                    event.currentTarget.classList.add('correct');
+                    feedback.className = 'feedback feedback-correct show';
+                    feedback.innerHTML = '<strong>✓ Chính xác!</strong> Tự hỏi sau giờ học là Assessment as Learning – bước Phản ánh.';
+                } else {
+                    event.currentTarget.classList.add('incorrect');
+                    document.getElementById('q71-2-correct').classList.add('correct');
+                    feedback.className = 'feedback feedback-incorrect show';
+                    feedback.innerHTML = '<strong>✗ Chưa đúng.</strong> Đây là As Learning, bước Phản ánh.';
+                }
+            }
+            updateProgress();
+        }
+
+        function checkQuiz72(num, opt) {
+            if (num === 1) {
+                if (isQ72_1_Answered) return;
+                isQ72_1_Answered = true;
+                const card = document.getElementById('q72-1');
+                const options = card.querySelectorAll('.option');
+                const feedback = document.getElementById('q72-1-feedback');
+                options.forEach(b => b.classList.add('disabled'));
+                if (opt === 'B') {
+                    event.currentTarget.classList.add('correct');
+                    feedback.className = 'feedback feedback-correct show';
+                    feedback.innerHTML = '<strong>✓ Chính xác!</strong> Rubric tốt cần mô tả hành vi quan sát được.';
+                } else {
+                    event.currentTarget.classList.add('incorrect');
+                    document.getElementById('q72-1-correct').classList.add('correct');
+                    feedback.className = 'feedback feedback-incorrect show';
+                    feedback.innerHTML = '<strong>✗ Chưa đúng.</strong> Mô tả hành vi cụ thể là yếu tố cốt lõi.';
+                }
+            } else if (num === 2) {
+                if (isQ72_2_Answered) return;
+                isQ72_2_Answered = true;
+                const card = document.getElementById('q72-2');
+                const options = card.querySelectorAll('.option');
+                const feedback = document.getElementById('q72-2-feedback');
+                options.forEach(b => b.classList.add('disabled'));
+                if (opt === 'B') {
+                    event.currentTarget.classList.add('correct');
+                    feedback.className = 'feedback feedback-correct show';
+                    feedback.innerHTML = '<strong>✓ Chính xác!</strong> Tách riêng từng tiêu chí là Rubric phân tích.';
+                } else {
+                    event.currentTarget.classList.add('incorrect');
+                    document.getElementById('q72-2-correct').classList.add('correct');
+                    feedback.className = 'feedback feedback-incorrect show';
+                    feedback.innerHTML = '<strong>✗ Chưa đúng.</strong> Đó là Rubric phân tích.';
+                }
+            }
+            updateProgress();
+        }
+    </script>
+</body>
+</html>

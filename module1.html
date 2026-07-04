@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOOCs - Xác Định Mục Tiêu Học Tập</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Light Theme Variables */
+            --bg-color: #f8f9fa;
+            --text-main: #212529;
+            --text-muted: #6c757d;
+            --primary: #1a73e8; /* Google Blue */
+            --primary-hover: #1557b0;
+            --surface: #ffffff;
+            --border: #e9ecef;
+            --placeholder-bg: #f1f3f4;
+            --placeholder-border: #8ab4f8;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-hover: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            /* Dark Theme Variables */
+            --bg-color: #121212;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --primary: #8ab4f8;
+            --primary-hover: #aecbfa;
+            --surface: #1e1e1e;
+            --border: #333333;
+            --placeholder-bg: #292a2d;
+            --placeholder-border: #5f6368;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --shadow-hover: 0 10px 15px -3px rgba(0,0,0,0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            scroll-behavior: smooth;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1000;
+        }
+        .progress-bar {
+            height: 4px;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.2s;
+        }
+
+        /* Top Navigation */
+        header {
+            position: fixed;
+            top: 4px; /* below progress bar */
+            width: 100%;
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .breadcrumbs {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .breadcrumbs span { color: var(--primary); font-weight: 500; }
+
+        .tools {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        button.icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            transition: transform 0.2s;
+        }
+        button.icon-btn:hover { transform: scale(1.1); }
+
+        /* Layout */
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 100px auto 40px;
+            padding: 0 5%;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            position: sticky;
+            top: 100px;
+            height: max-content;
+        }
+        aside h4 { margin-bottom: 15px; font-size: 1.1rem; }
+        aside ul { list-style: none; }
+        aside ul li { margin-bottom: 10px; }
+        aside ul li a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        aside ul li a:hover, aside ul li a.active {
+            background-color: var(--placeholder-bg);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        main { padding-bottom: 50px; }
+        
+        section {
+            margin-bottom: 60px;
+            scroll-margin-top: 100px;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 10px; line-height: 1.2; }
+        h2 { font-size: 1.8rem; margin: 30px 0 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+        h3 { font-size: 1.4rem; margin: 25px 0 15px; }
+        p { margin-bottom: 15px; font-size: 1.05rem; }
+
+        .est-time {
+            display: inline-block;
+            background: var(--placeholder-bg);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-5px); }
+        
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+
+        .icon-card { text-align: center; }
+        .icon-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .icon-card h4 { margin-bottom: 10px; color: var(--primary); }
+
+        /* Placeholders */
+        .placeholder-card {
+            background-color: var(--placeholder-bg);
+            border: 2px dashed var(--placeholder-border);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 30px 0;
+            color: var(--text-muted);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .placeholder-card:hover { background-color: rgba(26, 115, 232, 0.05); }
+        .placeholder-icon { font-size: 3rem; margin-bottom: 15px; opacity: 0.7; }
+        .placeholder-title { font-weight: 600; font-size: 1.1rem; color: var(--text-main); margin-bottom: 8px; }
+        .placeholder-desc { font-size: 0.9rem; }
+
+        /* Quote Box */
+        .quote-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-style: italic;
+            margin: 40px 0;
+            box-shadow: var(--shadow);
+        }
+
+        /* Timeline / Flowchart */
+        .timeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin: 30px 0;
+        }
+        .timeline-item { text-align: center; flex: 1; }
+        .timeline-icon { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .timeline-title { font-weight: bold; }
+        .timeline-arrow { font-size: 1.5rem; color: var(--text-muted); }
+
+        /* Comparison Table */
+        .table-responsive { overflow-x: auto; margin: 30px 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        th, td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: var(--placeholder-bg); font-weight: 600; color: var(--text-main); }
+        tr:last-child td { border-bottom: none; }
+
+        /* Warning Banner */
+        .warning-banner {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            color: var(--text-main);
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: var(--surface);
+            border: 2px solid var(--primary);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 30px 0;
+            line-height: 2;
+        }
+        .formula-blank { border-bottom: 2px solid var(--text-main); display: inline-block; width: 100px; margin: 0 10px; }
+
+        /* Summary & CTA */
+        .summary-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 50px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        .btn-primary {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+        }
+
+        /* Floating elements */
+        .back-to-top, .notes-toggle {
+            position: fixed;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--surface);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        .back-to-top { bottom: 30px; opacity: 0; visibility: hidden; }
+        .back-to-top.show { opacity: 1; visibility: visible; }
+        .notes-toggle { bottom: 90px; }
+        .back-to-top:hover, .notes-toggle:hover { background: var(--primary); color: white; }
+
+        /* Notes Panel */
+        .notes-panel {
+            position: fixed;
+            right: -350px;
+            bottom: 30px;
+            width: 320px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow-hover);
+            padding: 20px;
+            z-index: 100;
+            transition: right 0.3s ease;
+        }
+        .notes-panel.open { right: 90px; }
+        .notes-panel textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-main);
+            resize: none;
+            margin-top: 10px;
+        }
+
+        /* Completion Badge */
+        .completion-badge {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            z-index: 1000;
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .completion-badge.show { bottom: 40px; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            aside { display: none; /* Can be implemented as off-canvas for mobile */ }
+            .timeline { flex-direction: column; gap: 20px; }
+            .timeline-arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
+
+    <header>
+        <div class="breadcrumbs">
+            📚 Cấp độ: Cơ bản / <span>Module 1</span>
+        </div>
+        <div class="tools">
+            <span class="est-time" style="margin-bottom:0;">⏱ 45 phút</span>
+            <button class="icon-btn" id="darkModeToggle" title="Bật/tắt chế độ tối">🌓</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside>
+            <h4>Nội dung Module</h4>
+            <ul id="navMenu">
+                <li><a href="#hero" class="active">Giới thiệu Module 1</a></li>
+                <li><a href="#outcomes">Kết quả học tập</a></li>
+                <li><a href="#lesson1-1">Bài 1.1: Vì sao cần mục tiêu?</a></li>
+                <li><a href="#lesson1-2">Bài 1.2: Thiết lập mục tiêu SMART</a></li>
+                <li><a href="#summary">Tổng kết</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="hero" class="reveal">
+                <span class="est-time">🎯 Module 1</span>
+                <h1>XÁC ĐỊNH MỤC TIÊU HỌC TẬP</h1>
+                <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 30px;">Defining Your Learning Goals</p>
+                
+                <div class="card">
+                    <h3>Chào mừng đến với Module 1 👋</h3>
+                    <p>Bạn đã bao giờ bắt đầu học một kỹ năng mới với rất nhiều quyết tâm, nhưng chỉ sau vài ngày lại mất động lực?</p>
+                    <p>Đây là trải nghiệm phổ biến của rất nhiều người học trong thời đại số. Chúng ta có vô số khóa học trực tuyến, video hướng dẫn và tài liệu miễn phí chỉ cách vài cú nhấp chuột. Tuy nhiên, việc tiếp cận được nhiều kiến thức không đồng nghĩa với việc học tập hiệu quả.</p>
+                    <p>Một trong những yếu tố tạo nên sự khác biệt giữa người học thành công và người học dễ bỏ cuộc chính là <strong>mục tiêu học tập rõ ràng</strong>.</p>
+                    <p>Trong module này, bạn sẽ khám phá cách xác định đích đến cho hành trình học tập của mình và xây dựng những mục tiêu có khả năng biến thành hành động thực tế.</p>
+                </div>
+            </section>
+
+            <section id="outcomes" class="reveal">
+                <h2>Kết quả học tập (Learning Outcomes)</h2>
+                <div class="grid-2">
+                    <div class="card icon-card">
+                        <div class="icon">🎯</div>
+                        <p>Giải thích được vai trò của mục tiêu học tập trong quá trình tự học.</p>
+                    </div>
+                    <div class="card icon-card">
+                        <div class="icon">🔍</div>
+                        <p>Nhận diện những hạn chế của các mục tiêu mơ hồ.</p>
+                    </div>
+                    <div class="card icon-card">
+                        <div class="icon">🛠️</div>
+                        <p>Áp dụng mô hình SMART để xây dựng mục tiêu học tập cá nhân.</p>
+                    </div>
+                    <div class="card icon-card">
+                        <div class="icon">✍️</div>
+                        <p>Viết được ít nhất một mục tiêu học tập rõ ràng cho bản thân.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="lesson1-1" class="reveal">
+                <span class="est-time">Bài 1.1</span>
+                <h2>Vì sao cần có mục tiêu học tập?</h2>
+                
+                <h3>Học tập không có mục tiêu giống như lên đường mà không biết đích đến</h3>
+                <p>Nhiều người học online thường sa đà vào việc lưu trữ hàng tá tài liệu mà không bao giờ mở ra xem. Lý do sâu xa thường bắt nguồn từ việc thiếu vắng một "kim chỉ nam".</p>
+                
+                <div class="infographic-container" style="text-align: center; margin: 30px 0;">
+    <img src="https://drive.google.com/thumbnail?id=1ImSg65hNEnVV8fKl2e9RyljubjYA3dI5&sz=w1000" 
+         alt="Infographic: Hành trình không mục tiêu" 
+         style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border);">
+</div>
+
+                <h3>Khi không có mục tiêu rõ ràng</h3>
+                <div class="grid-3 reveal">
+                    <div class="card">😟 Học theo cảm hứng</div>
+                    <div class="card">🔄 Chuyển đổi liên tục giữa nhiều chủ đề</div>
+                    <div class="card">🌪️ Dễ bị phân tán bởi thông tin</div>
+                    <div class="card">📉 Khó đánh giá tiến bộ</div>
+                    <div class="card">🛑 Dễ mất động lực</div>
+                </div>
+
+                <div class="quote-box reveal">
+                    "Sau quá trình học này, tôi muốn mình làm được điều gì?"
+                </div>
+
+                <h3>Ba lợi ích quan trọng của mục tiêu học tập</h3>
+                <div class="grid-3 reveal">
+                    <div class="card icon-card">
+                        <div class="icon">🧭</div>
+                        <h4>Định hướng</h4>
+                        <p>Giúp bạn biết cần tập trung vào đâu và bỏ qua những gì.</p>
+                    </div>
+                    <div class="card icon-card">
+                        <div class="icon">🔥</div>
+                        <h4>Tạo động lực</h4>
+                        <p>Là nhiên liệu thúc đẩy bạn tiếp tục khi gặp khó khăn.</p>
+                    </div>
+                    <div class="card icon-card">
+                        <div class="icon">📈</div>
+                        <h4>Theo dõi tiến bộ</h4>
+                        <p>Cung cấp thước đo để bạn biết mình đã đi được bao xa.</p>
+                    </div>
+                </div>
+
+                <h3>Mô hình WHY – WHAT – HOW</h3>
+                <div class="timeline reveal">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">❓</div>
+                        <div class="timeline-title">WHY (Tại sao)</div>
+                        <p>Lý do cốt lõi bạn muốn học</p>
+                    </div>
+                    <div class="timeline-arrow">➔</div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🎯</div>
+                        <div class="timeline-title">WHAT (Cái gì)</div>
+                        <p>Kết quả cụ thể muốn đạt</p>
+                    </div>
+                    <div class="timeline-arrow">➔</div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">⚙️</div>
+                        <div class="timeline-title">HOW (Như thế nào)</div>
+                        <p>Phương pháp và hành động</p>
+                    </div>
+                </div>
+
+                <div class="video-wrapper reveal" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 12px; box-shadow: var(--shadow); margin: 30px 0;">
+    <iframe src="https://drive.google.com/file/d/1f7p18e9W-2eLJxCuR1QLWja2BAyV8D5U/preview" 
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+            allow="autoplay" 
+            allowfullscreen>
+    </iframe>
+</div>
+
+                <h3>Bạn đang thuộc nhóm người học nào?</h3>
+                <div class="table-responsive reveal">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Đặc điểm</th>
+                                <th>Người học không mục tiêu</th>
+                                <th>Người học mục tiêu mơ hồ</th>
+                                <th>Người học mục tiêu rõ ràng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Động lực</td>
+                                <td>Tức thời, mau chán</td>
+                                <td>Cao lúc đầu, giảm dần</td>
+                                <td>Bền vững, tự thân</td>
+                            </tr>
+                            <tr>
+                                <td>Tài liệu</td>
+                                <td>Lưu trữ mọi thứ</td>
+                                <td>Tải nhiều nhưng học ít</td>
+                                <td>Chọn lọc thứ cần thiết</td>
+                            </tr>
+                            <tr>
+                                <td>Kết quả</td>
+                                <td>Bỏ dở giữa chừng</td>
+                                <td>Có kiến thức rải rác</td>
+                                <td>Áp dụng được vào thực tế</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="interactive-wrapper reveal" style="margin: 30px 0; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); background: var(--surface);">
+    <iframe src="https://bejewelled-meerkat-d36eb2.netlify.app/" 
+            title="Bài tập trắc nghiệm phản tư"
+            style="width: 100%; min-height: 550px; border: none; display: block;" 
+            allowfullscreen>
+    </iframe>
+</div>
+            </section>
+
+            <section id="lesson1-2" class="reveal">
+                <span class="est-time">Bài 1.2</span>
+                <h2>Thiết lập mục tiêu SMART</h2>
+
+                <h3>Từ mong muốn đến mục tiêu thực sự</h3>
+                <div class="grid-3">
+                    <div class="card">☁️ "Tôi muốn học tiếng Anh"</div>
+                    <div class="card">☁️ "Tôi muốn giỏi công nghệ"</div>
+                    <div class="card">☁️ "Tôi muốn nâng cao kỹ năng"</div>
+                </div>
+                
+                <div class="warning-banner reveal">
+                    <strong>⚠ Lưu ý:</strong> Đây mới chỉ là những mong muốn chung chung, chưa phải là một mục tiêu SMART có thể hành động được.
+                </div>
+
+                <h3>SMART là gì?</h3>
+                <div class="grid-2 reveal">
+                    <div class="card icon-card">
+                        <div class="icon">📍</div>
+                        <h4>S – Specific (Cụ thể)</h4>
+                        <p>Mục tiêu phải rõ ràng, dễ hiểu, tránh chung chung.</p>
+                    </div>
+                    <div class="card icon-card">
+                        <div class="icon">📏</div>
+                        <h4>M – Measurable (Đo lường được)</h4>
+                        <p>Có số liệu, tiêu chí để đánh giá mức độ hoàn thành.</p>
+                    </div>
+                    <div class="card icon-card">
+                        <div class="icon">🏆</div>
+                        <h4>A – Achievable (Khả thi)</h4>
+                        <p>Phù hợp với năng lực và tài nguyên hiện tại.</p>
+                    </div>
+                    <div class="card icon-card">
+                        <div class="icon">🔗</div>
+                        <h4>R – Relevant (Thực tế/Liên quan)</h4>
+                        <p>Đóng góp vào mục tiêu lớn hơn của bạn.</p>
+                    </div>
+                    <div class="card icon-card" style="grid-column: 1 / -1;">
+                        <div class="icon">⏳</div>
+                        <h4>T – Time-bound (Có thời hạn)</h4>
+                        <p>Deadline cụ thể để tạo áp lực tích cực.</p>
+                    </div>
+                </div>
+
+                <div class="infographic-container reveal" style="text-align: center; margin: 30px 0;">
+    <img src="https://drive.google.com/thumbnail?id=1KnTM8srSryJbrWubNgZ6oz0uSee1xwOM&sz=w1000" 
+         alt="Infographic sơ đồ tư duy mô hình SMART" 
+         style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border);">
+</div>
+
+                <h3>Công thức xây dựng mục tiêu SMART</h3>
+                <div class="formula-box reveal">
+                    Trong <span class="formula-blank"></span> tuần/tháng tới,<br>
+                    tôi sẽ <span class="formula-blank" style="width:200px"></span><br>
+                    để đạt được <span class="formula-blank" style="width:200px"></span><br>
+                    và có thể đánh giá kết quả bằng <span class="formula-blank" style="width:150px"></span>.
+                </div>
+
+                <h3>Hãy bắt đầu xây dựng mục tiêu của bạn</h3>
+                <div class="form-wrapper reveal" style="margin: 30px 0; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); background: var(--surface);">
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeISMph9TorgAjFJpCWO1JTHpM3aA3LdhqyyjZNe3Q7cxg72g/viewform?embedded=true" 
+            title="Biểu mẫu điền mục tiêu cá nhân"
+            style="width: 100%; min-height: 750px; border: none; display: block;">
+        Đang tải biểu mẫu...
+    </iframe>
+</div>
+            </section>
+
+            <section id="summary" class="reveal">
+                <div class="summary-box">
+                    <h3>📚 Tổng kết Module 1</h3>
+                    <p>Trong Module 1, bạn đã khám phá vai trò của mục tiêu học tập và làm quen với mô hình <strong>SMART</strong> – một công cụ đơn giản nhưng hiệu quả giúp biến mong muốn thành kế hoạch hành động cụ thể.</p>
+                    <p>Việc xác định mục tiêu rõ ràng là bước đầu tiên và quan trọng nhất để trở thành người học tự chủ trong thời đại số.</p>
+                </div>
+
+                <div class="cta-section">
+                    <h2 style="border:none;">🚀 Chúc mừng bạn đã hoàn thành Module 1!</h2>
+                    <p>Sẵn sàng cho bước tiếp theo: <strong>Xây dựng kế hoạch học tập và quản lý thời gian</strong></p>
+                    <button class="btn-primary" onclick="finishModule1()">Hoàn thành Module</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button class="notes-toggle" id="notesToggle" title="Ghi chú cá nhân">🗒️</button>
+    <div class="notes-panel" id="notesPanel">
+        <h4 style="display:flex; justify-content:space-between; align-items:center;">
+            Ghi chú cá nhân 
+            <span style="cursor:pointer;" id="closeNotes">✕</span>
+        </h4>
+        <textarea placeholder="Ghi chú nhanh những ý tưởng của bạn tại đây. Nội dung tự động lưu cục bộ..."></textarea>
+    </div>
+
+    <button class="back-to-top" id="backToTop" title="Lên đầu trang">↑</button>
+
+    <div class="completion-badge" id="completionBadge">
+        🎉 Bạn đã đọc hoàn tất nội dung Module 1!
+    </div>
+
+    <script>
+        function finishModule1(){
+
+    localStorage.setItem("currentModule",2);
+
+    alert("Bạn đã hoàn thành Module 1!");
+
+    window.location.href="module2.html";
+
+}
+        // Progress Bar & Scroll Events
+        window.onscroll = function() {
+            // Progress Bar
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+
+            // Back to Top Button
+            const backToTop = document.getElementById("backToTop");
+            if (winScroll > 300) {
+                backToTop.classList.add("show");
+            } else {
+                backToTop.classList.remove("show");
+            }
+
+            // Completion Badge (Triggered at 95% scroll)
+            const badge = document.getElementById("completionBadge");
+            if(scrolled > 95) {
+                badge.classList.add("show");
+            }
+        };
+
+        // Smooth Scroll to Top
+        document.getElementById("backToTop").addEventListener("click", function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Personal Notes Toggle
+        const notesToggle = document.getElementById('notesToggle');
+        const notesPanel = document.getElementById('notesPanel');
+        const closeNotes = document.getElementById('closeNotes');
+        
+        notesToggle.addEventListener('click', () => notesPanel.classList.toggle('open'));
+        closeNotes.addEventListener('click', () => notesPanel.classList.remove('open'));
+
+        // Scroll Animation (Intersection Observer)
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+        
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Trigger only once
+                }
+            });
+        }, revealOptions);
+
+        reveals.forEach(reveal => {
+            revealOnScroll.observe(reveal);
+        });
+
+        // Highlight Active Menu on Scroll
+        const sections = document.querySelectorAll("section[id]");
+        const navLi = document.querySelectorAll("#navMenu li a");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navLi.forEach((a) => {
+                a.classList.remove("active");
+                if (a.getAttribute("href").includes(current)) {
+                    a.classList.add("active");
+                }
+            });
+        });
+       
+    </script>
+</body>
+</html>

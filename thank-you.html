@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký thành công | Khởi động Khóa học</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS tuân thủ design system gốc của bạn */
+        :root {
+            --primary: #2563EB;
+            --surface-color: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --bg-color: #F8FAFC;
+        }
+        body {
+            font-family: 'Inter', sans-serif; background-color: var(--bg-color);
+            color: var(--text-primary); display: flex; align-items: center;
+            justify-content: center; min-height: 100vh; margin: 0; text-align: center;
+        }
+        .thank-you-card {
+            background: var(--surface-color); padding: 50px 40px; border-radius: 24px;
+            box-shadow: 0 20px 40px -5px rgba(15, 23, 42, 0.08); max-width: 550px; width: 90%;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .icon-success {
+            font-size: 72px; color: #22C55E; margin-bottom: 24px;
+            animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        h1 { font-family: 'Poppins', sans-serif; font-size: 28px; margin-bottom: 12px; }
+        p { color: var(--text-secondary); margin-bottom: 30px; line-height: 1.6; font-size: 1.05rem; }
+        .highlight { color: var(--primary); font-weight: 600; }
+        
+        /* Tiến trình chuẩn MOOCs */
+        .progress-wrapper { text-align: left; margin-bottom: 32px; }
+        .progress-container {
+            background: #E2E8F0; border-radius: 10px; height: 10px; width: 100%;
+            margin-bottom: 8px; overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%; width: 0%; background: var(--primary);
+            border-radius: 10px; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .progress-text { font-size: 14px; color: var(--primary); font-weight: 600; display: block; text-align: right; }
+        
+        .btn-start {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            background: var(--primary); color: #fff; padding: 16px 32px; border-radius: 50px;
+            text-decoration: none; font-family: 'Poppins', sans-serif; font-size: 1.1rem;
+            font-weight: 600; transition: all 0.3s; border: none; cursor: pointer; width: 100%;
+        }
+        .btn-start:hover {
+            transform: translateY(-3px); box-shadow: 0 15px 25px -10px rgba(37, 99, 235, 0.4);
+        }
+        .redirect-notice { font-size: 14px; color: var(--text-secondary); margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="thank-you-card">
+        <i class="fa-solid fa-circle-check icon-success"></i>
+        <h1>🎉 Chúc mừng!</h1>
+        <p>Bạn đã đăng ký thành công khóa học.<br>Chào mừng bạn đến với hành trình học tập. Bạn sẽ bắt đầu với <span class="highlight">Module 0 - Khởi động</span>, nơi giới thiệu mục tiêu khóa học, hướng dẫn học tập và khảo sát đầu vào.</p>
+        
+        <div class="progress-wrapper">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <span class="progress-text">Tiến trình: 0%</span>
+        </div>
+
+        <a href="#" id="startBtn" class="btn-start">
+            Bắt đầu Module 0 <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="redirect-notice">Tự động chuyển hướng sau <span id="countdown">5</span> giây...</div>
+        
+        <script>
+            // --------------------------------------------------------
+            // CẤU HÌNH ĐƯỜNG DẪN MODULE 0 DỄ DÀNG BẢO TRÌ TẠI ĐÂY
+            // --------------------------------------------------------
+            const MODULE0_URL = "https://phenomenal-bublanina-c61364.netlify.app/"; // Hoặc "/module0/index.html"
+            // --------------------------------------------------------
+
+            document.getElementById('startBtn').href = MODULE0_URL;
+
+            // Chạy animation thanh tiến trình để tăng UX cảm giác "bắt đầu học"
+            setTimeout(() => {
+                document.getElementById('progressBar').style.width = '2%';
+                document.querySelector('.progress-text').innerText = 'Tiến trình: 2% (Khởi động)';
+            }, 600);
+
+            // Xử lý đếm ngược 5 giây và chuyển hướng
+            let timeLeft = 5;
+            const countdownEl = document.getElementById('countdown');
+            const timer = setInterval(() => {
+                timeLeft--;
+                countdownEl.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    window.location.href = MODULE0_URL;
+                }
+            }, 1000);
+        </script>
+        </div>
+</body>
+</html>

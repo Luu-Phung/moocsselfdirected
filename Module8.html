@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8 – Xây dựng Thói quen Tự học</title>
+    <style>
+        /* ========== CSS Variables ========== */
+        :root {
+            --primary-color: #0A4B7C;
+            --primary-light: #16609a;
+            --secondary-color: #E8F4FD;
+            --text-color: #1E293B;
+            --text-light: #475569;
+            --accent-color: #F59E0B;
+            --accent-hover: #d98604;
+            --bg-color: #FFFFFF;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --modal-bg: #fff;
+            --card-bg: #fff;
+            --input-bg: #fff;
+            --toggle-bg: #f1f5f9;
+        }
+
+        body.dark-mode {
+            --primary-color: #3b82f6;
+            --primary-light: #60a5fa;
+            --secondary-color: #1e293b;
+            --text-color: #e2e8f0;
+            --text-light: #94a3b8;
+            --accent-color: #f59e0b;
+            --accent-hover: #fbbf24;
+            --bg-color: #0f172a;
+            --gray-100: #1e293b;
+            --gray-200: #334155;
+            --gray-300: #475569;
+            --success: #10b981;
+            --danger: #f87171;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            --modal-bg: #1e293b;
+            --card-bg: #1e293b;
+            --input-bg: #334155;
+            --toggle-bg: #334155;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-color);
+            background-color: var(--gray-100);
+            line-height: 1.6;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .progress-bar-container {
+            width: 100%; height: 4px;
+            background-color: var(--gray-200);
+            position: fixed; top: 0; left: 0; z-index: 1000;
+        }
+        .progress-bar { height: 100%; background-color: var(--accent-color); transition: width 0.5s ease; }
+
+        #dark-mode-toggle {
+            position: fixed; top: 15px; right: 15px; z-index: 2001;
+            background: var(--toggle-bg); border: none; border-radius: 50%;
+            width: 44px; height: 44px; font-size: 1.5rem; cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        #dark-mode-toggle:hover { transform: scale(1.1); }
+
+        .container {
+            max-width: 900px; margin: 40px auto; background-color: var(--bg-color);
+            padding: 30px 40px; border-radius: 12px; box-shadow: var(--shadow);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .hidden { display: none !important; }
+
+        .breadcrumb { font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px; }
+        .breadcrumb span { color: var(--primary-color); font-weight: 500; }
+
+        h1 { color: var(--primary-color); font-size: 2rem; margin-bottom: 10px; line-height: 1.3; }
+        h2 { color: var(--primary-color); font-size: 1.5rem; margin: 30px 0 15px; }
+        h3 { color: var(--text-color); font-size: 1.2rem; margin: 20px 0 10px; }
+
+        .course-header { border-bottom: 2px solid var(--gray-200); padding-bottom: 20px; margin-bottom: 30px; }
+        .course-meta { display: flex; gap: 15px; font-size: 0.9rem; color: var(--text-light); margin-bottom: 10px; font-weight: 500; }
+        .course-meta span { background-color: var(--secondary-color); padding: 4px 10px; border-radius: 20px; color: var(--primary-color); }
+
+        .objectives-box {
+            background-color: var(--secondary-color); border-left: 4px solid var(--primary-color);
+            padding: 20px; border-radius: 0 var(--border-radius) var(--border-radius) 0; margin-bottom: 30px;
+        }
+        .objectives-box h3 { margin-top: 0; color: var(--primary-color); display: flex; align-items: center; gap: 8px; }
+        .objectives-list { list-style: none; }
+        .objectives-list li { margin-bottom: 10px; position: relative; padding-left: 30px; }
+        .objectives-list li::before { content: '🎯'; position: absolute; left: 0; top: 0; font-size: 1.1rem; }
+
+        .accordion { margin-bottom: 30px; }
+        .accordion-item { border: 1px solid var(--gray-200); border-radius: var(--border-radius); margin-bottom: 15px; overflow: hidden; background-color: var(--card-bg); transition: background-color 0.3s; }
+        .accordion-header { background-color: var(--gray-100); padding: 18px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--primary-color); transition: var(--transition); user-select: none; }
+        .accordion-header:hover { background-color: var(--secondary-color); }
+        .accordion-header::after { content: '+'; font-size: 1.5rem; transition: transform 0.3s ease; }
+        .accordion-item.active .accordion-header::after { content: '−'; transform: rotate(180deg); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background-color: var(--card-bg); }
+        .accordion-item.active .accordion-content { border-top: 1px solid var(--gray-200); }
+        .accordion-body { padding: 20px; }
+
+        .habit-loop-diagram {
+            display: flex; align-items: center; justify-content: space-between;
+            margin: 30px 0; background-color: var(--gray-100); padding: 30px;
+            border-radius: var(--border-radius); flex-wrap: wrap; gap: 20px;
+        }
+        .loop-step {
+            flex: 1; min-width: 150px; background: var(--card-bg); padding: 20px; text-align: center;
+            border-radius: var(--border-radius); box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-color);
+        }
+        .loop-step.accent { border-top-color: var(--accent-color); }
+        .loop-step.success { border-top-color: var(--success); }
+        .loop-step h4 { color: var(--primary-color); margin-bottom: 10px; font-size: 1.1rem; }
+        .loop-arrow { font-size: 2rem; color: var(--gray-300); font-weight: bold; }
+
+        .highlight-card, .highlight-box {
+            background-color: #fffbeb; border-left: 5px solid var(--accent-color);
+            padding: 20px; border-radius: 4px; margin: 20px 0;
+        }
+        .dark-mode .highlight-card, .dark-mode .highlight-box { background-color: #2d2a1c; }
+        .highlight-card h4 { color: var(--accent-hover); font-size: 1.2rem; margin-bottom: 8px; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 20px; background-color: var(--primary-color); color: white;
+            border: none; border-radius: var(--border-radius); cursor: pointer;
+            font-size: 1rem; font-weight: 500; transition: var(--transition); text-decoration: none;
+        }
+        .btn:hover { background-color: var(--primary-light); transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-outline { background-color: var(--card-bg); color: var(--primary-color); border: 2px solid var(--primary-color); }
+        .btn-outline:hover { background-color: var(--secondary-color); }
+        .btn-accent { background-color: var(--accent-color); color: #fff; }
+        .btn-accent:hover { background-color: var(--accent-hover); }
+
+        .resources-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px; margin-bottom: 40px;
+        }
+
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7); z-index: 2000;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .modal-content {
+            background-color: var(--modal-bg); border-radius: 12px;
+            max-width: 900px; width: 100%; max-height: 90vh;
+            overflow-y: auto; position: relative; animation: modalFadeIn 0.3s ease; color: var(--text-color);
+        }
+        .modal-header {
+            padding: 15px 20px; border-bottom: 1px solid var(--gray-200);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-body { padding: 20px; text-align: center; }
+        .modal-body img, .modal-body video { max-width: 100%; height: auto; border-radius: var(--border-radius); }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+        .close-modal:hover { color: var(--danger); }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .activity-section {
+            background-color: var(--gray-100); padding: 25px;
+            border-radius: var(--border-radius); margin-bottom: 40px;
+            border: 1px solid var(--gray-200);
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+        textarea {
+            width: 100%; padding: 12px; border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius); font-family: inherit; font-size: 1rem;
+            resize: vertical; min-height: 80px; transition: border-color 0.3s;
+            background-color: var(--input-bg); color: var(--text-color);
+        }
+        textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(10,75,124,0.1); }
+        .example-text { font-size: 0.85rem; color: var(--text-light); margin-top: 4px; font-style: italic; }
+
+        /* ========== Commitment Display ========== */
+        .commitment-display {
+            background-color: var(--card-bg); border: 1px solid var(--gray-200);
+            padding: 20px; border-radius: var(--border-radius); margin-top: 20px;
+        }
+        .commitment-display h4 { color: var(--primary-color); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .commitment-item {
+            background-color: var(--gray-100); padding: 15px;
+            border-radius: var(--border-radius); margin-bottom: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
+        .commitment-item p { margin: 5px 0; }
+        .commitment-item .time { font-size: 0.8rem; color: var(--text-light); margin-top: 8px; }
+        .empty-commitment { text-align: center; color: var(--text-light); padding: 20px; }
+
+        .quiz-container { margin-bottom: 30px; }
+        .question {
+            background: var(--card-bg); border: 1px solid var(--gray-200);
+            padding: 25px; border-radius: var(--border-radius); margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .question h4 { font-size: 1.1rem; margin-bottom: 15px; color: var(--text-color); }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option {
+            padding: 12px 15px; border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius); cursor: pointer;
+            transition: var(--transition); background-color: var(--gray-100);
+        }
+        .option:hover:not(.disabled) { background-color: var(--gray-200); border-color: var(--gray-300); }
+        .option.disabled { cursor: not-allowed; opacity: 0.7; }
+        .option.correct { background-color: #d1fae5; border-color: var(--success); color: #065f46; }
+        .option.incorrect { background-color: #fee2e2; border-color: var(--danger); color: #991b1b; }
+        .feedback {
+            margin-top: 15px; padding: 15px; border-radius: var(--border-radius);
+            display: none; font-size: 0.95rem;
+        }
+        .feedback.show { display: block; animation: modalFadeIn 0.3s ease; }
+        .feedback-correct { background-color: #d1fae5; color: #065f46; border-left: 4px solid var(--success); }
+        .feedback-incorrect { background-color: #fee2e2; color: #991b1b; border-left: 4px solid var(--danger); }
+
+        .table-section { margin-bottom: 40px; }
+        .table-wrapper { overflow-x: auto; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 0 0 1px var(--gray-200); }
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); text-align: left; min-width: 600px; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid var(--gray-200); }
+        th { background-color: var(--primary-color); color: white; font-weight: 600; white-space: nowrap; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: var(--gray-100); }
+        td input[type="text"] {
+            width: 100%; padding: 8px; border: 1px solid var(--gray-300);
+            border-radius: 4px; font-family: inherit;
+            background-color: var(--input-bg); color: var(--text-color);
+        }
+        td input[type="text"]:focus { outline: none; border-color: var(--primary-color); }
+        td input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--success); }
+        .week-title {
+            color: var(--primary-color); margin: 25px 0 10px 0;
+            font-size: 1.1rem; font-weight: bold; display: flex; align-items: center; gap: 8px;
+        }
+        .template-actions { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+
+        #locked-screen {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center; min-height: 60vh;
+            padding: 40px; background-color: var(--bg-color); border-radius: 12px;
+            max-width: 600px; margin: 100px auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        #locked-screen h2 { color: var(--danger); margin-bottom: 15px; font-size: 1.8rem; }
+        #locked-screen p { color: var(--text-light); margin-bottom: 25px; }
+
+        #transition-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255,255,255,0.95); z-index: 1500;
+            justify-content: center; align-items: center; flex-direction: column;
+            font-size: 1.5rem; color: var(--primary-color);
+            animation: fadeInOverlay 0.3s ease;
+        }
+        .dark-mode #transition-overlay { background-color: rgba(15,23,42,0.95); }
+        #transition-overlay .spinner {
+            width: 50px; height: 50px;
+            border: 5px solid var(--gray-200); border-top-color: var(--accent-color);
+            border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+        .toast {
+            visibility: hidden; min-width: 250px;
+            background-color: var(--success); color: #fff;
+            text-align: center; border-radius: var(--border-radius);
+            padding: 16px; position: fixed; z-index: 3000;
+            left: 50%; bottom: 30px; transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-weight: 500;
+        }
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+
+        footer { text-align: center; padding: 20px; color: var(--text-light); font-size: 0.9rem; border-top: 1px solid var(--gray-200); margin-top: 40px; }
+
+        @media (max-width: 768px) {
+            .container { margin: 20px 15px; padding: 20px; }
+            .habit-loop-diagram { flex-direction: column; gap: 10px; }
+            .loop-arrow { transform: rotate(90deg); margin: 5px 0; }
+            .resources-grid { grid-template-columns: 1fr; }
+            .template-actions { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar-container"><div id="progress-bar" class="progress-bar" style="width: 50%;"></div></div>
+    <button id="dark-mode-toggle" aria-label="Chuyển đổi chế độ sáng/tối">☀️</button>
+
+    <div id="transition-overlay">
+        <div class="spinner"></div>
+        <p id="transition-text">Đang chuyển sang Bài 8.2...</p>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BÀI 8.1                                   -->
+    <!-- ========================================== -->
+    <main id="bai-8-1" class="container">
+        <div class="breadcrumb">
+            Trang chủ / Module 8 / <span id="breadcrumb-8-1">Bài 8.1 - Nguyên tắc hình thành thói quen</span>
+        </div>
+
+        <section class="course-header">
+            <div class="course-meta">
+                <span>Module 8: Xây dựng Thói quen Tự học</span>
+                <span>⏱ 12 phút</span>
+            </div>
+            <h1>Bài 8.1 – Nguyên tắc hình thành thói quen</h1>
+            <p style="color: var(--text-light); font-size: 1.1rem;">Khám phá khoa học đằng sau thói quen và cách ứng dụng để xây dựng kỷ luật tự học vững chắc.</p>
+        </section>
+
+        <section class="objectives-box">
+            <h3>Mục tiêu học tập</h3>
+            <ul class="objectives-list">
+                <li>Giải thích được vòng lặp thói quen (Habit Loop) của Charles Duhigg.</li>
+                <li>Phân tích và áp dụng ba chiến thuật: Habit Stacking, Implementation Intention, Environment Design.</li>
+                <li>Vận dụng quy tắc "Không bao giờ bỏ lỡ 2 lần" để duy trì kỷ luật tự học.</li>
+            </ul>
+        </section>
+
+        <section class="accordion">
+            <div class="accordion-item active">
+                <div class="accordion-header">1. Vòng lặp thói quen (Habit Loop)</div>
+                <div class="accordion-content"><div class="accordion-body">
+                    <p>Theo Charles Duhigg, mọi thói quen đều được vận hành dựa trên một vòng lặp gồm 3 thành phần.</p>
+                    <div class="habit-loop-diagram">
+                        <div class="loop-step"><h4>1. Cue (Tín hiệu)</h4><p>Sự kiện kích hoạt não bộ (ví dụ: tiếng chuông báo thức).</p></div>
+                        <div class="loop-arrow">➝</div>
+                        <div class="loop-step accent"><h4>2. Routine (Hành động)</h4><p>Hành vi theo sau tín hiệu (ví dụ: mở sách ra học).</p></div>
+                        <div class="loop-arrow">➝</div>
+                        <div class="loop-step success"><h4>3. Reward (Phần thưởng)</h4><p>Cảm giác thỏa mãn giúp não ghi nhớ vòng lặp.</p></div>
+                    </div>
+                    <p><strong>Bí quyết:</strong> Giữ nguyên <em>Cue</em> và <em>Reward</em>, thay đổi <em>Routine</em>.</p>
+                </div></div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header">2. Cần bao lâu để hình thành thói quen?</div>
+                <div class="accordion-content"><div class="accordion-body">
+                    <p>Theo nghiên cứu của Phillippa Lally (2009), trung bình cần <strong>66 ngày</strong> để một hành vi trở thành thói quen tự động (dao động 18–254 ngày).</p>
+                    <p><strong>Bài học:</strong> Đừng bỏ cuộc ở tuần thứ 3. Sự nhất quán quan trọng hơn cường độ.</p>
+                </div></div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header">3. Ba chiến thuật nhân đôi hiệu suất thói quen</div>
+                <div class="accordion-content"><div class="accordion-body">
+                    <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 10px;">
+                        <li><strong>Habit Stacking:</strong> Gắn thói quen mới vào sau thói quen cũ.<br><em>"Sau khi đánh răng, tôi sẽ học từ vựng 10 phút."</em></li>
+                        <li><strong>Implementation Intention:</strong> Công thức <code>Khi [X], tôi sẽ [Y]</code>.<br><em>"Khi đồng hồ điểm 20h00, tôi sẽ mở bài giảng."</em></li>
+                        <li><strong>Environment Design:</strong> Thiết kế không gian giảm ma sát cho thói quen tốt.<br><em>Để sẵn sách vở trên bàn; cất điện thoại sang phòng khác.</em></li>
+                    </ul>
+                </div></div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header">4. Quy tắc "Không bao giờ bỏ lỡ 2 lần"</div>
+                <div class="accordion-content"><div class="accordion-body">
+                    <div class="highlight-card">
+                        <h4>"Never miss twice" - James Clear</h4>
+                        <p>Bỏ lỡ 1 lần là tai nạn. <strong>Bỏ lỡ lần thứ 2 liên tiếp là khởi đầu của thói quen lười biếng.</strong></p>
+                        <p style="margin-top: 10px;">Nếu không thể học 2 tiếng, hãy học 5 phút để bảo vệ danh tính người có kỷ luật.</p>
+                    </div>
+                </div></div>
+            </div>
+        </section>
+
+        <h2>Tài nguyên học tập</h2>
+        <section class="resources-grid">
+            <button class="btn btn-outline" onclick="openModal('modal-infographic-8-1')">📊 Xem Infographic</button>
+            <button class="btn btn-outline" onclick="openModal('modal-mindmap-8-1')">🧠 Xem Mind Map</button>
+            <button class="btn btn-outline" onclick="openModal('modal-video-8-1')">🎥 Xem Video bài giảng</button>
+        </section>
+
+        <h2>Hoạt động Thực hành</h2>
+        <section class="activity-section">
+            <p style="margin-bottom: 20px;">Viết <strong>Implementation Intention</strong> của riêng bạn:</p>
+            <div class="form-group"><label>Cam kết 1:</label><textarea placeholder="Ví dụ: Khi tôi vừa ăn tối xong lúc 19h30, tôi sẽ ngồi vào bàn học ngay lập tức."></textarea></div>
+            <div class="form-group"><label>Cam kết 2:</label><textarea placeholder="Ví dụ: Khi tôi thấy điện thoại báo tin nhắn, tôi sẽ lật úp điện thoại xuống."></textarea></div>
+            <div class="form-group"><label>Cam kết 3:</label><textarea placeholder="Ví dụ: Sau khi pha cà phê sáng, tôi sẽ mở app Duolingo học 1 bài."></textarea></div>
+            <button class="btn btn-accent" onclick="saveCommitment()">🚀 Đăng lên diễn đàn lớp học</button>
+
+            <div id="commitment-display" class="commitment-display">
+                <h4>📋 Cam kết đã lưu trên máy của bạn</h4>
+                <div id="commitment-list"></div>
+            </div>
+        </section>
+
+        <h2>Kiểm tra nhanh</h2>
+        <section class="quiz-container">
+            <div class="question" id="q1-container-8-1">
+                <h4>Câu 1: Theo Duhigg, để thay đổi thói quen, bạn nên tác động vào yếu tố nào trước tiên?</h4>
+                <div class="options">
+                    <div class="option" data-correct="false" onclick="checkAnswer8_1(this, 'q1')">A. Thay đổi Reward.</div>
+                    <div class="option" data-correct="true" onclick="checkAnswer8_1(this, 'q1')">B. Thay đổi Routine.</div>
+                    <div class="option" data-correct="false" onclick="checkAnswer8_1(this, 'q1')">C. Loại bỏ hoàn toàn Cue.</div>
+                    <div class="option" data-correct="false" onclick="checkAnswer8_1(this, 'q1')">D. Tự mắng mỏ bản thân.</div>
+                </div>
+                <div id="q1-feedback-8-1" class="feedback"></div>
+            </div>
+            <div class="question" id="q2-container-8-1">
+                <h4>Câu 2: "Khi tôi đóng cửa phòng, tôi sẽ bật chế độ máy bay" là ví dụ của chiến thuật nào?</h4>
+                <div class="options">
+                    <div class="option" data-correct="false" onclick="checkAnswer8_1(this, 'q2')">A. Habit Stacking</div>
+                    <div class="option" data-correct="false" onclick="checkAnswer8_1(this, 'q2')">B. Environment Design</div>
+                    <div class="option" data-correct="true" onclick="checkAnswer8_1(this, 'q2')">C. Implementation Intention</div>
+                    <div class="option" data-correct="false" onclick="checkAnswer8_1(this, 'q2')">D. Phần thưởng ngẫu nhiên</div>
+                </div>
+                <div id="q2-feedback-8-1" class="feedback"></div>
+            </div>
+        </section>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <button id="complete-btn-8-1" class="btn btn-accent" onclick="completeBai8_1()" disabled>
+                ✅ Hoàn thành Bài 8.1 & Chuyển sang Bài 8.2
+            </button>
+            <p id="quiz-reminder" style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">
+                ⚠️ Vui lòng trả lời cả 2 câu hỏi để mở khóa nút chuyển tiếp.
+            </p>
+        </div>
+
+        <footer>&copy; 2026 Nền tảng MOOCs "Kỹ năng Tự học trong Thời đại Số".</footer>
+    </main>
+
+    <!-- Modals cho Bài 8.1 -->
+    <div id="modal-infographic-8-1" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-infographic-8-1')"><div class="modal-content"><div class="modal-header"><h3>Infographic Bài 8.1</h3><button class="close-modal" onclick="closeModal('modal-infographic-8-1')">×</button></div><div class="modal-body"><img src="https://i.ibb.co/tp9drMry/5-B-c-T-o-T-H-c.png" alt="Infographic 8.1"></div></div></div>
+    <div id="modal-mindmap-8-1" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-mindmap-8-1')"><div class="modal-content"><div class="modal-header"><h3>Mind Map Bài 8.1</h3><button class="close-modal" onclick="closeModal('modal-mindmap-8-1')">×</button></div><div class="modal-body"><img src="https://i.ibb.co/PsSZp4dw/Notebook-LM-Mind-Map-2.png" alt="Mind Map 8.1"></div></div></div>
+    <div id="modal-video-8-1" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-video-8-1')"><div class="modal-content"><div class="modal-header"><h3>Video Bài 8.1</h3><button class="close-modal" onclick="closeModal('modal-video-8-1', true)">×</button></div><div class="modal-body"><video id="video-8-1" controls><source src="https://files.catbox.moe/bd866t.mp4" type="video/mp4"></video></div></div></div>
+
+    <!-- Màn hình khóa -->
+    <div id="locked-screen">
+        <h2>🔒 Nội dung bị khóa</h2>
+        <p>Hệ thống nhận thấy bạn chưa hoàn thành <strong>Bài 8.1 – Nguyên tắc hình thành thói quen</strong>. Để lập kế hoạch hiệu quả, bạn cần nắm vững nền tảng khoa học thói quen trước.</p>
+        <button class="btn btn-primary" onclick="switchToBai8_1()">⬅ Quay về học Bài 8.1</button>
+        <br><br>
+        <button class="btn btn-outline" style="font-size: 0.8rem; padding: 8px 12px;" onclick="forceUnlock()">[Dành cho Dev] Bỏ qua điều kiện</button>
+    </div>
+
+    <!-- BÀI 8.2 -->
+    <main id="bai-8-2" class="container hidden">
+        <div class="breadcrumb">Trang chủ / Module 8 / <span id="breadcrumb-8-2">Bài 8.2 - Kế hoạch 21 ngày</span></div>
+        <section class="course-header"><div class="course-meta"><span>Module 8: Xây dựng Thói quen Tự học</span><span>⏱ 15 phút</span></div><h1>Bài 8.2 – Kế hoạch 21 ngày Tự học</h1><p style="color: var(--text-light); font-size: 1.1rem;">Bắt tay vào hành động! Thiết kế lộ trình 21 ngày để chuyển hóa kiến thức thành hành động thực tế và thói quen bền vững.</p></section>
+        <section class="objectives-box"><h3>Mục tiêu học tập</h3><ul class="objectives-list"><li>Lập được kế hoạch tự học 21 ngày khả thi, có cột mốc và phần thưởng.</li><li>Hiểu rõ vai trò của từng giai đoạn trong xây dựng thói quen.</li><li>Biết cách chọn và làm việc với Accountability Partner.</li></ul></section>
+        <section class="accordion">
+            <div class="accordion-item active"><div class="accordion-header">1. Tại sao lại là 21 ngày?</div><div class="accordion-content"><div class="accordion-body"><p>Ở Bài 8.1, chúng ta đã biết cần trung bình <strong>66 ngày</strong>. 21 ngày đầu tiên là khoảng thời gian khó khăn nhất để vượt qua sức ì và xây dựng "quán tính".</p><div class="highlight-box">Vượt qua 21 ngày liên tục, bạn đã có momentum. Phần còn lại sẽ nhẹ nhàng hơn.</div></div></div></div>
+            <div class="accordion-item"><div class="accordion-header">2. Cấu trúc 3 giai đoạn (7 + 7 + 7)</div><div class="accordion-content"><div class="accordion-body"><ul><li><strong style="color:var(--primary-color)">Tuần 1 (Ngày 1-7):</strong> Thử nghiệm – Giữ chuỗi. Ưu tiên "sự xuất hiện".</li><li><strong style="color:var(--primary-color)">Tuần 2 (Ngày 8-14):</strong> Củng cố – Tăng cường độ. Áp dụng Pomodoro.</li><li><strong style="color:var(--primary-color)">Tuần 3 (Ngày 15-21):</strong> Duy trì & Bứt phá. Đo lường chất lượng.</li></ul></div></div></div>
+            <div class="accordion-item"><div class="accordion-header">3. Hệ thống theo dõi & Phần thưởng</div><div class="accordion-content"><div class="accordion-body"><p>Tracking kích hoạt <strong>Reward</strong> trong Vòng lặp thói quen. Tự thiết kế phần thưởng ở các cột mốc: Ngày 7, 14, 21.</p></div></div></div>
+            <div class="accordion-item"><div class="accordion-header">4. Accountability Partner (Đối tác trách nhiệm)</div><div class="accordion-content"><div class="accordion-body"><p>Có người đồng hành tăng tỷ lệ thành công lên <strong>95%</strong>. Cam kết check-in ít nhất 3 lần/tuần.</p></div></div></div>
+            <div class="accordion-item"><div class="accordion-header">5. Kết nối Module 7 (Tự đánh giá)</div><div class="accordion-content"><div class="accordion-body"><p>Cuối mỗi tuần, dùng Rubric Tự đánh giá để nhìn nhận lại: Điều gì tốt? Điều gì xao nhãng? Cần điều chỉnh gì?</p></div></div></div>
+        </section>
+        <h2>Tài nguyên học tập</h2>
+        <section class="resources-grid">
+            <button class="btn btn-outline" onclick="openModal('modal-infographic-8-2')">📊 Xem Infographic</button>
+            <button class="btn btn-outline" onclick="openModal('modal-mindmap-8-2')">🧠 Xem Mind Map</button>
+            <button class="btn btn-outline" onclick="openModal('modal-video-8-2')">🎥 Xem Video bài giảng</button>
+        </section>
+        <h2>Hoạt động – Lập kế hoạch 21 ngày</h2>
+        <section class="table-section">
+            <p>Sử dụng bảng dưới đây để phác thảo lộ trình của bạn.</p>
+            <div class="week-title">🔥 Tuần 1: Thử nghiệm – Giữ chuỗi</div>
+            <div class="table-wrapper"><table><thead><tr><th>Ngày</th><th>Hành động cam kết</th><th style="text-align:center">Đã làm</th><th>Cảm nhận</th></tr></thead><tbody><tr><td>Ngày 1</td><td><input type="text" value="Học từ vựng T.A 15 phút" readonly style="background:transparent;border:none;"></td><td style="text-align:center"><input type="checkbox" checked></td><td><input type="text" value="Hơi lười nhưng đã hoàn thành!"></td></tr><tr><td>Ngày 2</td><td><input type="text" value="Học từ vựng T.A 15 phút" readonly style="background:transparent;border:none;"></td><td style="text-align:center"><input type="checkbox"></td><td><input type="text" placeholder="Nhập cảm nhận..."></td></tr><tr><td>Ngày 3-7</td><td><input type="text" value="Duy trì chuỗi 15 phút/ngày" readonly style="background:transparent;border:none;"></td><td style="text-align:center"><input type="checkbox"></td><td><input type="text" placeholder="..."></td></tr></tbody></table></div>
+            <div class="week-title">⚡ Tuần 2: Củng cố – Tăng cường độ</div>
+            <div class="table-wrapper"><table><thead><tr><th>Ngày</th><th>Hành động cam kết</th><th>Thời gian</th><th style="text-align:center">Đã làm</th><th>Cảm nhận</th></tr></thead><tbody><tr><td>Ngày 8</td><td><input type="text" value="Học T.A & Làm 1 bài đọc hiểu" readonly style="background:transparent;border:none;"></td><td><input type="text" value="30 phút" readonly style="background:transparent;border:none;"></td><td style="text-align:center"><input type="checkbox"></td><td><input type="text" placeholder="Nhập cảm nhận..."></td></tr><tr><td>Ngày 9-14</td><td><input type="text" placeholder="Nhập hành động..."></td><td><input type="text" placeholder="30-45p"></td><td style="text-align:center"><input type="checkbox"></td><td><input type="text" placeholder="..."></td></tr></tbody></table></div>
+            <div class="week-title">🚀 Tuần 3: Duy trì & Bứt phá</div>
+            <div class="table-wrapper"><table><thead><tr><th>Ngày</th><th>Hành động</th><th>Thời gian</th><th>Công cụ</th><th style="text-align:center">Đã làm</th><th>Cảm nhận</th></tr></thead><tbody><tr><td>Ngày 15</td><td><input type="text" value="Học kiến thức mới" readonly style="background:transparent;border:none;"></td><td><input type="text" value="45 phút" readonly style="background:transparent;border:none;"></td><td><input type="text" value="Active Recall / Pomodoro" readonly style="background:transparent;border:none;"></td><td style="text-align:center"><input type="checkbox"></td><td><input type="text" placeholder="Hiệu quả ra sao?"></td></tr><tr><td>Ngày 16-21</td><td><input type="text" placeholder="..."></td><td><input type="text" placeholder="..."></td><td><input type="text" placeholder="Mindmap / Flashcard..."></td><td style="text-align:center"><input type="checkbox"></td><td><input type="text" placeholder="..."></td></tr></tbody></table></div>
+            <div class="template-actions">
+                <button class="btn btn-primary" onclick="openModal('modal-template-csv')">📄 Xem Template CSV</button>
+            </div>
+        </section>
+        <h2>Kiểm tra nhanh</h2>
+        <section class="quiz-container">
+            <div class="question" id="q1-container-8-2">
+                <h4>Câu 1: Mục đích chính của Tuần 1 (Ngày 1-7) là gì?</h4>
+                <div class="options">
+                    <div class="option" data-correct="false" onclick="checkAnswer8_2(this, 'q1')">A. Đánh giá và tối ưu công cụ học tập.</div>
+                    <div class="option" data-correct="false" onclick="checkAnswer8_2(this, 'q1')">B. Tăng cường độ học lên tối đa.</div>
+                    <div class="option" data-correct="true" onclick="checkAnswer8_2(this, 'q1')">C. Vượt qua sức ì, tạo chuỗi liên tục.</div>
+                    <div class="option" data-correct="false" onclick="checkAnswer8_2(this, 'q1')">D. Tìm Accountability Partner.</div>
+                </div>
+                <div id="q1-feedback-8-2" class="feedback"></div>
+            </div>
+            <div class="question" id="q2-container-8-2">
+                <h4>Câu 2: Tiêu chí quan trọng nhất của Accountability Partner?</h4>
+                <div class="options">
+                    <div class="option" data-correct="false" onclick="checkAnswer8_2(this, 'q2')">A. Học cùng chuyên ngành.</div>
+                    <div class="option" data-correct="true" onclick="checkAnswer8_2(this, 'q2')">B. Check-in đôn đốc đều đặn (ít nhất 3 lần/tuần).</div>
+                    <div class="option" data-correct="false" onclick="checkAnswer8_2(this, 'q2')">C. Là chuyên gia đầu ngành.</div>
+                    <div class="option" data-correct="false" onclick="checkAnswer8_2(this, 'q2')">D. Luôn khen ngợi, không phê bình.</div>
+                </div>
+                <div id="q2-feedback-8-2" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- Nút Hoàn thành Bài 8.2 & Chuyển sang Dự án Cuối khóa -->
+        <div style="text-align: center; margin: 30px 0;">
+            <button id="complete-btn-8-2" class="btn btn-accent" onclick="goToFinalProject()" disabled>
+                🌟 Hoàn thành Module 8 – Chuyển đến Dự án Cuối khóa
+            </button>
+            <p id="quiz-reminder-8-2" style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">
+                ⚠️ Vui lòng trả lời cả 2 câu hỏi của Bài 8.2 để mở khóa.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="btn btn-outline" onclick="switchToBai8_1()">⬅ Quay lại xem Bài 8.1</button>
+        </div>
+
+        <footer>&copy; 2026 Nền tảng MOOCs "Kỹ năng Tự học trong Thời đại Số".</footer>
+    </main>
+
+    <!-- Modals cho Bài 8.2 -->
+    <div id="modal-infographic-8-2" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-infographic-8-2')"><div class="modal-content"><div class="modal-header"><h3>Infographic Bài 8.2</h3><button class="close-modal" onclick="closeModal('modal-infographic-8-2')">×</button></div><div class="modal-body"><img src="https://i.ibb.co/tMn1vDKZ/Nu-i-d-ng-th-i-quen-t-h-c.png" alt="Infographic 8.2"></div></div></div>
+    <div id="modal-mindmap-8-2" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-mindmap-8-2')"><div class="modal-content"><div class="modal-header"><h3>Mind Map Bài 8.2</h3><button class="close-modal" onclick="closeModal('modal-mindmap-8-2')">×</button></div><div class="modal-body"><img src="https://i.ibb.co/vxcStL5N/Notebook-LM-Mind-Map.png" alt="Mind Map 8.2"></div></div></div>
+    <div id="modal-video-8-2" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-video-8-2')"><div class="modal-content"><div class="modal-header"><h3>Video Bài 8.2</h3><button class="close-modal" onclick="closeModal('modal-video-8-2', true)">×</button></div><div class="modal-body"><video id="video-8-2" controls><source src="https://files.catbox.moe/t6x08g.mp4" type="video/mp4"></video></div></div></div>
+    <!-- Modal template CSV -->
+    <div id="modal-template-csv" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'modal-template-csv')">
+        <div class="modal-content" style="max-width:800px;">
+            <div class="modal-header"><h3>📄 Template Kế hoạch 21 ngày (CSV)</h3><button class="close-modal" onclick="closeModal('modal-template-csv')">×</button></div>
+            <div class="modal-body" style="text-align:left;">
+                <p style="margin-bottom:10px;">Nội dung bên dưới là file CSV mẫu. Bạn có thể <strong>bôi đen toàn bộ</strong> và sao chép (Ctrl+C) rồi dán vào Excel hoặc Google Sheets.</p>
+                <textarea id="csv-content" readonly style="width:100%; height:300px; font-family:monospace; background:var(--input-bg); color:var(--text-color); border:1px solid var(--gray-300); padding:10px;"></textarea>
+                <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
+                    <button class="btn btn-accent" onclick="copyCsvContent()">📋 Copy nội dung</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        (function() {
+            // ========== 0. QUẢN LÝ HIỂN THỊ BÀI HỌC ==========
+            const bai8_1 = document.getElementById('bai-8-1');
+            const bai8_2 = document.getElementById('bai-8-2');
+            const lockedScreen = document.getElementById('locked-screen');
+            const progressBar = document.getElementById('progress-bar');
+            const transitionOverlay = document.getElementById('transition-overlay');
+            const transitionText = document.getElementById('transition-text');
+
+            let quiz8_1_answered = { q1: false, q2: false };
+            let quiz8_2_answered = { q1: false, q2: false };
+
+            function updateProgress() {
+                try {
+                    const is8_1Completed = localStorage.getItem('bai8_1_completed') === 'true';
+                    const is8_2Unlocked = is8_1Completed || localStorage.getItem('bai8_2_force_unlocked') === 'true';
+                    if (is8_2Unlocked && bai8_2 && !bai8_2.classList.contains('hidden')) {
+                        progressBar.style.width = '100%';
+                    } else if (is8_1Completed) {
+                        progressBar.style.width = '65%';
+                    } else {
+                        progressBar.style.width = '50%';
+                    }
+                } catch (e) {}
+            }
+
+            function checkQuizCompletion8_1() {
+                const btn = document.getElementById('complete-btn-8-1');
+                const reminder = document.getElementById('quiz-reminder');
+                if (!btn) return;
+                if (quiz8_1_answered.q1 && quiz8_1_answered.q2) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                    if (reminder) reminder.style.display = 'none';
+                } else {
+                    btn.disabled = true;
+                    if (reminder) reminder.style.display = 'block';
+                }
+            }
+
+            function checkQuizCompletion8_2() {
+                const btn = document.getElementById('complete-btn-8-2');
+                const reminder = document.getElementById('quiz-reminder-8-2');
+                if (!btn) return;
+                if (quiz8_2_answered.q1 && quiz8_2_answered.q2) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                    if (reminder) reminder.style.display = 'none';
+                } else {
+                    btn.disabled = true;
+                    if (reminder) reminder.style.display = 'block';
+                }
+            }
+
+            window.showTransition = function(message, callback) {
+                if (transitionOverlay && transitionText) {
+                    transitionText.textContent = message;
+                    transitionOverlay.style.display = 'flex';
+                    setTimeout(() => {
+                        transitionOverlay.style.display = 'none';
+                        if (callback) callback();
+                    }, 800);
+                } else {
+                    if (callback) callback();
+                }
+            };
+
+            window.switchToBai8_1 = function() {
+                if (bai8_1) bai8_1.classList.remove('hidden');
+                if (bai8_2) bai8_2.classList.add('hidden');
+                if (lockedScreen) lockedScreen.classList.add('hidden');
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            window.switchToBai8_2 = function() {
+                if (bai8_1) bai8_1.classList.add('hidden');
+                if (bai8_2) bai8_2.classList.remove('hidden');
+                if (lockedScreen) lockedScreen.classList.add('hidden');
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            window.completeBai8_1 = function() {
+                if (!quiz8_1_answered.q1 || !quiz8_1_answered.q2) {
+                    window.showToast('⚠️ Vui lòng trả lời cả 2 câu hỏi trước!');
+                    return;
+                }
+                try { localStorage.setItem('bai8_1_completed', 'true'); } catch(e) {}
+                updateProgress();
+                window.showTransition('🎉 Chúc mừng! Đang chuyển sang Bài 8.2...', () => {
+                    window.switchToBai8_2();
+                    window.showToast('✅ Đã mở khóa Bài 8.2 – Kế hoạch 21 ngày!');
+                });
+            };
+
+            window.forceUnlock = function() {
+                try { localStorage.setItem('bai8_1_completed', 'true'); localStorage.setItem('bai8_2_force_unlocked', 'true'); } catch(e) {}
+                updateProgress();
+                window.showTransition('🔓 Đang mở khóa (Dev Mode)...', () => {
+                    window.switchToBai8_2();
+                    window.showToast('Đã mở khóa bài học (Dev Mode)');
+                });
+            };
+
+            window.showToast = function(message) {
+                const toast = document.getElementById('toast');
+                if (!toast) return;
+                toast.innerText = message;
+                toast.className = 'toast show';
+                setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 3000);
+            };
+
+            // ========== LƯU CAM KẾT VỚI FALLBACK ==========
+            let memoryFallback = [];
+            function getStorage(key) {
+                try { return localStorage.getItem(key); } catch(e) {}
+                try { return sessionStorage.getItem(key); } catch(e) {}
+                return null;
+            }
+            function setStorage(key, value) {
+                try { localStorage.setItem(key, value); return true; } catch(e) {}
+                try { sessionStorage.setItem(key, value); return true; } catch(e) {}
+                return false;
+            }
+
+            window.saveCommitment = function() {
+                const textareas = document.querySelectorAll('#bai-8-1 .activity-section textarea');
+                const commitments = Array.from(textareas).map(ta => ta.value.trim());
+                if (commitments.every(c => c === '')) {
+                    window.showToast('Vui lòng nhập ít nhất một cam kết trước khi đăng!');
+                    return;
+                }
+                const entry = { c1: commitments[0], c2: commitments[1], c3: commitments[2], time: new Date().toLocaleString() };
+                let saved = [];
+                const data = getStorage('camket');
+                if (data) { try { saved = JSON.parse(data); } catch(e) { saved = []; } }
+                saved.push(entry);
+                if (saved.length > 10) saved = saved.slice(-10);
+                const value = JSON.stringify(saved);
+                const storageSuccess = setStorage('camket', value);
+                if (!storageSuccess) {
+                    memoryFallback.push(entry);
+                    window.showToast('⚠️ Trình duyệt chặn lưu trữ. Cam kết sẽ mất khi tải lại trang.');
+                } else {
+                    window.showToast('✅ Cam kết đã được lưu trên máy của bạn!');
+                }
+                textareas.forEach(ta => ta.value = '');
+                loadCommitments();
+            };
+
+            function loadCommitments() {
+                const container = document.getElementById('commitment-list');
+                if (!container) return;
+                let saved = [];
+                const data = getStorage('camket');
+                if (data) { try { saved = JSON.parse(data); } catch(e) { saved = []; } }
+                if (saved.length === 0 && memoryFallback.length > 0) saved = memoryFallback.slice(-10);
+                if (saved.length === 0) {
+                    container.innerHTML = '<div class="empty-commitment">📭 Chưa có cam kết nào được lưu.</div>';
+                    return;
+                }
+                let html = '';
+                saved.forEach((item, index) => {
+                    html += `<div class="commitment-item">
+                        <p><strong>Cam kết ${index + 1}:</strong></p>
+                        <p>1. ${escapeHtml(item.c1) || '<em>(bỏ trống)</em>'}</p>
+                        <p>2. ${escapeHtml(item.c2) || '<em>(bỏ trống)</em>'}</p>
+                        <p>3. ${escapeHtml(item.c3) || '<em>(bỏ trống)</em>'}</p>
+                        <div class="time">🕒 ${escapeHtml(item.time)}</div>
+                    </div>`;
+                });
+                container.innerHTML = html;
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+
+            loadCommitments();
+
+            // ========== TEMPLATE CSV ==========
+            function generateCsvContent() {
+                const BOM = '\uFEFF';
+                let csv = BOM + 'Ngày,Hành động cam kết,Thời gian,Đã làm,Cảm nhận\n';
+                for (let i = 1; i <= 21; i++) {
+                    csv += `Ngày ${i},,,,\n`;
+                }
+                csv += '\nHướng dẫn: Điền hành động, thời gian, đánh dấu X nếu đã làm, ghi cảm nhận.\n';
+                return csv;
+            }
+
+            window.copyCsvContent = function() {
+                const textarea = document.getElementById('csv-content');
+                if (!textarea) return;
+                textarea.select();
+                textarea.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+                window.showToast('✅ Đã sao chép nội dung template! Dán vào Excel nhé.');
+            };
+
+            window.openModal = function(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    if (modalId === 'modal-template-csv') {
+                        const textarea = document.getElementById('csv-content');
+                        if (textarea) textarea.value = generateCsvContent();
+                    }
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            };
+
+            window.closeModal = function(modalId, isVideo = false) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    if (isVideo) {
+                        const video = modal.querySelector('video');
+                        if (video) video.pause();
+                    }
+                }
+            };
+            window.closeModalOnOutsideClick = function(event, modalId) {
+                if (event.target.id === modalId) {
+                    window.closeModal(modalId, modalId.includes('video'));
+                }
+            };
+
+            // ========== CHUYỂN ĐẾN DỰ ÁN CUỐI KHÓA ==========
+            window.goToFinalProject = function() {
+                // Thay đổi URL bên dưới thành trang dự án cuối khóa thực tế
+                window.location.href = 'du-an-cuoi-khoa.html';
+            };
+
+            // Quiz handlers
+            window.checkAnswer8_1 = function(selectedOption, questionId) {
+                const container = document.getElementById(`${questionId}-container-8-1`);
+                if (!container || container.dataset.answered === 'true') return;
+                const options = container.querySelectorAll('.option');
+                const feedbackDiv = document.getElementById(`${questionId}-feedback-8-1`);
+                container.dataset.answered = 'true';
+                options.forEach(opt => opt.classList.add('disabled'));
+                const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+                const explanations = {
+                    q1: { correct: '<strong>Chính xác!</strong> Theo quy tắc vàng của sự thay đổi thói quen, cách hiệu quả nhất là giữ nguyên Cue và Reward, nhưng chèn một Routine mới tích cực hơn.' },
+                    q1_wrong: '<strong>Chưa chính xác.</strong> Thay đổi Routine (Hành động) là cách dễ và hiệu quả nhất.',
+                    q2: { correct: '<strong>Chính xác!</strong> Cấu trúc "Khi... tôi sẽ..." là định nghĩa kinh điển của Implementation Intention.' },
+                    q2_wrong: '<strong>Chưa chính xác.</strong> Mặc dù liên quan đến môi trường, nhưng cấu trúc câu là Implementation Intention.'
+                };
+                if (isCorrect) {
+                    selectedOption.classList.add('correct');
+                    if (feedbackDiv) { feedbackDiv.innerHTML = explanations[questionId].correct; feedbackDiv.className = 'feedback feedback-correct show'; }
+                } else {
+                    selectedOption.classList.add('incorrect');
+                    options.forEach(opt => { if (opt.getAttribute('data-correct') === 'true') opt.classList.add('correct'); });
+                    if (feedbackDiv) { feedbackDiv.innerHTML = explanations[questionId+'_wrong']; feedbackDiv.className = 'feedback feedback-incorrect show'; }
+                }
+                quiz8_1_answered[questionId] = true;
+                checkQuizCompletion8_1();
+            };
+
+            window.checkAnswer8_2 = function(selectedOption, questionId) {
+                const container = document.getElementById(`${questionId}-container-8-2`);
+                if (!container || container.dataset.answered === 'true') return;
+                const options = container.querySelectorAll('.option');
+                const feedbackDiv = document.getElementById(`${questionId}-feedback-8-2`);
+                container.dataset.answered = 'true';
+                options.forEach(opt => opt.classList.add('disabled'));
+                const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+                const explanations = {
+                    q1: { correct: '<strong>Chính xác!</strong> Tuần đầu tiên là giai đoạn khó khăn nhất, mục tiêu hàng đầu là xây dựng "quán tính".' },
+                    q1_wrong: '<strong>Chưa chính xác.</strong> Đánh giá hay tăng cường độ là nhiệm vụ của Tuần 2 và 3.',
+                    q2: { correct: '<strong>Chính xác!</strong> Giá trị lớn nhất của đối tác trách nhiệm là sự kỷ luật và check-in đều đặn.' },
+                    q2_wrong: '<strong>Chưa chính xác.</strong> Đối tác không cần cùng ngành hay là chuyên gia. Quan trọng là sự đều đặn.'
+                };
+                if (isCorrect) {
+                    selectedOption.classList.add('correct');
+                    if (feedbackDiv) { feedbackDiv.innerHTML = explanations[questionId].correct; feedbackDiv.className = 'feedback feedback-correct show'; }
+                } else {
+                    selectedOption.classList.add('incorrect');
+                    options.forEach(opt => { if (opt.getAttribute('data-correct') === 'true') opt.classList.add('correct'); });
+                    if (feedbackDiv) { feedbackDiv.innerHTML = explanations[questionId+'_wrong']; feedbackDiv.className = 'feedback feedback-incorrect show'; }
+                }
+                quiz8_2_answered[questionId] = true;
+                checkQuizCompletion8_2();
+            };
+
+            // Accordion
+            document.querySelectorAll('.accordion-item.active .accordion-content').forEach(content => { content.style.maxHeight = content.scrollHeight + 'px'; });
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    const item = this.parentElement;
+                    const content = this.nextElementSibling;
+                    item.classList.toggle('active');
+                    content.style.maxHeight = item.classList.contains('active') ? content.scrollHeight + 'px' : null;
+                });
+            });
+
+            // Dark Mode Toggle
+            const darkToggle = document.getElementById('dark-mode-toggle');
+            if (darkToggle) {
+                try {
+                    if (localStorage.getItem('darkMode') === 'enabled') {
+                        document.body.classList.add('dark-mode');
+                        darkToggle.textContent = '🌙';
+                    }
+                } catch(e) {}
+                darkToggle.addEventListener('click', function() {
+                    document.body.classList.toggle('dark-mode');
+                    const isDark = document.body.classList.contains('dark-mode');
+                    darkToggle.textContent = isDark ? '🌙' : '☀️';
+                    try { localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled'); } catch(e) {}
+                });
+            }
+
+            // Khởi tạo luồng bài học
+            let startOn8_2 = false;
+            try { startOn8_2 = localStorage.getItem('bai8_1_completed') === 'true'; } catch(e) {}
+            if (startOn8_2) { window.switchToBai8_2(); } else { window.switchToBai8_1(); }
+            updateProgress();
+        })();
+    </script>
+</body>
+</html>

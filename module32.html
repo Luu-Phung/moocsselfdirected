@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BÀI 3.2: Mind Map - Học & Kiểm tra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f2f7fc;
+            padding: 30px 20px;
+            color: #0b2a44;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 48px;
+            box-shadow: 0 25px 60px rgba(0, 20, 40, 0.10);
+            padding: 40px 45px 50px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* ---------- Nội dung học tập ---------- */
+        .content-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e4a6b, #0f2c44);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .content-section .subhead {
+            font-size: 16px;
+            color: #3f627c;
+            border-bottom: 2px dashed #d0e0ed;
+            padding-bottom: 18px;
+            margin-bottom: 25px;
+        }
+
+        .content-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a405b;
+            margin: 28px 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section h2 .emoji-big {
+            font-size: 28px;
+        }
+
+        .content-section p {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            color: #1f3e57;
+        }
+
+        .content-section ul, .content-section ol {
+            padding-left: 28px;
+            margin-bottom: 20px;
+        }
+
+        .content-section li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            color: #1f3e57;
+        }
+
+        .content-section .highlight-box {
+            background: #e5f0fa;
+            border-left: 6px solid #1e4a6b;
+            padding: 18px 24px;
+            border-radius: 16px;
+            margin: 22px 0;
+        }
+
+        .content-section .highlight-box strong {
+            color: #0f2c44;
+        }
+
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 28px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .content-section th {
+            background: #1e4a6b;
+            color: white;
+            font-weight: 600;
+            padding: 12px 12px;
+            text-align: left;
+        }
+
+        .content-section td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e5edf5;
+            background: #fafdff;
+        }
+
+        .content-section tr:last-child td {
+            border-bottom: none;
+        }
+
+        .content-section .table-wrap {
+            overflow-x: auto;
+        }
+
+        .content-section .principle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0 20px;
+        }
+
+        .content-section .principle-item {
+            background: #f3f8fe;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border-left: 4px solid #1e4a6b;
+            font-weight: 500;
+        }
+
+        .content-section .principle-item span {
+            font-weight: 700;
+            color: #0f2c44;
+        }
+
+        .content-section .app-example {
+            background: #f6faff;
+            border-radius: 20px;
+            padding: 16px 22px;
+            margin: 12px 0 20px;
+            border: 1px solid #dce8f3;
+        }
+
+        .content-section .app-example strong {
+            color: #1a405b;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #dce8f3;
+            margin: 30px 0;
+        }
+
+        /* ---------- Bài kiểm tra ---------- */
+        .quiz-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #1e4a6b;
+        }
+
+        .quiz-section .quiz-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .quiz-section .quiz-header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0b2a44;
+        }
+
+        .score-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background: #e3eef9;
+            border-radius: 60px;
+            padding: 10px 20px 10px 25px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02), 0 6px 14px rgba(0, 30, 60, 0.06);
+        }
+
+        .score-bar .info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .score-bar .info span {
+            font-weight: 500;
+            color: #1a405b;
+        }
+
+        .score-bar .info .count {
+            background: white;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #0b2a44;
+            font-size: 15px;
+        }
+
+        .score-bar .result-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .score-bar .result-area .score-display {
+            font-weight: 700;
+            font-size: 22px;
+            color: #0f2c44;
+            background: white;
+            padding: 2px 20px;
+            border-radius: 60px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn {
+            border: none;
+            background: white;
+            padding: 10px 26px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #1a405b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 20, 40, 0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #1e4a6b;
+            color: white;
+            box-shadow: 0 8px 20px rgba(26, 67, 113, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #143a55;
+            box-shadow: 0 12px 28px rgba(26, 67, 113, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #b0c8dd;
+        }
+
+        .btn-outline:hover {
+            background: #e3eef9;
+            border-color: #7c9bb8;
+        }
+
+        .btn-success {
+            background: #2b7a4b;
+            color: white;
+            box-shadow: 0 8px 20px rgba(33, 120, 70, 0.25);
+        }
+
+        .btn-success:hover {
+            background: #1f603a;
+            transform: translateY(-2px);
+        }
+
+        .btn-google {
+            background: #4285f4;
+            color: white;
+            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.30);
+        }
+
+        .btn-google:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(66, 133, 244, 0.40);
+        }
+
+        .question {
+            background: white;
+            border-radius: 24px;
+            padding: 22px 28px 18px;
+            margin-bottom: 28px;
+            box-shadow: 0 6px 18px rgba(0, 20, 40, 0.04);
+            transition: box-shadow 0.25s, transform 0.2s;
+            border-left: 6px solid #b8d0e3;
+        }
+
+        .question:hover {
+            box-shadow: 0 10px 30px rgba(0, 20, 40, 0.08);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .question-header .qnum {
+            font-weight: 700;
+            color: #1e4a6b;
+            background: #e3eef9;
+            border-radius: 40px;
+            padding: 0 14px;
+            font-size: 15px;
+            line-height: 30px;
+        }
+
+        .question-header .qtext {
+            font-weight: 600;
+            font-size: 18px;
+            color: #0b2a44;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-left: 6px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 14px 8px 8px;
+            border-radius: 16px;
+            transition: background 0.15s;
+            background: #fafdff;
+            border: 1px solid transparent;
+        }
+
+        .option-item:hover {
+            background: #f0f7fd;
+        }
+
+        .option-item .label {
+            font-weight: 500;
+            color: #1e3c55;
+            min-width: 22px;
+        }
+
+        .option-item .statement {
+            flex: 1;
+            color: #1e3c55;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        .option-item .radio-group {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2a4c69;
+            cursor: pointer;
+            padding: 2px 10px 2px 6px;
+            border-radius: 30px;
+            transition: all 0.1s;
+        }
+
+        .radio-group label input[type="radio"] {
+            accent-color: #1e4a6b;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .radio-group label:hover {
+            background: #dce9f5;
+        }
+
+        .option-item.correct {
+            background: #e6f5ed !important;
+            border-color: #2b7a4b;
+            border-radius: 16px;
+        }
+
+        .option-item.wrong {
+            background: #ffeae9 !important;
+            border-color: #b33a34;
+            border-radius: 16px;
+        }
+
+        .option-item .icon-result {
+            margin-left: 6px;
+            font-size: 18px;
+        }
+
+        .disabled-radio input[type="radio"] {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .footer-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #dde8f2;
+        }
+
+        .footer-actions .message {
+            font-weight: 500;
+            color: #1e4a6b;
+            font-size: 16px;
+        }
+
+        .footer-actions .actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* Animation & responsive */
+        .fade-in {
+            animation: fadeUp 0.5s ease forwards;
+        }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(14px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .shake {
+            animation: shake 0.3s ease;
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .highlight-score {
+            animation: pop 0.4s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 700px) {
+            .wrapper {
+                padding: 24px 18px;
+            }
+            .content-section h1 {
+                font-size: 26px;
+            }
+            .principle-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .question {
+                padding: 16px 16px 12px;
+            }
+            .option-item {
+                flex-wrap: wrap;
+                padding: 8px 6px;
+            }
+            .option-item .radio-group {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .score-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .score-bar .result-area {
+                justify-content: space-between;
+            }
+            .footer-actions {
+                flex-direction: column;
+                gap: 14px;
+            }
+            .btn {
+                padding: 8px 18px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- ======== PHẦN NỘI DUNG HỌC TẬP ======== -->
+        <section class="content-section">
+            <h1>🧠 BÀI 3.2 : Mind Map</h1>
+            <div class="subhead">Sơ đồ tư duy – Phương pháp ghi chép và tư duy toàn diện</div>
+
+            <h2><span class="emoji-big">🗺️</span> 1. Mind Map là gì?</h2>
+            <p><strong>Mind Map (Sơ đồ tư duy)</strong> là một phương pháp ghi chép và tổ chức thông tin dưới dạng sơ đồ phân nhánh. Thay vì viết theo dòng, mọi ý tưởng được tỏa ra từ một chủ đề trung tâm, sử dụng từ khóa, hình ảnh và màu sắc để tạo nên một bức tranh tổng thể, giúp não bộ dễ ghi nhớ, liên kết và hình dung vấn đề. Phương pháp này được phát triển và phổ biến bởi nhà tâm lý học người Anh <strong>Tony Buzan</strong> từ những năm 1970.</p>
+
+            <h2><span class="emoji-big">🧬</span> Nền tảng khoa học đằng sau</h2>
+            <div class="highlight-box">
+                <p><strong>Cơ chế hoạt động của Mind Map</strong> được xây dựng dựa trên cách vận hành tự nhiên của não bộ:</p>
+                <ul>
+                    <li><strong>Kích hoạt toàn bộ não bộ (Whole-Brain Thinking):</strong> Trong khi ghi chép tuyến tính (dạng dàn bài, gạch đầu dòng) chỉ thiên về não trái (logic, ngôn ngữ, phân tích), Mind Map đồng thời kích hoạt cả hai bán cầu não.</li>
+                    <li><strong>Tận dụng cơ chế ghi nhớ qua hình ảnh và liên kết (Visualization & Association):</strong> Mind Map sử dụng màu sắc, hình ảnh và các nhánh liên kết, giúp thông tin được lưu trữ một cách trực quan và sống động, từ đó tăng cường khả năng ghi nhớ và nhận diện.</li>
+                    <li><strong>Mô phỏng hoạt động của Nơ-ron thần kinh:</strong> Cấu trúc phân nhánh của Mind Map mô phỏng lại cách các nơ-ron trong não bộ kết nối với nhau. Sự sắp xếp không gian này (spatial arrangement) được khoa học chứng minh là một cách lưu trữ và liên kết thông tin hiệu quả.</li>
+                </ul>
+            </div>
+
+            <h2><span class="emoji-big">✍️</span> 2. 6 nguyên tắc vàng để vẽ Mind Map hiệu quả (theo Tony Buzan)</h2>
+            <div class="principle-grid">
+                <div class="principle-item"><span>1.</span> Bắt đầu từ TRUNG TÂM: đặt chủ đề chính ở trung tâm, dưới dạng hình ảnh hoặc từ khóa.</div>
+                <div class="principle-item"><span>2.</span> Sử dụng HÌNH ẢNH xuyên suốt: mỗi ý tưởng quan trọng nên có hình ảnh tượng trưng.</div>
+                <div class="principle-item"><span>3.</span> Sử dụng MÀU SẮC: ít nhất 3 màu, tô cho nhánh và hình ảnh trung tâm.</div>
+                <div class="principle-item"><span>4.</span> Kết nối các NHÁNH: tất cả nhánh phải được kết nối với nhánh trung tâm và nhánh mẹ.</div>
+                <div class="principle-item"><span>5.</span> Mỗi dòng chỉ một TỪ KHÓA: cô đọng thông tin, kích thích liên kết mới.</div>
+                <div class="principle-item"><span>6.</span> Phát triển theo cấu trúc PHÂN NHÁNH (Radiant Thinking): tỏa ra từ trung tâm như cái cây.</div>
+            </div>
+
+            <h2><span class="emoji-big">🛠️</span> 3. Công cụ vẽ Mind Map: Giấy + Tay 🆚 Canva Whiteboard 🆚 MindMeister</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Đặc điểm</th><th>✍️ Giấy + Tay / Bút</th><th>🎨 Canva Whiteboard</th><th>🗺️ MindMeister (miễn phí)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Chi phí</td><td>Rất thấp</td><td>Miễn phí (có gói nâng cấp)</td><td>Miễn phí có giới hạn</td></tr>
+                        <tr><td>Số lượng Map</td><td>Không giới hạn</td><td>Không giới hạn</td><td>Giới hạn 3 bản đồ online</td></tr>
+                        <tr><td>Tính linh hoạt</td><td>Tuyệt đối (tự do sáng tạo)</td><td>Rất cao (nhiều template)</td><td>Cao (chuyên sâu cho sơ đồ)</td></tr>
+                        <tr><td>Chia sẻ & Cộng tác</td><td>Không (chỉ chụp ảnh)</td><td>Có (làm việc nhóm trực tuyến)</td><td>Có (cộng tác thời gian thực)</td></tr>
+                        <tr><td>Tính di động</td><td>Khá (mang theo giấy)</td><td>Có (đa nền tảng)</td><td>Có (web & di động)</td></tr>
+                        <tr><td>Điểm mạnh nhất</td><td>Ghi nhớ sâu, sáng tạo tối đa</td><td>Thẩm mỹ cao, dễ làm đẹp</td><td>Tổ chức khoa học, cộng tác mượt</td></tr>
+                        <tr><td>Hạn chế</td><td>Khó chỉnh sửa, lưu trữ, chia sẻ</td><td>Có thể gây xao nhãng bởi nhiều tính năng</td><td>Bản miễn phí giới hạn tính năng</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><em>✍️ Giấy + Tay:</em> Phù hợp ghi nhớ sâu, brainstorm cá nhân.<br>
+            <em>🎨 Canva Whiteboard:</em> Lý tưởng cho sơ đồ đẹp mắt để thuyết trình.<br>
+            <em>🗺️ MindMeister:</em> Công cụ chuyên nghiệp, cộng tác thời gian thực. <strong>Lưu ý:</strong> Vietcetera & MindMeister có chương trình tài trợ bản quyền cho sinh viên Việt Nam giảm đến 85%.</p>
+
+            <h2><span class="emoji-big">⚖️</span> 4. So sánh hiệu quả: Mind Map vs. Ghi chép tuyến tính</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Tiêu chí</th><th>📝 Ghi chép tuyến tính</th><th>🧠 Mind Map</th></tr></thead>
+                    <tbody>
+                        <tr><td>Tư duy</td><td>Tuần tự, logic theo đường thẳng</td><td>Tư duy tỏa nhánh (Radiant), bao quát toàn bộ</td></tr>
+                        <tr><td>Tổng quan</td><td>Khó nhìn thấy mối liên hệ</td><td>Thể hiện rõ cấu trúc và kết nối</td></tr>
+                        <tr><td>Ghi nhớ</td><td>Dựa chủ yếu vào sự lặp lại</td><td>Tăng cường trí nhớ nhờ hình ảnh, màu sắc, liên kết</td></tr>
+                        <tr><td>Sáng tạo & Giải quyết vấn đề</td><td>Hạn chế, thiên về ghi chép thụ động</td><td>Kích thích sáng tạo, tìm ra giải pháp mới</td></tr>
+                        <tr><td>Hiệu quả học tập</td><td>Có thể gây nhàm chán, khó tập trung</td><td>Cải thiện điểm số đáng kể (nghiên cứu trên sinh viên y khoa, p&lt;0.05)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Một phân tích tổng hợp từ 21 nghiên cứu kết luận Mind Map có tác động tích cực đến kết quả học tập. Nên kết hợp cả hai: dùng Mind Map để nắm ý chính, ghi chép tuyến tính cho chi tiết, số liệu.</p>
+
+            <h2><span class="emoji-big">💡</span> 5. Ứng dụng thực tế: Ôn thi, Brainstorm, Tóm tắt sách</h2>
+            <div class="app-example">
+                <strong>🎓 Ứng dụng 1: Ôn thi và Hệ thống kiến thức</strong>
+                <p><em>Cách làm:</em> Trung tâm ghi tên môn học/chủ đề. Nhánh cấp 1: các giai đoạn/chủ đề lớn. Nhánh cấp 2,3: chi tiết hơn, dùng từ khóa, màu sắc, hình ảnh.<br>
+                <strong>Ví dụ (Vật lý – Điện học):</strong> Trung tâm: hình củ khoai tây cắm dây điện, ghi "ĐIỆN HỌC". Nhánh: Điện trở (xanh), Định luật Ôm (đỏ), Đoạn mạch nối tiếp (vàng)…</p>
+            </div>
+            <div class="app-example">
+                <strong>💡 Ứng dụng 2: Brainstorm và Phát triển ý tưởng</strong>
+                <p><em>Cách làm:</em> Trung tâm ghi vấn đề cần brainstorm. Vòng đầu tự do phân nhánh mọi ý tưởng. Sau đó kết nối và phát triển các nhánh tiềm năng.<br>
+                <strong>Ví dụ (Cải thiện kỹ năng thuyết trình):</strong> Trung tâm: hình người đang nói. Nhánh ban đầu: tập nói trước gương, slide đẹp, kể chuyện, luyện giọng… Sau đó nhóm thành: CHUẨN BỊ NỘI DUNG, THIẾT KẾ SLIDE, KỸ THUẬT TRÌNH BÀY.</p>
+            </div>
+            <div class="app-example">
+                <strong>📚 Ứng dụng 3: Tóm tắt nội dung một chương sách</strong>
+                <p><em>Cách làm:</em> Đọc lướt tiêu đề, tiểu mục, từ in đậm. Xác định chủ đề trung tâm (tên chương). Tạo nhánh cấp 1 từ các ý chính. Đọc kỹ và bổ sung chi tiết vào nhánh con.<br>
+                <strong>Ví dụ (Marketing Căn bản):</strong> Trung tâm "MARKETING CĂN BẢN". Nhánh cấp 1: 4P, Thị trường mục tiêu, Hành vi khách hàng. Nhánh 4P → Product, Price, Place, Promotion → tiếp tục chi tiết.</p>
+            </div>
+            <p style="margin-top: 12px;"><strong>Tóm lại:</strong> Mind Map không chỉ là công cụ ghi chép, mà là phương pháp tư duy toàn diện. Ứng dụng đúng nguyên tắc khoa học giúp bạn học tập hiệu quả, làm việc sáng tạo và giải quyết vấn đề thông minh hơn.</p>
+            <hr />
+        </section>
+
+        <!-- ======== PHẦN BÀI KIỂM TRA ======== -->
+        <section class="quiz-section" id="quizSection">
+            <div class="quiz-header">
+                <h2>📝 Kiểm tra kiến thức</h2>
+                <span style="background:#e3eef9; padding:6px 18px; border-radius:40px; font-weight:600; color:#1a405b;">5 câu · 20 nhận định</span>
+            </div>
+
+            <!-- Score bar -->
+            <div class="score-bar" id="scoreBar">
+                <div class="info">
+                    <span>📌 Trắc nghiệm</span>
+                    <span class="count" id="questionCount">5 câu · 20 nhận định</span>
+                </div>
+                <div class="result-area">
+                    <span style="font-weight:500; color:#1a405b;">Điểm</span>
+                    <span class="score-display" id="scoreDisplay">0 / 20</span>
+                    <button class="btn btn-success" id="submitBtn">✅ Nộp bài</button>
+                    <button class="btn btn-outline" id="resetBtn">⟳ Làm lại</button>
+                </div>
+            </div>
+
+            <!-- Questions container -->
+            <div id="questionsContainer"></div>
+
+            <!-- Footer actions -->
+            <div class="footer-actions">
+                <span class="message" id="footerMessage">💡 Hãy chọn Đúng / Sai cho từng nhận định.</span>
+                <div class="actions">
+                    <button class="btn btn-success" id="submitBtn2">✅ Nộp bài</button>
+                    <button class="btn btn-outline" id="resetBtn2">⟳ Làm lại</button>
+                    <!-- Nút Kiểm tra Module 3 với link mới -->
+                    <a href="https://forms.gle/fsMmgagnS632EKhGA" target="_blank" class="btn btn-google" id="module3Btn">
+                        📋 Kiểm tra Module 3
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- Dữ liệu đáp án ----------
+            const questions = [{
+                id: 1,
+                text: 'Mind Map và cơ sở khoa học',
+                statements: [
+                    { label: 'a', text: 'Mind Map là phương pháp tổ chức thông tin dưới dạng sơ đồ phân nhánh, xuất phát từ một chủ đề trung tâm.', answer: true },
+                    { label: 'b', text: 'Mind Map chỉ sử dụng chữ viết, không cần hình ảnh hay màu sắc.', answer: false },
+                    { label: 'c', text: 'Mind Map giúp kích hoạt cả hai bán cầu não thông qua việc kết hợp hình ảnh, màu sắc và từ khóa.', answer: true },
+                    { label: 'd', text: 'Cấu trúc phân nhánh của Mind Map mô phỏng cách các nơ-ron thần kinh liên kết với nhau.', answer: true }
+                ]
+            }, {
+                id: 2,
+                text: 'Nguyên tắc vẽ Mind Map',
+                statements: [
+                    { label: 'a', text: 'Chủ đề chính của Mind Map nên được đặt ở trung tâm sơ đồ.', answer: true },
+                    { label: 'b', text: 'Mỗi nhánh nên ghi cả một đoạn văn để đảm bảo đầy đủ thông tin.', answer: false },
+                    { label: 'c', text: 'Các nhánh trong Mind Map cần được kết nối với nhau để thể hiện mối quan hệ giữa các ý tưởng.', answer: true },
+                    { label: 'd', text: 'Mind Map nên phát triển theo cấu trúc phân nhánh từ trung tâm ra bên ngoài.', answer: true }
+                ]
+            }, {
+                id: 3,
+                text: 'Công cụ tạo Mind Map',
+                statements: [
+                    { label: 'a', text: 'Vẽ Mind Map bằng giấy và bút giúp tăng khả năng ghi nhớ và kích thích sáng tạo.', answer: true },
+                    { label: 'b', text: 'Canva Whiteboard hỗ trợ cộng tác trực tuyến và có nhiều mẫu thiết kế đẹp.', answer: true },
+                    { label: 'c', text: 'Phiên bản miễn phí của MindMeister cho phép lưu không giới hạn số lượng sơ đồ tư duy.', answer: false },
+                    { label: 'd', text: 'MindMeister phù hợp cho làm việc nhóm và quản lý ý tưởng theo thời gian thực.', answer: true }
+                ]
+            }, {
+                id: 4,
+                text: 'So sánh Mind Map với ghi chép tuyến tính',
+                statements: [
+                    { label: 'a', text: 'Ghi chép tuyến tính giúp thể hiện rõ mối liên hệ giữa các ý tưởng hơn Mind Map.', answer: false },
+                    { label: 'b', text: 'Mind Map sử dụng hình ảnh, màu sắc và sự liên kết để hỗ trợ ghi nhớ.', answer: true },
+                    { label: 'c', text: 'Mind Map khuyến khích tư duy sáng tạo và hỗ trợ giải quyết vấn đề tốt hơn ghi chép tuyến tính.', answer: true },
+                    { label: 'd', text: 'Các nghiên cứu cho thấy việc sử dụng Mind Map có thể cải thiện kết quả học tập so với phương pháp ghi chép truyền thống.', answer: true }
+                ]
+            }, {
+                id: 5,
+                text: 'Ứng dụng của Mind Map',
+                statements: [
+                    { label: 'a', text: 'Mind Map có thể được sử dụng để hệ thống hóa kiến thức khi ôn tập trước kỳ thi.', answer: true },
+                    { label: 'b', text: 'Trong Brainstorm bằng Mind Map, cần loại bỏ ngay các ý tưởng chưa khả thi ngay khi xuất hiện.', answer: false },
+                    { label: 'c', text: 'Khi tóm tắt một chương sách bằng Mind Map, nên xác định chủ đề trung tâm trước khi phát triển các nhánh chính.', answer: true },
+                    { label: 'd', text: 'Mind Map chỉ phù hợp cho việc học tập, không có giá trị trong công việc hoặc phát triển ý tưởng.', answer: false }
+                ]
+            }];
+
+            // DOM refs
+            const container = document.getElementById('questionsContainer');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const footerMessage = document.getElementById('footerMessage');
+            const submitBtns = [document.getElementById('submitBtn'), document.getElementById('submitBtn2')];
+            const resetBtns = [document.getElementById('resetBtn'), document.getElementById('resetBtn2')];
+
+            let submitted = false;
+
+            // ---------- Render ----------
+            function renderQuestions() {
+                let html = '';
+                questions.forEach((q, qIdx) => {
+                    html += `<div class="question fade-in" data-qidx="${qIdx}">`;
+                    html += `<div class="question-header">
+                                <span class="qnum">Câu ${q.id}</span>
+                                <span class="qtext">${q.text}</span>
+                            </div>`;
+                    html += `<div class="options">`;
+                    q.statements.forEach((s, sIdx) => {
+                        const name = `q${qIdx}_s${sIdx}`;
+                        html += `<div class="option-item" data-q="${qIdx}" data-s="${sIdx}">
+                                    <span class="label">${s.label}.</span>
+                                    <span class="statement">${s.text}</span>
+                                    <div class="radio-group">
+                                        <label>
+                                            <input type="radio" name="${name}" value="true" /> Đúng
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="${name}" value="false" /> Sai
+                                        </label>
+                                    </div>
+                                    <span class="icon-result"></span>
+                                </div>`;
+                    });
+                    html += `</div></div>`;
+                });
+                container.innerHTML = html;
+                submitted = false;
+                updateScoreAndUI();
+                document.querySelectorAll('.option-item').forEach(el => {
+                    el.classList.remove('correct', 'wrong');
+                    el.querySelector('.icon-result').textContent = '';
+                });
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => {
+                    r.disabled = false;
+                    r.checked = false;
+                });
+                document.querySelectorAll('.option-item').forEach(el => el.classList.remove('disabled-radio'));
+                footerMessage.textContent = '💡 Hãy chọn Đúng / Sai cho từng nhận định.';
+                scoreDisplay.textContent = '0 / 20';
+                scoreDisplay.classList.remove('highlight-score');
+            }
+
+            // ---------- Collect answers ----------
+            function getSelectedAnswers() {
+                const result = [];
+                const items = document.querySelectorAll('.option-item');
+                items.forEach((el) => {
+                    const radios = el.querySelectorAll('input[type="radio"]');
+                    let selected = null;
+                    for (let r of radios) {
+                        if (r.checked) {
+                            selected = r.value === 'true';
+                            break;
+                        }
+                    }
+                    result.push(selected);
+                });
+                return result;
+            }
+
+            // ---------- Compute score ----------
+            function computeScore(selections) {
+                let correctCount = 0;
+                let total = 0;
+                const flatAnswers = [];
+                questions.forEach(q => {
+                    q.statements.forEach(s => flatAnswers.push(s.answer));
+                });
+                selections.forEach((sel, idx) => {
+                    if (sel !== null) {
+                        total++;
+                        if (sel === flatAnswers[idx]) correctCount++;
+                    }
+                });
+                return { correctCount, total, flatAnswers };
+            }
+
+            // ---------- Apply result ----------
+            function applyResult(selections, flatAnswers) {
+                const items = document.querySelectorAll('.option-item');
+                let correctCount = 0;
+                items.forEach((el, idx) => {
+                    const sel = selections[idx];
+                    const ans = flatAnswers[idx];
+                    const icon = el.querySelector('.icon-result');
+                    el.classList.remove('correct', 'wrong');
+                    if (sel === null) {
+                        el.classList.add('wrong');
+                        icon.textContent = '❌';
+                    } else if (sel === ans) {
+                        el.classList.add('correct');
+                        icon.textContent = '✅';
+                        correctCount++;
+                    } else {
+                        el.classList.add('wrong');
+                        icon.textContent = '❌';
+                    }
+                    el.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+                    el.classList.add('disabled-radio');
+                });
+
+                const total = flatAnswers.length;
+                scoreDisplay.textContent = `${correctCount} / ${total}`;
+                scoreDisplay.classList.add('highlight-score');
+                setTimeout(() => scoreDisplay.classList.remove('highlight-score'), 600);
+
+                const pct = Math.round((correctCount / total) * 100);
+                let msg = '';
+                if (pct === 100) msg = '🎉 Hoàn hảo! Bạn đã nắm vững kiến thức về Mind Map.';
+                else if (pct >= 80) msg = '🌟 Rất tốt! Hãy xem lại những nhận định sai để hiểu sâu hơn.';
+                else if (pct >= 60) msg = '📖 Khá ổn! Bạn nên ôn lại các nguyên tắc và ứng dụng của Mind Map.';
+                else msg = '🔄 Cần cố gắng hơn! Hãy đọc lại nội dung bài học và thử lại.';
+                footerMessage.textContent = msg;
+                submitted = true;
+            }
+
+            // ---------- Submit ----------
+            function handleSubmit() {
+                if (submitted) {
+                    footerMessage.textContent = '⏳ Bạn đã nộp bài rồi! Nhấn "Làm lại" để thử lại.';
+                    return;
+                }
+                const selections = getSelectedAnswers();
+                const allSelected = selections.every(s => s !== null);
+                if (!allSelected) {
+                    footerMessage.textContent = '⚠️ Bạn chưa chọn hết các nhận định. Vui lòng hoàn thành tất cả.';
+                    const bar = document.getElementById('scoreBar');
+                    bar.classList.add('shake');
+                    setTimeout(() => bar.classList.remove('shake'), 400);
+                    return;
+                }
+                const { correctCount, total, flatAnswers } = computeScore(selections);
+                applyResult(selections, flatAnswers);
+            }
+
+            // ---------- Reset ----------
+            function handleReset() {
+                renderQuestions();
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => r.checked = false);
+                document.querySelectorAll('.option-item').forEach(el => {
+                    el.classList.remove('correct', 'wrong', 'disabled-radio');
+                    el.querySelector('.icon-result').textContent = '';
+                });
+                submitted = false;
+                footerMessage.textContent = '💡 Hãy chọn Đúng / Sai cho từng nhận định.';
+                scoreDisplay.textContent = '0 / 20';
+                scoreDisplay.classList.remove('highlight-score');
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => r.disabled = false);
+                attachRadioEvents();
+            }
+
+            // ---------- Update score realtime ----------
+            function updateScoreAndUI() {
+                if (submitted) return;
+                const selections = getSelectedAnswers();
+                const answered = selections.filter(s => s !== null).length;
+                const total = questions.reduce((acc, q) => acc + q.statements.length, 0);
+                scoreDisplay.textContent = `${answered} / ${total}`;
+            }
+
+            function attachRadioEvents() {
+                document.querySelectorAll('.option-item input[type="radio"]').forEach(r => {
+                    r.addEventListener('change', function() {
+                        if (!submitted) {
+                            updateScoreAndUI();
+                        }
+                    });
+                });
+            }
+
+            // ---------- Init ----------
+            function init() {
+                renderQuestions();
+                attachRadioEvents();
+                submitBtns.forEach(btn => {
+                    btn.addEventListener('click', handleSubmit);
+                });
+                resetBtns.forEach(btn => {
+                    btn.addEventListener('click', handleReset);
+                });
+                // Override để gắn lại event sau reset
+                const origReset = handleReset;
+                handleReset = function() {
+                    origReset();
+                    attachRadioEvents();
+                };
+                const origSubmit = handleSubmit;
+                handleSubmit = function() {
+                    origSubmit();
+                };
+                submitBtns.forEach(btn => {
+                    btn.removeEventListener('click', handleSubmit);
+                    btn.addEventListener('click', handleSubmit);
+                });
+                resetBtns.forEach(btn => {
+                    btn.removeEventListener('click', handleReset);
+                    btn.addEventListener('click', handleReset);
+                });
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>

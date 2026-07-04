@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6: Học tập qua học liệu số</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* ================= CSS VARIABLES ================= */
+        :root {
+            --primary: #2563EB;
+            --secondary: #1E40AF;
+            --accent: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
+        }
+
+        /* ================= RESET & TYPOGRAPHY ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; color: var(--text-main); }
+        a { text-decoration: none; color: var(--primary); transition: var(--transition); }
+        ul { list-style: none; }
+        
+        /* Focus Outline for Accessibility */
+        *:focus-visible { outline: 3px solid var(--warning); outline-offset: 2px; }
+
+        /* ================= LAYOUT ================= */
+        .app-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* ================= PROGRESS BAR ================= */
+        .progress-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: #e2e8f0; z-index: 9999;
+        }
+        .progress-bar {
+            height: 100%; background: var(--primary); width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            position: sticky;
+            top: 0; height: 100vh;
+            background: var(--card); border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem; overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.02);
+            z-index: 100;
+        }
+        .sidebar-title { font-size: 1.2rem; margin-bottom: 2rem; color: var(--primary); }
+        .nav-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .nav-item a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 16px; border-radius: 8px;
+            color: var(--text-muted); font-weight: 500;
+        }
+        .nav-item a:hover { background: var(--bg); color: var(--primary); }
+        .nav-item a.active {
+            background: var(--primary); color: white;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        /* ================= MAIN CONTENT ================= */
+        .main-content { padding-bottom: 5rem; }
+        .section-container { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+
+        /* ================= HERO BANNER ================= */
+        .hero {
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+            padding: 8rem 2rem; text-align: center; color: white;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: rgba(15, 23, 42, 0.7); z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.25rem; font-weight: 300; margin-bottom: 2rem; opacity: 0.9; }
+        .hero-btns { display: flex; gap: 1rem; justify-content: center; }
+
+        /* Mini Hero for Modules */
+        .mini-hero {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            padding: 3rem 2rem; border-radius: var(--radius);
+            color: white; margin-bottom: 3rem; text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        /* ================= BUTTONS & RIPPLE ================= */
+        .btn {
+            position: relative; overflow: hidden;
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px; border-radius: 8px; font-weight: 600;
+            cursor: pointer; transition: var(--transition); border: none; font-size: 1rem;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: var(--shadow); }
+        .btn-outline { background: transparent; color: white; border: 2px solid white; }
+        .btn-outline:hover { background: white; color: var(--text-main); }
+        
+        .ripple {
+            position: absolute; border-radius: 50%;
+            transform: scale(0); animation: ripple-anim 0.6s linear;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+        /* ================= CARDS & PLACEHOLDERS ================= */
+        .card {
+            background: var(--card); border-radius: var(--radius);
+            padding: 1.5rem; box-shadow: var(--shadow); transition: var(--transition);
+        }
+        .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-5px); }
+        
+        .placeholder-card {
+            border: 2px dashed #CBD5E1; background: #F1F5F9;
+            border-radius: var(--radius); padding: 4rem 2rem;
+            text-align: center; color: var(--text-muted);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;
+            margin: 2rem 0; font-weight: 500;
+        }
+        .placeholder-card i { font-size: 3rem; color: #94A3B8; }
+
+        /* ================= BADGES & CALLOUTS ================= */
+        .badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; margin-right: 0.5rem;
+        }
+        .badge-bloom { background: #E0E7FF; color: #3730A3; }
+        .badge-time { background: #DCFCE7; color: #166534; }
+        
+        .callout {
+            border-left: 4px solid var(--primary); background: #EFF6FF;
+            padding: 1.5rem; border-radius: 0 var(--radius) var(--radius) 0;
+            margin: 2rem 0; display: flex; gap: 1rem; align-items: flex-start;
+        }
+        .callout.warning { border-left-color: var(--warning); background: #FEF3C7; }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(120deg, #1E293B, #0F172A); color: white;
+            padding: 2rem; border-radius: var(--radius); text-align: center; margin: 2rem 0;
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
+        }
+        .highlight-box .stat { font-size: 3rem; font-weight: 800; color: var(--accent); }
+
+        /* ================= ACCORDION ================= */
+        .accordion-container { margin: 2rem 0; display: flex; flex-direction: column; gap: 1rem; }
+        .accordion-item {
+            background: var(--card); border-radius: 8px; border: 1px solid var(--border-color);
+            overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .accordion-header {
+            width: 100%; padding: 1.25rem; display: flex; justify-content: space-between;
+            align-items: center; background: none; border: none; font-size: 1.1rem;
+            font-weight: 600; color: var(--text-main); cursor: pointer; text-align: left;
+        }
+        .accordion-header i { transition: transform 0.3s; }
+        .accordion-header.active i { transform: rotate(180deg); color: var(--primary); }
+        .accordion-body {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;
+            background: var(--bg);
+        }
+        .accordion-content { padding: 1.5rem; border-top: 1px solid var(--border-color); }
+
+        /* ================= GRID LAYOUTS ================= */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        
+        /* ================= FLIP CARDS ================= */
+        .flip-card-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin: 2rem 0; }
+        .flip-card {
+            background-color: transparent; width: 100%; height: 200px;
+            perspective: 1000px; cursor: pointer;
+        }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.6s; transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: var(--radius); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        .flip-card-front { background-color: var(--card); color: var(--text-main); border: 2px solid var(--danger); }
+        .flip-card-front i { font-size: 2.5rem; color: var(--danger); margin-bottom: 1rem; }
+        .flip-card-back {
+            background-color: var(--danger); color: white; transform: rotateY(180deg); font-weight: 500;
+        }
+
+        /* ================= TIMELINE ================= */
+        .timeline {
+            position: relative; max-width: 100%; margin: 2rem 0; padding: 1rem 0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .timeline::before {
+            content: ''; position: absolute; top: 50%; left: 0; right: 0;
+            height: 4px; background: var(--border-color); transform: translateY(-50%); z-index: 1;
+        }
+        .timeline-step {
+            position: relative; z-index: 2; background: var(--card); border: 3px solid var(--primary);
+            border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center;
+            justify-content: center; font-weight: 700; color: var(--primary); transition: var(--transition);
+        }
+        .timeline-step:hover { background: var(--primary); color: white; transform: scale(1.1); }
+        .timeline-content { position: absolute; top: 60px; text-align: center; width: max-content; font-size: 0.9rem; font-weight: 500; left: 50%; transform: translateX(-50%); }
+
+        /* Horizontal Timeline Alternative (Vertical for smaller steps) */
+        .v-timeline { border-left: 3px solid var(--primary); padding-left: 20px; margin-left: 10px; }
+        .v-step { position: relative; margin-bottom: 20px; }
+        .v-step::before {
+            content: ''; position: absolute; left: -28px; top: 0;
+            width: 14px; height: 14px; border-radius: 50%; background: var(--primary);
+        }
+
+        /* ================= INTERACTIVE COMPARISON ================= */
+        .comparison-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin: 2rem 0; }
+        .comp-side { padding: 2rem; transition: var(--transition); }
+        .comp-side.passive { background: #FEF2F2; border-right: 1px solid white; }
+        .comp-side.active { background: #ECFDF5; }
+        .comp-side h4 { text-align: center; margin-bottom: 1.5rem; font-size: 1.2rem; }
+        .comp-side.passive h4 { color: var(--danger); }
+        .comp-side.active h4 { color: var(--accent); }
+        .comp-list li { margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .comp-side:hover { transform: scale(1.02); }
+
+        /* ================= BACK TO TOP ================= */
+        .back-to-top {
+            position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px;
+            background: var(--primary); color: white; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; cursor: pointer; opacity: 0;
+            visibility: hidden; transition: var(--transition); z-index: 99; border: none; box-shadow: var(--shadow);
+        }
+        .back-to-top.show { opacity: 1; visibility: visible; }
+        .back-to-top:hover { background: var(--secondary); transform: translateY(-3px); }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 992px) {
+            .app-container { grid-template-columns: 1fr; }
+            .sidebar { display: none; } /* Could be made into a mobile menu toggle */
+            .hero h1 { font-size: 2.5rem; }
+            .section-container { padding: 3rem 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .flip-card-container, .comparison-wrapper { grid-template-columns: 1fr; }
+            .hero-btns { flex-direction: column; }
+            .timeline { flex-direction: column; height: 300px; padding: 0; }
+            .timeline::before { width: 4px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+            .timeline-content { top: 50%; left: 60px; transform: translateY(-50%); }
+            .comp-side.passive { border-right: none; border-bottom: 2px solid white; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <h2 class="sidebar-title"><i class="fa-solid fa-layer-group"></i> Module 6</h2>
+            <nav>
+                <ul class="nav-list" id="nav-menu">
+                    <li class="nav-item"><a href="#hero" class="active"><i class="fa-solid fa-house"></i> Tổng quan</a></li>
+                    <li class="nav-item"><a href="#bai6-1"><i class="fa-solid fa-laptop-code"></i> Bài 6.1: Học với MOOCs</a></li>
+                    <li class="nav-item"><a href="#bai6-2"><i class="fa-brands fa-youtube"></i> Bài 6.2: YouTube có chủ đích</a></li>
+                    <li class="nav-item"><a href="#tong-ket"><i class="fa-solid fa-check-double"></i> Tổng kết</a></li>
+                    <li class="nav-item"><a href="#tai-nguyen"><i class="fa-solid fa-folder-open"></i> Tài nguyên</a></li>
+                    <li class="nav-item"><a href="#post-test"><i class="fa-solid fa-clipboard-question"></i> Post-test</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            
+            <section id="hero" class="hero">
+                <div class="hero-content" data-aos="zoom-in">
+                    <h1>HỌC TẬP QUA HỌC LIỆU SỐ</h1>
+                    <p>Từ người xem nội dung trở thành người kiến tạo tri thức</p>
+                    <div class="hero-btns">
+                        <button class="btn btn-primary ripple-btn" onclick="document.getElementById('bai6-1').scrollIntoView();">
+                            <i class="fa-solid fa-play"></i> Bắt đầu học
+                        </button>
+                        <button class="btn btn-outline ripple-btn" onclick="document.getElementById('outcomes').scrollIntoView();">
+                            Xem mục tiêu
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="outcomes" class="section-container">
+                <h2 data-aos="fade-up">Mục tiêu học tập (Learning Outcomes)</h2>
+                <div class="grid-2" style="margin-top: 2rem;">
+                    <div class="card" data-aos="fade-up" data-aos-delay="100">
+                        <h3 style="margin-bottom: 1rem;"><i class="fa-solid fa-bullseye" style="color: var(--primary);"></i> Năng lực đầu ra</h3>
+                        <ul class="nav-list">
+                            <li class="nav-item"><i class="fa-solid fa-check text-muted"></i> Áp dụng bộ tiêu chí khoa học để lựa chọn MOOCs phù hợp.</li>
+                            <li class="nav-item"><i class="fa-solid fa-check text-muted"></i> Xây dựng lộ trình hoàn thành khóa học trực tuyến.</li>
+                            <li class="nav-item"><i class="fa-solid fa-check text-muted"></i> Phân biệt học chủ động và học thụ động qua video.</li>
+                            <li class="nav-item"><i class="fa-solid fa-check text-muted"></i> Khai thác YouTube như một nguồn học liệu học thuật.</li>
+                            <li class="nav-item"><i class="fa-solid fa-check text-muted"></i> Hình thành năng lực học tập tự quyết (Heutagogy).</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card" data-aos="fade-up" data-aos-delay="200" style="background: var(--primary); color: white;">
+                        <h3 style="margin-bottom: 1rem; color: white;"><i class="fa-solid fa-gift"></i> Bạn sẽ đạt được</h3>
+                        <div class="v-timeline" style="border-color: rgba(255,255,255,0.3);">
+                            <div class="v-step" data-aos="fade-left" data-aos-delay="300">Biết lựa chọn MOOCs chất lượng</div>
+                            <div class="v-step" data-aos="fade-left" data-aos-delay="400">Lập kế hoạch hoàn thành khóa học</div>
+                            <div class="v-step" data-aos="fade-left" data-aos-delay="500">Biến YouTube thành thư viện học tập</div>
+                            <div class="v-step" data-aos="fade-left" data-aos-delay="600">Kiểm soát thuật toán gây phân tâm</div>
+                            <div class="v-step" data-aos="fade-left" data-aos-delay="700">Học chủ động bằng Cornell Note</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bai6-1" class="section-container">
+                <div class="mini-hero" data-aos="fade-up">
+                    <span class="badge badge-bloom">Bloom: Apply</span>
+                    <span class="badge badge-time"><i class="fa-regular fa-clock"></i> 12 phút</span>
+                    <h2 style="color: white; margin-top: 10px;">BÀI 6.1: HỌC VỚI MOOCs</h2>
+                </div>
+
+                <div class="highlight-box" data-aos="fade-up">
+                    <div class="stat">5–7%</div>
+                    <p style="font-size: 1.1rem; margin-top: 10px;">Chỉ khoảng 5-7% người đăng ký MOOCs hoàn thành khóa học.</p>
+                </div>
+
+                <div class="callout" data-aos="fade-right">
+                    <i class="fa-solid fa-lightbulb" style="font-size: 1.5rem; color: var(--primary);"></i>
+                    <p>Khác biệt không nằm ở nền tảng, mà nằm ở <strong>khả năng tự quản lý việc học</strong>.</p>
+                </div>
+
+                               <div class="placeholder-card" data-aos="fade-up">
+<i class="fa-solid fa-circle-play"></i>
+<h3>Video bài giảng 6.1</h3>
+<p>Video được nhúng trực tiếp từ Google Drive.</p>
+<div style="margin-top:20px">
+<iframe src="https://drive.google.com/file/d/1mUH6Av5GtfnxvsV0fgsT3IMC2-j4sI3B/preview"
+width="100%" height="520" allow="autoplay"
+style="border:none;border-radius:12px;box-shadow:var(--shadow);"></iframe>
+</div>
+</div>
+
+<h3 style="margin-top: 3rem;" data-aos="fade-up">Nội dung lý thuyết trọng tâm</h3>
+                <div class="accordion-container" data-aos="fade-up">
+                    
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-expanded="false">
+                            <span><i class="fa-solid fa-globe" style="margin-right: 10px;"></i> Hệ sinh thái MOOCs</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-body">
+                            <div class="accordion-content grid-3">
+                                <div class="card" style="border-top: 3px solid #0056D2;">
+                                    <h4 style="color: #0056D2;">Coursera</h4>
+                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 10px;">Học thuật, Đại học hàng đầu, Cấp chứng chỉ chuyên nghiệp.</p>
+                                </div>
+                                <div class="card" style="border-top: 3px solid #B20021;">
+                                    <h4 style="color: #B20021;">edX</h4>
+                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 10px;">Cộng đồng mở, MIT/Harvard, MicroMasters.</p>
+                                </div>
+                                <div class="card" style="border-top: 3px solid #A435F0;">
+                                    <h4 style="color: #A435F0;">Udemy</h4>
+                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 10px;">Thực chiến, Kỹ năng mềm/cứng, Giá rẻ.</p>
+                                </div>
+                                <div class="card" style="border-top: 3px solid #14BF96;">
+                                    <h4 style="color: #14BF96;">Khan Academy</h4>
+                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 10px;">K-12, Miễn phí hoàn toàn, Video ngắn.</p>
+                                </div>
+                                <div class="card" style="border-top: 3px solid #000000;">
+                                    <h4>OpenLearn</h4>
+                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 10px;">Của Open University, Đọc hiểu nhiều, Miễn phí.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-expanded="false">
+                            <span><i class="fa-solid fa-filter" style="margin-right: 10px;"></i> Bộ lọc lựa chọn MOOCs</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-body">
+                            <div class="accordion-content grid-2">
+                                <div class="card"><i class="fa-solid fa-award text-warning"></i> <strong>① Uy tín:</strong> Đơn vị tổ chức/Giảng viên.</div>
+                                <div class="card"><i class="fa-solid fa-bullseye text-primary"></i> <strong>② Phù hợp mục tiêu:</strong> Syllabus khớp nhu cầu.</div>
+                                <div class="card"><i class="fa-solid fa-clipboard-check text-accent"></i> <strong>③ Có đánh giá năng lực:</strong> Bài tập thực hành, Quizzes.</div>
+                                <div class="card"><i class="fa-solid fa-comments text-secondary"></i> <strong>④ Phản hồi cộng đồng:</strong> Ratings & Reviews.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-expanded="false">
+                            <span><i class="fa-solid fa-triangle-exclamation" style="margin-right: 10px;"></i> Hai chiếc bẫy phổ biến (Flip Cards)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-body">
+                            <div class="accordion-content flip-card-container">
+                                <div class="flip-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front">
+                                            <i class="fa-solid fa-box-open"></i>
+                                            <h3>Course Hoarding</h3>
+                                            <p style="font-size: 0.8rem; margin-top:10px;">(Trữ khóa học)</p>
+                                        </div>
+                                        <div class="flip-card-back">
+                                            <p>Đăng ký quá nhiều khóa học nhưng không hoàn thành.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flip-card">
+                                    <div class="flip-card-inner">
+                                        <div class="flip-card-front">
+                                            <i class="fa-solid fa-brain"></i>
+                                            <h3>Illusion of Competence</h3>
+                                            <p style="font-size: 0.8rem; margin-top:10px;">(Ảo tưởng năng lực)</p>
+                                        </div>
+                                        <div class="flip-card-back">
+                                            <p>Xem video nhưng không ghi chép, không luyện tập nên tưởng mình đã hiểu.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" aria-expanded="false">
+                            <span><i class="fa-solid fa-route" style="margin-right: 10px;"></i> Chiến lược hoàn thành MOOCs</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-body">
+                            <div class="accordion-content">
+                                <div class="timeline">
+                                    <div class="timeline-step">1<div class="timeline-content">Đọc Syllabus</div></div>
+                                    <div class="timeline-step">2<div class="timeline-content">Sơ đồ tổng quan</div></div>
+                                    <div class="timeline-step">3<div class="timeline-content">Lập lịch cố định<br><small class="text-muted">(VD: T3 & T6 | 19:00-20:30)</small></div></div>
+                                    <div class="timeline-step">4<div class="timeline-content">Làm bài tập ngay</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                                    
+            <section id="bai6-2" class="section-container">
+                <div class="mini-hero" style="background: linear-gradient(135deg, #EF4444, #991B1B);" data-aos="fade-up">
+                    <span class="badge badge-bloom">Bloom: Analyze</span>
+                    <span class="badge badge-time"><i class="fa-regular fa-clock"></i> 12 phút</span>
+                    <h2 style="color: white; margin-top: 10px;">Bài 6.2 YouTube là thư viện học tập lớn nhất thế giới</h2>
+                </div>
+
+                <div class="callout warning" data-aos="fade-left">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; color: var(--warning);"></i>
+                    <p>Đồng thời cũng là <strong>cỗ máy gây phân tâm mạnh nhất</strong>.</p>
+                </div>
+
+                          </div>
+
+<div class="placeholder-card" data-aos="zoom-in">
+    <i class="fa-solid fa-circle-play"></i>
+
+    <h3>Video bài giảng 6.2</h3>
+    <p>Video được nhúng trực tiếp từ Google Drive.</p>
+
+    <div style="margin-top:20px;width:100%;">
+        <iframe
+            src="https://drive.google.com/file/d/1SMOuKDCgjoQ2idOdIO7pwIT47VonEU3j/preview"
+            width="100%"
+            height="520"
+            allow="autoplay"
+            style="border:none;border-radius:12px;box-shadow:var(--shadow);">
+        </iframe>
+    </div>
+</div>
+
+<h3 style="margin-top: 3rem;" data-aos="fade-up">Passive vs Active Learning</h3>
+                <div class="comparison-wrapper" data-aos="fade-up">
+                    <div class="comp-side passive">
+                        <h4>Thụ động (Passive)</h4>
+                        <ul class="comp-list">
+                            <li><i class="fa-solid fa-xmark text-danger"></i> Xem liên tục</li>
+                            <li><i class="fa-solid fa-xmark text-danger"></i> Không ghi chép</li>
+                            <li><i class="fa-solid fa-xmark text-danger"></i> Tốc độ 1x (Dễ xao nhãng)</li>
+                            <li><i class="fa-solid fa-xmark text-danger"></i> Chỉ nghe</li>
+                            <li><i class="fa-solid fa-xmark text-danger"></i> Quên nhanh</li>
+                        </ul>
+                    </div>
+                    <div class="comp-side active">
+                        <h4>Chủ động (Active)</h4>
+                        <ul class="comp-list">
+                            <li><i class="fa-solid fa-check text-accent"></i> Pause liên tục</li>
+                            <li><i class="fa-solid fa-check text-accent"></i> Ghi Cornell Note</li>
+                            <li><i class="fa-solid fa-check text-accent"></i> Tốc độ 1.25x - 1.5x (Tăng tập trung)</li>
+                            <li><i class="fa-solid fa-check text-accent"></i> Phản biện nội dung</li>
+                            <li><i class="fa-solid fa-check text-accent"></i> Ghi nhớ lâu</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card" style="border: 2px solid var(--danger); margin: 2rem 0;" data-aos="zoom-in">
+                    <h3 style="color: var(--danger); display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-skull-crossbones"></i> Chiến thắng thuật toán
+                    </h3>
+                    <ul style="margin: 1rem 0; padding-left: 20px;">
+                        <li><i class="fa-solid fa-ban text-danger"></i> Không học từ Home Feed.</li>
+                        <li><i class="fa-solid fa-magnifying-glass text-primary"></i> Luôn dùng thanh Search cho mục đích cụ thể.</li>
+                        <li><i class="fa-solid fa-eye-slash text-muted"></i> Ẩn Suggested Videos (Video đề xuất).</li>
+                    </ul>
+                    <div class="grid-2" style="margin-top: 1rem;">
+                        <div class="card" style="background: var(--bg); text-align: center;"><strong>Extension: Unhook</strong></div>
+                        <div class="card" style="background: var(--bg); text-align: center;"><strong>Extension: DF Tube</strong></div>
+                    </div>
+                </div>
+
+                <h3 data-aos="fade-up">Tận dụng tính năng nâng cao</h3>
+                <div class="grid-2" style="margin-top: 1rem;" data-aos="fade-up">
+                    <div class="card text-center">
+                        <i class="fa-solid fa-list-ol text-primary" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <h4>Chapters</h4>
+                        <p class="text-muted" style="font-size: 0.9rem;">Nhảy đến đúng trọng tâm cần học.</p>
+                    </div>
+                    <div class="card text-center">
+                        <i class="fa-solid fa-closed-captioning text-primary" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <h4>Transcript</h4>
+                        <p class="text-muted" style="font-size: 0.9rem;">Đọc lướt văn bản nhanh hơn xem video.</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;" data-aos="fade-up">Cornell Note Workflow</h3>
+                <div style="overflow-x: auto; padding: 1rem 0;" data-aos="fade-up">
+                    <div class="timeline" style="min-width: 600px;">
+                        <div class="timeline-step"><i class="fa-solid fa-search"></i><div class="timeline-content">Search</div></div>
+                        <div class="timeline-step"><i class="fa-solid fa-play"></i><div class="timeline-content">Watch</div></div>
+                        <div class="timeline-step"><i class="fa-solid fa-pause"></i><div class="timeline-content">Pause</div></div>
+                        <div class="timeline-step"><i class="fa-solid fa-pen"></i><div class="timeline-content">Cornell Note</div></div>
+                        <div class="timeline-step"><i class="fa-solid fa-play"></i><div class="timeline-content">Resume</div></div>
+                        <div class="timeline-step"><i class="fa-solid fa-align-left"></i><div class="timeline-content">Summary</div></div>
+                        <div class="timeline-step"><i class="fa-solid fa-rotate-left"></i><div class="timeline-content">Review</div></div>
+                    </div>
+                </div>
+
+                <div class="grid-3" style="margin-top: 2rem;" data-aos="fade-up">
+                    <div class="card text-center" style="background: var(--primary); color: white;">
+                        <i class="fa-solid fa-brain" style="font-size: 1.5rem; margin-bottom: 5px;"></i>
+                        <h5>Dual Coding</h5>
+                    </div>
+                    <div class="card text-center" style="background: var(--accent); color: white;">
+                        <i class="fa-solid fa-layer-group" style="font-size: 1.5rem; margin-bottom: 5px;"></i>
+                        <h5>Deep Processing</h5>
+                    </div>
+                    <div class="card text-center" style="background: var(--warning); color: white;">
+                        <i class="fa-solid fa-hard-drive" style="font-size: 1.5rem; margin-bottom: 5px;"></i>
+                        <h5>Long-term Memory</h5>
+                    </div>
+                </div>
+
+                <div class="card" data-aos="fade-up" style="margin-top: 3rem; border-left: 4px solid var(--primary);">
+                    <h3><i class="fa-solid fa-laptop-file"></i> Hoạt động thực hành</h3>
+                    
+                    <p>Các bước thực hiện:</p>
+                    <ol style="margin-top: 10px; padding-left: 20px;">
+                        <li>Chọn 1 video học thuật ≥ 5 phút.</li>
+                        <li>Sử dụng kỹ thuật Pause & Cornell Note.</li>
+                        <li>Viết tóm tắt 5-7 câu.</li>
+                        <li>Rút ra tối thiểu 2 bài học cốt lõi.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="tong-ket" class="section-container">
+                <h2 data-aos="fade-up">Tổng kết Module 6</h2>
+                <div class="grid-2" style="margin-top: 2rem;" data-aos="fade-up">
+                    <div class="card"><i class="fa-solid fa-trophy text-warning" style="margin-right: 10px;"></i> Biết lựa chọn MOOCs</div>
+                    <div class="card"><i class="fa-solid fa-trophy text-warning" style="margin-right: 10px;"></i> Tránh Course Hoarding</div>
+                    <div class="card"><i class="fa-solid fa-trophy text-warning" style="margin-right: 10px;"></i> Tránh Illusion of Competence</div>
+                    <div class="card"><i class="fa-solid fa-trophy text-warning" style="margin-right: 10px;"></i> Quản lý tiến độ học</div>
+                    <div class="card"><i class="fa-solid fa-trophy text-warning" style="margin-right: 10px;"></i> Học YouTube chủ động</div>
+                    <div class="card"><i class="fa-solid fa-trophy text-warning" style="margin-right: 10px;"></i> Khai thác Transcript</div>
+                    <div class="card"><i class="fa-solid fa-trophy text-warning" style="margin-right: 10px;"></i> Ghi chú Cornell Note</div>
+                    <div class="card"><i class="fa-solid fa-trophy text-warning" style="margin-right: 10px;"></i> Hình thành năng lực tự quyết</div>
+                </div>
+            </section>
+
+            <section id="tai-nguyen" class="section-container">
+                <h2 data-aos="fade-up">Tài nguyên bổ sung</h2>
+                <div class="grid-2" style="margin-top: 2rem;" data-aos="fade-up">
+                    <div class="card">
+                        <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-graduation-cap text-primary"></i> MOOCs Platforms</h4>
+                        <ul class="nav-list">
+                            <li><i class="fa-solid fa-link text-muted"></i> Coursera</li>
+                            <li><i class="fa-solid fa-link text-muted"></i> edX</li>
+                            <li><i class="fa-solid fa-link text-muted"></i> OpenLearn</li>
+                            <li><i class="fa-solid fa-link text-muted"></i> Khan Academy</li>
+                            <li><i class="fa-solid fa-link text-muted"></i> FutureLearn</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-toolbox text-accent"></i> Tools & Extensions</h4>
+                        <ul class="nav-list">
+                            <li><i class="fa-solid fa-wrench text-muted"></i> Google Docs / Classroom</li>
+                            <li><i class="fa-solid fa-wrench text-muted"></i> Notion</li>
+                            <li><i class="fa-solid fa-wrench text-muted"></i> Obsidian</li>
+                            <li><i class="fa-solid fa-wrench text-muted"></i> Unhook (Chrome Extension)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="post-test" class="section-container">
+                <h2 data-aos="fade-up"><i class="fa-solid fa-list-check text-primary"></i> Đánh giá cuối Module</h2>
+                <div class="placeholder-card" data-aos="fade-up" style="min-height: 300px; border-color: var(--primary);">
+                    <i class="fa-brands fa-wpforms" style="color: var(--primary); font-size: 4rem;"></i>
+                    <h3>Đánh giá cuối Module 6</h3>
+                    <p>Nhấn nút bên dưới để mở Google Forms.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScIwU4ZAGXL3x15kVPMlVWXV_2wVN3g88tC9KqRrxRSmikqEg/viewform?usp=header" target="_blank" class="btn btn-primary ripple-btn" style="margin-top:20px;"><i class="fa-solid fa-clipboard-check"></i> Bắt đầu đánh giá</a>
+                </div>
+            </section>
+
+            <section class="section-container" style="padding-bottom: 0;">
+                <div class="mini-hero" style="background: linear-gradient(135deg, #1E293B, #0F172A); margin-bottom: 0;" data-aos="zoom-in">
+                    <span class="badge" style="background: #334155; color: white;">MODULE 7</span>
+                    <h2 style="color: white; margin: 15px 0;">HỌC TẬP HỢP TÁC VÀ XÂY DỰNG TRI THỨC TRONG MÔI TRƯỜNG SỐ</h2>
+                    <p style="color: #94A3B8; margin-bottom: 2rem;">Từ học tập cá nhân sang kiến tạo tri thức cùng cộng đồng.</p>
+                    <button class="btn btn-primary ripple-btn">Tiếp tục Module 7 <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <button class="back-to-top" id="backToTop" aria-label="Lên đầu trang">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
+/* Preview Infographic 6.2 */
+const infographic62=document.getElementById("infographic62");
+if(infographic62){
+ infographic62.addEventListener("change",function(){
+  const f=this.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const img=document.getElementById("previewInfographic62");
+    img.src=e.target.result; img.style.display="block";
+  };
+  r.readAsDataURL(f);
+ });
+}
+
+
+function toggleInfographic61(){
+ const b=document.getElementById('infographic61');
+ b.style.display=(b.style.display==='block')?'none':'block';
+}
+
+
+['61','62'].forEach(n=>{
+ const inp=document.getElementById('video'+n);
+ if(inp) inp.addEventListener('change',function(){
+  const f=this.files[0]; if(!f) return;
+  const v=document.getElementById('player'+n);
+  v.src=URL.createObjectURL(f); v.style.display='block';
+ });
+});
+
+</script>
+    
+    <script>
+        // 1. Khởi tạo AOS Animation
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 50
+        });
+
+        // 2. Progress Bar & Scroll Spy & Back to Top
+        const progressBar = document.getElementById('progressBar');
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-item a');
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            // Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            // Back to Top Visibility
+            if (winScroll > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+
+            // Scroll Spy
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current) && current !== '') {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Back to top action
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth Scroll cho Sidebar links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 50,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 3. Accordion Animation
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const body = header.nextElementSibling;
+                const isActive = header.classList.contains('active');
+                
+                // Close all other accordions (Tùy chọn, bỏ comment nếu muốn chỉ mở 1 tab tại 1 thời điểm)
+                /*
+                document.querySelectorAll('.accordion-header').forEach(h => {
+                    h.classList.remove('active');
+                    h.setAttribute('aria-expanded', 'false');
+                    h.nextElementSibling.style.maxHeight = null;
+                });
+                */
+
+                if (!isActive) {
+                    header.classList.add('active');
+                    header.setAttribute('aria-expanded', 'true');
+                    body.style.maxHeight = body.scrollHeight + "px";
+                } else {
+                    header.classList.remove('active');
+                    header.setAttribute('aria-expanded', 'false');
+                    body.style.maxHeight = null;
+                }
+            });
+        });
+
+        // 4. Button Ripple Effect
+        const buttons = document.querySelectorAll('.ripple-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const x = e.clientX - e.target.getBoundingClientRect().left;
+                const y = e.clientY - e.target.getBoundingClientRect().top;
+                
+                const ripples = document.createElement('span');
+                ripples.style.left = x + 'px';
+                ripples.style.top = y + 'px';
+                ripples.classList.add('ripple');
+                
+                this.appendChild(ripples);
+                
+                setTimeout(() => {
+                    ripples.remove();
+                }, 600);
+            });
+        });
+    </script>
+</body>
+</html>
