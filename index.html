@@ -6,8 +6,8 @@
     <title>Kỹ năng Tự học trong Thời đại Số | MOOCs Chuẩn Quốc Tế</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -42,8 +42,7 @@
             --gradient-accent: linear-gradient(135deg, #F97316, #F59E0B);
             
             /* Typography */
-            --font-heading: 'Poppins', sans-serif;
-            --font-body: 'Inter', sans-serif;
+--font-heading: 'Montserrat', sans-serif;            --font-body: 'Inter', sans-serif;
             
             /* Transition */
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -399,13 +398,13 @@
         }
 
         .hero-content h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 16px;
             letter-spacing: -1px;
         }
 
         .hero-subtitle {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-family: var(--font-heading);
             color: var(--text-secondary);
             margin-bottom: 24px;
@@ -813,6 +812,9 @@
         /* ==========================================================================
            TECH STACK
            ========================================================================== */
+        /* ==========================================================================
+           TECH STACK (Cập nhật hỗ trợ Inline SVG chuẩn xác)
+           ========================================================================== */
         .tech-grid {
             display: flex;
             flex-wrap: wrap;
@@ -824,7 +826,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 24px;
+            padding: 12px 26px;
             background: var(--surface-color);
             border: 1px solid var(--border-color);
             border-radius: 50px;
@@ -837,6 +839,15 @@
             transform: translateY(-3px);
             border-color: var(--primary);
             box-shadow: var(--shadow-md);
+            background: var(--glass-bg);
+        }
+
+        /* Định hình kích thước chuẩn cho logo vector */
+        .tech-item svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+            flex-shrink: 0;
         }
 
         .tech-item i { font-size: 1.5rem; }
@@ -848,69 +859,132 @@
         .fa-magnifying-glass { color: #000; } /* Perplexityish */
 
         /* ==========================================================================
-           INSTRUCTORS
+           INSTRUCTORS (Hiệu chỉnh Font tiếng Việt & Bố cục Carousel)
            ========================================================================== */
-        .instructor-section { background: var(--surface-color); }
+        .instructor-section { 
+            background: linear-gradient(180deg, var(--bg-color) 0%, var(--surface-color) 100%); 
+        }
         
         .instructor-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            display: flex;
+            gap: 30px; /* Khoảng cách giữa các thẻ */
+            padding: 10px 0 40px 0; /* Padding dưới để không cắt viền bóng (box-shadow) */
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            align-items: stretch;
+            scroll-behavior: smooth;
+        }
+
+        .instructor-grid::-webkit-scrollbar { 
+            display: none; 
         }
 
         .instructor-card {
-            padding: 40px 32px;
+            /* THUẬT TOÁN BỐ CỤC: Hiển thị chính xác 3 thẻ trên PC. 
+               100% chiều rộng trừ đi 2 khoảng gap (60px), sau đó chia 3 */
+            flex: 0 0 calc((100% - 60px) / 3); 
+            scroll-snap-align: start; 
+            
+            display: flex;
+            flex-direction: column;
+            padding: 36px 28px;
             text-align: center;
+            border: 1px solid var(--border-color);
+            background: var(--glass-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
 
+        /* Responsive Layout cho Tablet & Mobile */
+        @media (max-width: 992px) {
+            .instructor-card {
+                /* Hiển thị 2 thẻ trên Tablet */
+                flex: 0 0 calc((100% - 30px) / 2); 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .instructor-card {
+                /* Hiển thị 1 thẻ chính và hé lộ 15% thẻ tiếp theo để gợi ý vuốt ngang */
+                flex: 0 0 85%; 
+                padding: 30px 20px;
+            }
+        }
+
+        /* Các hiệu ứng trang trí giữ nguyên */
+        .instructor-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0.6; transition: var(--transition);
+        }
+        .instructor-card:hover {
+            transform: translateY(-8px); border-color: rgba(37, 99, 235, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+        }
+        .instructor-card:hover::before { opacity: 1; height: 6px; }
+
+        .instructor-img-wrapper {
+            position: relative; width: 130px; height: 130px; margin: 0 auto 22px;
+        }
         .instructor-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 0 auto 24px;
-            object-fit: cover;
-            border: 4px solid var(--bg-color);
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 4px solid var(--surface-color); box-shadow: var(--shadow-md);
+            transition: all 0.4s ease; position: relative; z-index: 2;
         }
-
-        .instructor-card:hover .instructor-img {
-            transform: scale(1.05);
-            border-color: var(--primary);
+        .instructor-img-wrapper::after {
+            content: ''; position: absolute; top: -6px; left: -6px; right: -6px; bottom: -6px;
+            border-radius: 50%; border: 2px dashed var(--primary);
+            opacity: 0; transform: scale(0.9); transition: all 0.4s ease; z-index: 1;
         }
+        .instructor-card:hover .instructor-img { transform: scale(1.05); border-color: #fff; }
+        .instructor-card:hover .instructor-img-wrapper::after {
+            opacity: 0.5; transform: scale(1); animation: spinRadar 15s linear infinite;
+        }
+        @keyframes spinRadar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .instructor-card h4 { font-size: 1.25rem; margin-bottom: 4px; }
+        /* FIX LỖI FONT CHỮ: Đổi sang font Inter */
+        .instructor-card h4 { 
+            font-family: 'Inter', sans-serif; /* Đã chuyển font để chống lỗi dấu */
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            color: var(--text-color); 
+            margin-bottom: 6px; 
+            line-height: 1.4;
+        }
         
         .instructor-title {
-            color: var(--primary);
-            font-weight: 500;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
+            color: var(--primary); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; 
+            letter-spacing: 0.05em; margin-bottom: 14px; display: inline-block; 
+            padding: 4px 14px; background: rgba(37, 99, 235, 0.06); border-radius: 30px;
         }
-
+        .instructor-bio {
+            color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;
+            margin-bottom: 20px; text-align: center; flex-grow: 1;
+        }
+        .instructor-meta {
+            display: flex; justify-content: center; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;
+        }
+        .meta-tag {
+            font-size: 0.75rem; background: rgba(71, 85, 105, 0.06); color: #475569;
+            padding: 3px 10px; border-radius: 6px; font-weight: 500; display: inline-flex; align-items: center; gap: 5px;
+        }
         .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 20px;
+            display: flex; justify-content: center; gap: 12px; margin-top: auto;
+            padding-top: 18px; border-top: 1px solid rgba(0, 0, 0, 0.05); width: 100%;
         }
-
         .social-links a {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--bg-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            transition: var(--transition);
+            width: 38px; height: 38px; border-radius: 10px; background: var(--surface-color); 
+            border: 1px solid var(--border-color); display: flex; align-items: center; 
+            justify-content: center; color: var(--text-secondary); transition: all 0.3s ease;
         }
-
         .social-links a:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
+            background: var(--primary); color: #fff; border-color: var(--primary); 
+            transform: translateY(-3px); box-shadow: 0 6px 15px rgba(37, 99, 235, 0.2);
         }
 
         /* ==========================================================================
@@ -1231,7 +1305,7 @@
                 <div class="hero-badge">
                     <i class="fa-solid fa-bolt"></i> MOOCs Miễn Phí 100%
                 </div>
-                <h1><span class="gradient-text">Kỹ năng Tự học</span><br>Trong Thời Đại Số</h1>
+                <h1><span class="gradient-text">KỸ NĂNG TỰ HỌC</span><br>TRONG THỜI ĐẠI</h1>
                 <p class="hero-subtitle">Self-directed Learning Skills in the Digital Age</p>
                 <p class="hero-desc">Làm chủ công nghệ, xây dựng tư duy học tập suốt đời và khám phá tiềm năng không giới hạn của bản thân với sự hỗ trợ từ AI.</p>
                 
@@ -1410,85 +1484,127 @@
     <section class="section-padding roadmap-section" id="roadmap">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
-                <h2>Lộ Trình Khóa Học (9 Modules)</h2>
-                <p>Kéo để xem toàn bộ hành trình chinh phục kỹ năng tự học</p>
+                <h2>Lộ Trình Khóa Học</h2>
+                <p>Cùng nhau khám phá hành trình làm chủ kỹ năng tự học</p>
             </div>
             
             <div class="roadmap-wrapper">
-                <div class="module-card">
+                <div class="module-card" data-aos="fade-up" data-aos-delay="50">
                     <div class="glass-card module-inner">
-                        <div class="module-badge">Khởi động</div>
-                        <h4>Module 0: Mindset Shift</h4>
-                        <p>Thay đổi tư duy từ học thụ động sang chủ động.</p>
+                        <div class="module-badge" style="background: var(--primary)">Tuần 0</div>
+                        <h4>Module 0: Làm quen với khóa học</h4>
+                        <p>Định hướng và chuẩn bị tâm thế tự học chủ động trong môi trường số.</p>
                         <ul class="module-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Hiểu về Growth Mindset</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Vượt qua nỗi sợ sai</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Tổng quan lộ trình MOOCs</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Thiết lập không gian học</li>
                         </ul>
                     </div>
                 </div>
-                <div class="module-card">
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="glass-card module-inner">
                         <div class="module-badge">Tuần 1</div>
-                        <h4>Module 1: Goal Setting</h4>
-                        <p>Xác định mục tiêu học tập rõ ràng, thực tế.</p>
+                        <h4>Module 1: Mục tiêu học tập</h4>
+                        <p>Làm chủ kỹ thuật thiết lập mục tiêu học tập thông minh và thực tế.</p>
                         <ul class="module-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Nguyên tắc SMART</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Xây dựng OKRs cá nhân</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Nguyên tắc mục tiêu SMART</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Định hình kết quả đầu ra</li>
                         </ul>
                     </div>
                 </div>
-                <div class="module-card">
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge">Tuần 1</div>
+                        <h4>Module 2: Quản lý thời gian</h4>
+                        <p>Tối ưu hóa quỹ thời gian tự học cá nhân, loại bỏ xao nhãng số.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Kỹ thuật Time Blocking</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Xây dựng lịch học cố định</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="glass-card module-inner">
                         <div class="module-badge">Tuần 2</div>
-                        <h4>Module 2: Nguồn Tài Nguyên</h4>
-                        <p>Khai thác triệt để MOOCs, OER và thư viện số.</p>
+                        <h4>Module 3: Ghi chép hiệu quả</h4>
+                        <p>Hệ thống hóa, liên kết và trực quan hóa toàn bộ kiến thức tiếp nhận.</p>
                         <ul class="module-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Tìm kiếm Google nâng cao</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Tận dụng Coursera, edX</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Kỹ thuật vẽ Mind Map</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Ghi nhớ theo luồng tư duy</li>
                         </ul>
                     </div>
                 </div>
-                <div class="module-card">
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge">Tuần 2</div>
+                        <h4>Module 4: Tìm kiếm tài liệu</h4>
+                        <p>Bộ lọc tư duy giúp đánh giá chuẩn xác độ uy tín của nguồn thông tin số.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Thẩm định nguồn tư liệu</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Kỹ năng lọc nhiễu thông tin</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="glass-card module-inner">
+                        <div class="module-badge" style="background: var(--gradient-accent)">Tuần 3</div>
+                        <h4>Module 5: Học với AI</h4>
+                        <p>Biến các mô hình ngôn ngữ lớn (LLMs) thành người trợ lý, gia sư đồng hành 24/7.</p>
+                        <ul class="module-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Prompt Engineering cơ bản</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Đặt câu hỏi khai phóng AI</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="350">
                     <div class="glass-card module-inner">
                         <div class="module-badge">Tuần 3</div>
-                        <h4>Module 3: Thẩm Định Nguồn</h4>
-                        <p>Lọc tin giả, chọn lọc tài liệu chất lượng cao.</p>
+                        <h4>Module 6: Học liệu số</h4>
+                        <p>Khai thác tối đa kho tàng tri thức mở từ các nền tảng giáo dục toàn cầu.</p>
                         <ul class="module-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Phương pháp CRAAP</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Đọc hiểu tài liệu học thuật</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Học MOOCs chuẩn quốc tế</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Xem YouTube có chủ đích</li>
                         </ul>
                     </div>
                 </div>
-                <div class="module-card">
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="glass-card module-inner">
                         <div class="module-badge">Tuần 4</div>
-                        <h4>Module 4: Ghi Chép & Tổ Chức</h4>
-                        <p>Hệ thống hóa kiến thức để não bộ lưu trữ lâu.</p>
+                        <h4>Module 7: Tự đánh giá</h4>
+                        <p>Phát triển năng lực phản tư, đo lường chính xác mức độ tiến bộ của bản thân.</p>
                         <ul class="module-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Sử dụng Notion/Obsidian</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Phương pháp Zettelkasten</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Thiết lập Rubric cá nhân</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Nhận diện lỗ hổng tri thức</li>
                         </ul>
                     </div>
                 </div>
-                <div class="module-card">
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="450">
                     <div class="glass-card module-inner">
-                        <div class="module-badge" style="background: var(--gradient-accent)">Trọng tâm</div>
-                        <h4>Module 6: AI for Learning</h4>
-                        <p>Biến AI thành gia sư riêng biệt của bạn.</p>
+                        <div class="module-badge">Tuần 4</div>
+                        <h4>Module 8: Hình thành thói quen</h4>
+                        <p>Đóng gói hành trình bằng một hệ thống kỷ luật tự thân vững chắc cho tương lai.</p>
                         <ul class="module-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Nghệ thuật Prompting</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Ứng dụng NotebookLM</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Kế hoạch 21 ngày tự học</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Duy trì động lực nội tại</li>
                         </ul>
                     </div>
                 </div>
-                <div class="module-card">
-                    <div class="glass-card module-inner" style="border: 2px solid var(--success)">
+
+                <div class="module-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="glass-card module-inner" style="border: 2px solid var(--success);">
                         <div class="module-badge" style="background: var(--success)">Đích đến</div>
-                        <h4>Final Project</h4>
-                        <p>Áp dụng toàn bộ kiến thức vào dự án cá nhân.</p>
+                        <h4>Dự án cuối khóa</h4>
+                        <p>Ứng dụng thực tế bộ kỹ năng tự học vào việc giải quyết một bài toán cụ thể.</p>
                         <ul class="module-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Báo cáo tổng kết</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Nhận chứng chỉ hoàn thành</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Đóng gói báo cáo tiến trình</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Nhận Phản hồi & Chứng chỉ</li>
                         </ul>
                     </div>
                 </div>
@@ -1500,17 +1616,33 @@
         <div class="container text-center">
             <div class="section-header" data-aos="fade-up">
                 <h2>Công Cụ & Công Nghệ</h2>
-                <p>Thành thạo các công cụ số mạnh mẽ nhất để bứt phá hiệu suất học tập</p>
+                <p>Thành thạo các công cụ số mạnh mẽ - bứt phá hiệu suất học tập</p>
             </div>
             
             <div class="tech-grid" data-aos="fade-up" data-aos-delay="200">
-                <div class="tech-item"><i class="fa-solid fa-robot"></i> ChatGPT</div>
-                <div class="tech-item"><i class="fa-brands fa-google"></i> Google Gemini</div>
-                <div class="tech-item"><i class="fa-solid fa-book-open"></i> NotebookLM</div>
-                <div class="tech-item"><i class="fa-brands fa-microsoft"></i> Copilot</div>
-                <div class="tech-item"><i class="fa-solid fa-magnifying-glass"></i> Perplexity AI</div>
-                <div class="tech-item"><i class="fa-solid fa-graduation-cap"></i> Google Scholar</div>
-                <div class="tech-item"><i class="fa-solid fa-laptop-code"></i> MOOCs Platforms</div>
+                <div class="tech-item">
+                    ChatGPT
+                </div>
+
+                <div class="tech-item">
+                    Google Gemini
+                </div>
+
+                <div class="tech-item">
+                    NotebookLM
+                </div>
+
+                <div class="tech-item">
+                    Copilot
+                </div>
+
+                <div class="tech-item">
+                    Google Scholar
+                </div>
+
+                <div class="tech-item">
+                    MOOCs Platforms
+                </div>
             </div>
         </div>
     </section>
@@ -1519,38 +1651,76 @@
         <div class="container">
             <div class="section-header" data-aos="fade-up">
                 <h2>Đội Ngũ Chuyên Gia</h2>
-                <p>Học hỏi từ những chuyên gia hàng đầu về Công nghệ Giáo dục (EdTech)</p>
+                <p>Học hỏi trực tiếp từ những chuyên gia, giảng viên hàng đầu về Công nghệ Giáo dục. <br>
+                <span style="font-size: 0.9em; color: var(--primary); font-weight: 500;"><i class="fa-solid fa-arrows-left-right"></i> Vuốt hoặc cuộn ngang để xem danh sách</span></p>
             </div>
             
             <div class="instructor-grid">
-                <div class="glass-card instructor-card" data-aos="fade-up" data-aos-delay="100">
-                    <img src="cHa.jpg" alt="Giảng viên" class="instructor-img">
+                <div class="instructor-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="instructor-img-wrapper">
+                        <img src="cHa.jpg" alt="GS. TS. Nguyễn Thị Ngọc Hà" class="instructor-img">
+                    </div>
                     <h4>GS. TS. Nguyễn Thị Ngọc Hà</h4>
-                    <div class="instructor-title">Giáo sư ngành EdTech</div>
-                    <p>20 năm kinh nghiệm thiết kế các khóa học MOOCs chuẩn quốc tế, nguyên trưởng khoa Công nghệ Giáo dục.</p>
+                    <div><span class="instructor-title">Giáo sư ngành EdTech</span></div>
+                    <div class="instructor-meta">
+                        <span class="meta-tag"><i class="fa-solid fa-award"></i> 20 năm KN</span>
+                        <span class="meta-tag"><i class="fa-solid fa-graduation-cap"></i> Nguyên Trưởng Khoa</span>
+                    </div>
+                    <p class="instructor-bio">Chuyên gia đầu ngành về thiết kế các khóa học trực tuyến diện rộng chuẩn quốc tế, tiên phong kiến tạo khung năng lực tự học số.</p>
                     <div class="social-links">
                         <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                         <a href="#"><i class="fa-brands fa-twitter"></i></a>
                     </div>
                 </div>
-                <div class="glass-card instructor-card" data-aos="fade-up" data-aos-delay="200">
-                    <img src="vanThanh.jpg" alt="Giảng viên" class="instructor-img">
+
+                <div class="instructor-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="instructor-img-wrapper">
+                        <img src="vanThanh.jpg" alt="GS. TS. Phan Văn Thanh" class="instructor-img">
+                    </div>
                     <h4>GS. TS. Phan Văn Thanh</h4>
-                    <div class="instructor-title">Chuyên gia AI & Learning Design</div>
-                    <p>Cố vấn phát triển chương trình học tập ứng dụng Trí tuệ Nhân tạo cho nhiều tập đoàn công nghệ lớn.</p>
+                    <div><span class="instructor-title">Chuyên gia AI & Learning Design</span></div>
+                    <div class="instructor-meta">
+                        <span class="meta-tag"><i class="fa-solid fa-brain"></i> AI Innovator</span>
+                        <span class="meta-tag"><i class="fa-solid fa-layer-group"></i> Cố Vấn Cấp Cao</span>
+                    </div>
+                    <p class="instructor-bio">Cố vấn chịu trách nhiệm tối ưu hóa các chương trình đào tạo tích hợp trí tuệ nhân tạo thế hệ mới cho nhiều tập đoàn công nghệ lớn.</p>
                     <div class="social-links">
                         <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                         <a href="#"><i class="fa-solid fa-globe"></i></a>
                     </div>
                 </div>
-                <div class="glass-card instructor-card" data-aos="fade-up" data-aos-delay="300">
-                    <img src="tanDat.jpg" alt="Giảng viên" class="instructor-img">
+
+                <div class="instructor-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="instructor-img-wrapper">
+                        <img src="tanDat.jpg" alt="GS. TS. Lưu Phùng Tấn Đạt" class="instructor-img">
+                    </div>
                     <h4>GS. TS. Lưu Phùng Tấn Đạt</h4>
-                    <div class="instructor-title">Instructional Designer</div>
-                    <p>Sở hữu chứng chỉ chuyên sâu về thiết kế trải nghiệm học tập từ ĐH Stanford. Host của podcast "Học Tập Chủ Động".</p>
+                    <div><span class="instructor-title">Instructional Designer</span></div>
+                    <div class="instructor-meta">
+                        <span class="meta-tag"><i class="fa-solid fa-university"></i> ĐH Stanford</span>
+                        <span class="meta-tag"><i class="fa-solid fa-microphone"></i> Podcaster</span>
+                    </div>
+                    <p class="instructor-bio">Sở hữu chứng chỉ thiết kế trải nghiệm học tập từ Stanford. Nhà sáng lập và host của chuỗi nội dung "Học Tập Chủ Động".</p>
                     <div class="social-links">
                         <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                         <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="instructor-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="instructor-img-wrapper">
+                        <img src="phuocToan.jpg" alt="GS. TS. Phạm Phước Toàn" class="instructor-img">
+                    </div>
+                    <h4>GS. TS. Phạm Phước Toàn</h4>
+                    <div><span class="instructor-title">Chuyên gia Chuyển đổi số</span></div>
+                    <div class="instructor-meta">
+                        <span class="meta-tag"><i class="fa-solid fa-laptop-code"></i> EdTech Pioneer</span>
+                        <span class="meta-tag"><i class="fa-solid fa-users-viewfinder"></i> Nhà Quản trị</span>
+                    </div>
+                    <p class="instructor-bio">Chuyên gia tiên phong trong ứng dụng công nghệ vào quản trị giáo dục số và xây dựng các hệ sinh thái học tập suốt đời hiện đại.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                     </div>
                 </div>
             </div>
@@ -1601,7 +1771,7 @@
         <div class="container">
             <div class="section-header" data-aos="fade-up">
                 <h2>Cộng Đồng Nói Gì Về Chúng Tôi</h2>
-                <p>Hàng ngàn học viên đã thay đổi tư duy và cải thiện hiệu suất nhờ khóa học</p>
+                <p>Giúp học viên thay đổi tư duy và cải thiện hiệu suất sau khóa học</p>
             </div>
             
             <div class="carousel-container" data-aos="fade-up" data-aos-delay="200">
@@ -1677,7 +1847,7 @@
                 <details>
                     <summary>Khóa học có miễn phí hoàn toàn không?</summary>
                     <div class="faq-content">
-                        Toàn bộ tài liệu, video bài giảng và quiz đều miễn phí (OER). Tuy nhiên, để nhận chứng chỉ chính thức sau Final Project, bạn có thể cần thanh toán một khoản phí nhỏ hỗ trợ nền tảng.
+                        Toàn bộ tài liệu, video bài giảng và quiz đều miễn phí (OER).
                     </div>
                 </details>
             </div>
@@ -1740,9 +1910,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="footer-bottom">
-                &copy; 2026 EduMOOC. Thiết kế & Phát triển bởi Senior FE Engineer. All rights reserved.
-            </div>
+            
         </div>
     </footer>
 
@@ -1899,7 +2067,6 @@
             });
         });
     </script>
-    // BEGIN NEW CODE
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Tìm tất cả các nút có khả năng là nút đăng ký
@@ -1911,8 +2078,51 @@
             });
         });
     </script>
-    // END NEW CODE
 
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const instructorGrid = document.querySelector('.instructor-grid');
+            
+            if (instructorGrid) {
+                let autoScrollInterval;
+                const scrollDelay = 3500; // Thời gian dừng ở mỗi thẻ (3.5 giây)
+
+                const startAutoScroll = () => {
+                    autoScrollInterval = setInterval(() => {
+                        const card = instructorGrid.querySelector('.instructor-card');
+                        if (!card) return;
+
+                        // Lấy chiều rộng của 1 thẻ + khoảng cách gap (30px)
+                        const scrollStep = card.offsetWidth + 30; 
+                        
+                        // Tính toán khoảng cách cuộn tối đa
+                        const maxScrollLeft = instructorGrid.scrollWidth - instructorGrid.clientWidth;
+
+                        // Nếu đã cuộn đến thẻ cuối cùng (sai số 10px) -> Quay lại từ đầu
+                        if (instructorGrid.scrollLeft >= maxScrollLeft - 10) {
+                            instructorGrid.scrollTo({ left: 0, behavior: 'smooth' });
+                        } else {
+                            // Tiến lên thẻ tiếp theo
+                            instructorGrid.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                        }
+                    }, scrollDelay);
+                };
+
+                const stopAutoScroll = () => {
+                    clearInterval(autoScrollInterval);
+                };
+
+                // Kích hoạt chạy tự động khi tải xong trang
+                startAutoScroll();
+
+                // Dừng tự động cuộn khi người dùng tương tác (chuột & cảm ứng)
+                instructorGrid.addEventListener('mouseenter', stopAutoScroll);
+                instructorGrid.addEventListener('mouseleave', startAutoScroll);
+                instructorGrid.addEventListener('touchstart', stopAutoScroll, {passive: true});
+                instructorGrid.addEventListener('touchend', startAutoScroll, {passive: true});
+            }
+        });
+    </script>
 </body>
 </html>
 </body>
