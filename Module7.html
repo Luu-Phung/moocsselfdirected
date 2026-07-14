@@ -5,6 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 7: Tự đánh giá Kết quả Học tập</title>
     <style>
+        .btn-primary {
+    display: block;
+    width: fit-content;   /* hoặc bỏ dòng này nếu không cần */
+    margin: 20px auto;
+
+    background: var(--primary);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+    border: none;
+    cursor: pointer;
+}
+        ..btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+}
         /* ========== CSS VARIABLES (đồng bộ Module 8) ========== */
         :root {
             --primary-color: #0A4B7C;
@@ -754,6 +776,7 @@
     <div id="toast" class="toast"></div>
 
     <script>
+        
         // ========== TRẠNG THÁI & BIẾN ==========
         let currentLesson = "7.1";
         let isReflectionSaved71 = false;
@@ -823,7 +846,7 @@
         function goToModule8() {
             if (isRubricSaved72 && isQ72_1_Answered && isQ72_2_Answered) {
                 // Thay đổi URL bên dưới thành đường dẫn thực tế của Module 8
-                window.location.href = "module8.html";
+                window.location.href = "Module8.html?force_start=8.1";
             } else {
                 showToast("⚠️ Bạn cần hoàn thành tất cả hoạt động và quiz của Bài 7.2.", "error");
             }
