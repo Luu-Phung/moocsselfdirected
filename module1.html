@@ -186,9 +186,10 @@
         }
         .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-5px); }
         
-        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
 
         .icon-card { text-align: center; }
         .icon-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
@@ -389,11 +390,79 @@
 
         /* Responsive */
         @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; }
-            aside { display: none; /* Can be implemented as off-canvas for mobile */ }
-            .timeline { flex-direction: column; gap: 20px; }
-            .timeline-arrow { transform: rotate(90deg); }
-        }
+    .container { grid-template-columns: 1fr; }
+    aside { display: none; }
+    .timeline { flex-direction: column; gap: 20px; }
+    .timeline-arrow { transform: rotate(90deg); }
+    
+    /* Thêm dòng này để các thẻ tự động xếp chồng lên nhau trên Mobile */
+    .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+}
+/* --- BẮT ĐẦU CSS CHO VIDEO TƯƠNG TÁC --- */
+.interactive-video-container {
+    position: relative;
+    max-width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin: 30px 0;
+    background: #000;
+}
+
+video {
+    width: 100%;
+    display: block;
+}
+
+.quiz-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--text-main);
+    z-index: 10;
+    padding: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body.dark-mode .quiz-overlay {
+    background: rgba(30, 30, 30, 0.95);
+    color: var(--text-main);
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    max-width: 400px;
+    margin-inline: auto;
+}
+
+.quiz-options button {
+    padding: 12px 20px;
+    border: 2px solid var(--primary);
+    background: transparent;
+    color: var(--text-main);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.quiz-options button:hover {
+    background: var(--primary);
+    color: white;
+}
+
+#quizFeedback {
+    margin-top: 20px;
+    font-weight: bold;
+    min-height: 24px;
+}
+/* --- KẾT THÚC CSS CHO VIDEO TƯƠNG TÁC --- */
     </style>
 </head>
 <body>
@@ -525,12 +594,19 @@
                     </div>
                 </div>
 
-                <div class="video-wrapper reveal" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 12px; box-shadow: var(--shadow); margin: 30px 0;">
-    <iframe src="https://drive.google.com/file/d/1f7p18e9W-2eLJxCuR1QLWja2BAyV8D5U/preview" 
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
-            allow="autoplay" 
-            allowfullscreen>
-    </iframe>
+                <div class="interactive-video-container reveal">
+    <video id="myVideo" src="videomodule1.mp4" controls controlsList="nodownload"></video>
+    
+    <div id="questionOverlay" class="quiz-overlay">
+        <h3>Kiểm tra kiến thức nhanh 🧠</h3>
+        <p>Trong mô hình WHY - WHAT - HOW, yếu tố "WHY" đại diện cho điều gì?</p>
+        <div class="quiz-options">
+            <button onclick="checkAnswer(false)">A. Kết quả cụ thể muốn đạt được</button>
+            <button onclick="checkAnswer(true)">B. Lý do cốt lõi tạo động lực học tập</button>
+            <button onclick="checkAnswer(false)">C. Phương pháp và công cụ để học</button>
+        </div>
+        <p id="quizFeedback"></p>
+    </div>
 </div>
 
                 <h3>Bạn đang thuộc nhóm người học nào?</h3>
@@ -766,6 +842,52 @@
             });
         });
        
+        // --- BẮT ĐẦU JS CHO VIDEO TƯƠNG TÁC ---
+const video = document.getElementById('myVideo');
+const overlay = document.getElementById('questionOverlay');
+const feedback = document.getElementById('quizFeedback');
+
+const TRIGGER_TIME = 15; // Giây thứ 15 sẽ xuất hiện câu hỏi (Bạn có thể thay đổi số này)
+let isAnsweredCorrectly = false;
+
+// Ẩn lớp phủ câu hỏi lúc ban đầu
+overlay.style.display = 'none';
+
+// Lắng nghe sự kiện video đang phát
+video.addEventListener('timeupdate', () => {
+    if (!isAnsweredCorrectly && video.currentTime >= TRIGGER_TIME) {
+        video.pause();
+        video.controls = false; // Tắt thanh tiến trình để chặn tua
+        overlay.style.display = 'flex'; // Hiện câu hỏi
+    }
+});
+
+// Chặn người học kéo tua thanh tiến trình qua đoạn chưa học
+video.addEventListener('seeking', () => {
+    if (!isAnsweredCorrectly && video.currentTime > TRIGGER_TIME) {
+        video.currentTime = TRIGGER_TIME; // Kéo giật ngược lại
+    }
+});
+
+// Xử lý khi học viên chọn đáp án
+function checkAnswer(isCorrect) {
+    if (isCorrect) {
+        feedback.innerText = "🎉 Chính xác! Bạn đã hiểu rõ 'WHY'. Video sẽ tiếp tục...";
+        feedback.style.color = "#4caf50"; // Màu xanh
+        isAnsweredCorrectly = true; // Đánh dấu đã qua
+        
+        // Đợi 2 giây sau đó tắt câu hỏi và cho chạy tiếp
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            video.controls = true; // Bật lại thanh điều khiển
+            video.play();
+        }, 2000);
+    } else {
+        feedback.innerText = "❌ Chưa chính xác. Bạn hãy suy nghĩ và chọn lại nhé!";
+        feedback.style.color = "#f44336"; // Màu đỏ
+    }
+}
+// --- KẾT THÚC JS CHO VIDEO TƯƠNG TÁC ---
     </script>
 </body>
 </html>
