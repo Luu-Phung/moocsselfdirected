@@ -8,6 +8,139 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        /* ---------- Khung Nguồn Gốc (Origin Layout) ---------- */
+/* ---------- Khung Nguồn Gốc (Origin Layout) ---------- */
+.origin-layout {
+    display: flex;
+    gap: 2rem;
+    align-items: stretch; /* Đổi từ 'center' thành 'stretch' để 2 cột luôn cao bằng nhau */
+    background: #f8fafc;
+    padding: 1.8rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-sm);
+}
+/* ---------- Khung 3 Vùng (Zone Layout) ---------- */
+.zone-layout {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start; /* Căn lề trên cùng để bảng và ảnh bằng đầu nhau */
+    margin: 1.5rem 0;
+}
+
+.zone-media {
+    flex: 0.8;
+    width: 100%;
+    max-width: 280px; /* Khống chế độ rộng tối đa để hình không bị quá to */
+}
+
+/* Khung bọc iframe riêng cho phần 2 với tỷ lệ đứng (dáng tờ giấy) */
+.zone-iframe-wrapper {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    position: relative;
+    width: 100%;
+    padding-bottom: 135%; /* Tỷ lệ đứng giúp hiển thị trọn vẹn mẫu giấy bên trong iframe */
+    height: 0;
+    background: #f1f5f9;
+}
+
+.zone-iframe-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.zone-text {
+    flex: 2; /* Để phần bảng chiếm nhiều không gian hơn */
+}
+
+.zone-text .table-wrap {
+    margin-top: 0.8rem;
+    margin-bottom: 0;
+}
+
+/* Responsive cho thiết bị di động */
+@media (max-width: 768px) {
+    .zone-layout {
+        flex-direction: column;
+    }
+    .zone-media {
+        max-width: 100%;
+    }
+    .zone-iframe-wrapper {
+        padding-bottom: 120%; 
+        max-width: 320px; /* Căn giữa và thu gọn trên mobile */
+        margin: 0 auto 1rem auto;
+    }
+}
+.origin-media {
+    flex: 0.8; 
+    max-width: 260px;
+    display: flex; /* Thêm thuộc tính này để ảnh bên trong có thể dãn theo */
+}
+
+/* Định dạng trực tiếp cho thẻ img */
+.origin-media img {
+    width: 100%;
+    height: 100%; /* Buộc ảnh phải dãn đầy 100% chiều cao của cột chứa nó */
+    min-height: 260px; /* Đảm bảo ảnh luôn có một độ cao tối thiểu (dáng chân dung) */
+    object-fit: cover; /* Tự động cắt cúp những phần thừa, đảm bảo ảnh không bị méo tỷ lệ */
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    display: block;
+}
+
+.origin-text {
+    flex: 1.5; /* Cột chữ giữ nguyên hoặc tăng tỷ lệ */
+}
+
+.origin-text ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.origin-text li {
+    margin-bottom: 1.2rem;
+    padding-left: 2.2rem;
+    position: relative;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.origin-text li::before {
+    content: '\f058'; 
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--accent);
+    font-size: 1.3rem;
+}
+
+.origin-text strong {
+    color: var(--primary-dark);
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .origin-layout {
+        flex-direction: column;
+        padding: 1.2rem;
+    }
+    .origin-media {
+        max-width: 200px; /* Thu nhỏ ảnh trên mobile */
+        margin: 0 auto;
+    }
+}
         /* ---------- CSS Variables ---------- */
         :root {
             --primary: #2a4d7c;
@@ -417,56 +550,70 @@
 
     <!-- ==================== 1. NGUỒN GỐC ==================== -->
     <section>
-        <h2><i class="fas fa-user-graduate icon-tag"></i> 1. Nguồn gốc và nghiên cứu</h2>
+    <h2><i class="fas fa-user-graduate icon-tag"></i> 1. Nguồn gốc và nghiên cứu</h2>
 
-        <!-- IFrame 1: Hình Walter Pauk -->
-        <div class="iframe-wrapper">
-            <iframe src="https://drive.google.com/file/d/1TsMyg8GgujbwtWEwiRo3MmwGWXGhOmSg/preview" allow="autoplay"></iframe>
+    <div class="origin-layout">
+        <div class="origin-media">
+            <div class="iframe-wrapper">
+                <iframe src="https://drive.google.com/file/d/1TsMyg8GgujbwtWEwiRo3MmwGWXGhOmSg/preview" allow="autoplay"></iframe>
+            </div>
         </div>
-
-        <ul style="margin-top:0.2rem;">
-            <li><strong>Người sáng lập:</strong> Giáo sư <strong>Walter Pauk</strong>, Đại học Cornell (những năm 1950).</li>
-            <li><strong>Mục đích:</strong> Giúp sinh viên ghi chép, tổ chức thông tin và ôn tập hiệu quả.</li>
-            <li><strong>Phổ biến:</strong> Cuốn sách <em>"How to Study in College"</em> (1962) – tái bản 11 lần.</li>
-            <li><strong>Bằng chứng:</strong> Nhiều nghiên cứu (2010, 2023) cho thấy hiệu quả trong hiểu sâu và áp dụng kiến thức, tuy nhiên kết quả có thể phụ thuộc vào môn học và cách triển khai.</li>
-        </ul>
-    </section>
+        
+        <div class="origin-text">
+            <ul>
+                <li><strong>Người sáng lập:</strong> Giáo sư <strong>Walter Pauk</strong>, Đại học Cornell (những năm 1950).</li>
+                <li><strong>Mục đích:</strong> Giúp sinh viên ghi chép, tổ chức thông tin và ôn tập hiệu quả.</li>
+                <li><strong>Phổ biến:</strong> Cuốn sách <em>"How to Study in College"</em> (1962) – tái bản 11 lần.</li>
+                <li><strong>Bằng chứng:</strong> Nhiều nghiên cứu (2010, 2023) cho thấy hiệu quả trong hiểu sâu và áp dụng kiến thức, tuy nhiên kết quả có thể phụ thuộc vào môn học và cách triển khai.</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
     <!-- ==================== 2. BA VÙNG ==================== -->
-    <section>
-        <h2><i class="fas fa-layer-group icon-tag"></i> 2. Ba vùng trên một trang giấy</h2>
+   <section>
+    <h2><i class="fas fa-layer-group icon-tag"></i> 2. Ba vùng trên một trang giấy</h2>
 
-        <!-- IFrame 2: Hình mẫu giấy (đã cập nhật link mới) -->
-        <div class="iframe-wrapper">
-            <iframe src="https://drive.google.com/file/d/1vcw_TuXx9NXj7OcVXcUrXIRfheSDwuCp/preview" allow="autoplay"></iframe>
+    <div class="zone-layout">
+        <div class="zone-media">
+            <div class="zone-iframe-wrapper">
+                <iframe src="https://drive.google.com/file/d/1vcw_TuXx9NXj7OcVXcUrXIRfheSDwuCp/preview" allow="autoplay"></iframe>
+            </div>
         </div>
 
-        <p>Bố cục chia thành 3 phần chức năng:</p>
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr><th>Khu vực</th><th>Vị trí &amp; Tỷ lệ</th><th>Chức năng chính</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Cột ghi chú chính</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Note-taking)</span></td>
-                        <td>Bên phải, ~70% chiều rộng</td>
-                        <td>Ghi ý chính, dữ kiện, ví dụ bằng ngôn ngữ riêng, không chép nguyên văn.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cột từ khóa / Câu hỏi</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Cue column)</span></td>
-                        <td>Bên trái, ~30% chiều rộng</td>
-                        <td>Tóm tắt ý chính thành từ khóa, câu hỏi để tự kiểm tra sau.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Phần tóm tắt</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Summary)</span></td>
-                        <td>Cuối trang, khoảng 5–7 dòng</td>
-                        <td>Đoạn tóm tắt ngắn bao quát toàn bộ nội dung trang ghi chú.</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="zone-text">
+            <p>Bố cục chia thành 3 phần chức năng:</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Khu vực</th>
+                            <th>Vị trí &amp; Tỷ lệ</th>
+                            <th>Chức năng chính</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cột ghi chú chính</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Note-taking)</span></td>
+                            <td>Bên phải, ~70% chiều rộng</td>
+                            <td>Ghi ý chính, dữ kiện, ví dụ bằng ngôn ngữ riêng, không chép nguyên văn.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cột từ khóa / Câu hỏi</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Cue column)</span></td>
+                            <td>Bên trái, ~30% chiều rộng</td>
+                            <td>Tóm tắt ý chính thành từ khóa, câu hỏi để tự kiểm tra sau.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phần tóm tắt</strong><br><span style="font-size:0.85rem;color:var(--text-muted);">(Summary)</span></td>
+                            <td>Cuối trang, khoảng 5–7 dòng</td>
+                            <td>Đoạn tóm tắt ngắn bao quát toàn bộ nội dung trang ghi chú.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- ==================== 3. QUY TRÌNH 5R ==================== -->
     <section>
