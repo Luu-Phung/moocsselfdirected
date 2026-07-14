@@ -14,6 +14,154 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
+        /* ================= SYSTEM WIDE RESPONSIVE VIDEO ================= */
+/* Khung chứa tổng thể, đảm bảo tính toán chính xác kích thước bao gồm cả padding */
+.video-learning-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 1.5rem 0;
+}
+
+/* Thẻ Card hiện đại cho video */
+.video-card-modern {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden; /* Cắt bỏ mọi thành phần con cố tình tràn ra ngoài */
+}
+
+.video-card-modern:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* Tiêu đề thanh lịch phía trên video */
+.video-card-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.2rem;
+}
+
+.video-card-title i {
+    font-size: 1.8rem;
+    color: #e52d27; /* Sắc đỏ tinh tế của các nền tảng video */
+}
+
+.video-card-title h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Khung Responsive chuẩn 16:9 chống tràn tuyệt đối */
+.video-fluid-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9; /* Tự động co giãn theo chiều rộng màn hình */
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #0b0b0b;
+    box-shadow: inset 0 4px 20px rgba(0,0,0,0.4);
+}
+
+/* Ép Iframe tuân thủ 100% diện tích khung chứa */
+.video-fluid-wrapper iframe,
+.video-fluid-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+    /* ================= VIDEO PLAYER CARD ================= */
+.video-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    margin: 2rem 0;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+}
+
+.video-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.video-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 1.5rem;
+}
+
+.video-header i {
+    font-size: 2.2rem;
+    color: var(--danger); /* Màu đỏ gợi sự liên tưởng đến YouTube/Video */
+}
+
+.video-header-text h3 {
+    margin-bottom: 0.2rem;
+    font-size: 1.3rem;
+}
+
+.video-header-text p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Kỹ thuật bọc iframe để responsive tỷ lệ 16:9 chuẩn */
+.video-responsive-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Tự động tính toán chiều cao theo chiều rộng */
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #111; /* Hiển thị nền đen trong lúc chờ load video */
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
+}
+
+.video-responsive-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+            .btn-primary {
+    display: block;
+    width: fit-content;   /* hoặc bỏ dòng này nếu không cần */
+    margin: 20px auto;
+
+    background: var(--primary);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+    border: none;
+    cursor: pointer;
+}
+        .btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+}
         /* ================= CSS VARIABLES ================= */
         :root {
             --primary: #2563EB;
@@ -365,14 +513,31 @@
                     <p>Khác biệt không nằm ở nền tảng, mà nằm ở <strong>khả năng tự quản lý việc học</strong>.</p>
                 </div>
 
-                               <div class="placeholder-card" data-aos="fade-up">
-<i class="fa-solid fa-circle-play"></i>
-<h3>Video bài giảng 6.1</h3>
-<p>Video được nhúng trực tiếp từ Google Drive.</p>
-<div style="margin-top:20px">
-<iframe src="https://drive.google.com/file/d/1mUH6Av5GtfnxvsV0fgsT3IMC2-j4sI3B/preview"
-width="100%" height="520" allow="autoplay"
-style="border:none;border-radius:12px;box-shadow:var(--shadow);"></iframe>
+                               <div class="video-card" data-aos="fade-up">
+    <div class="video-header">
+        <i class="fa-solid fa-circle-play"></i>
+        <div class="video-header-text">
+            <h3>Video bài giảng 6.1</h3>
+            <p>Khám phá hệ sinh thái MOOCs và chiến lược học tập hiệu quả</p>
+        </div>
+    </div>
+
+    <div class="video-responsive-wrapper" style="position: relative;">
+    <video id="myInteractiveVideo" width="100%" height="100%" controls controlsList="nodownload">
+        <source src="module6.mp4" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ thẻ video.
+    </video>
+
+    <div id="quizOverlay" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); align-items: center; justify-content: center; z-index: 10; border-radius: 12px;">
+        <div class="card" style="width: 80%; max-width: 500px; text-align: left;">
+            <h3 id="quizQuestion" style="margin-bottom: 1.5rem; color: var(--primary);">Câu hỏi sẽ hiển thị ở đây</h3>
+            <div id="quizOptions" style="display: flex; flex-direction: column; gap: 10px;">
+                </div>
+            <div id="quizFeedback" style="color: var(--danger); margin-top: 15px; font-weight: 600; text-align: center; display: none;">
+                <i class="fa-solid fa-circle-xmark"></i> Chưa chính xác. Hãy suy nghĩ lại nhé!
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 
@@ -486,30 +651,12 @@ style="border:none;border-radius:12px;box-shadow:var(--shadow);"></iframe>
                     <h2 style="color: white; margin-top: 10px;">Bài 6.2 YouTube là thư viện học tập lớn nhất thế giới</h2>
                 </div>
 
-                <div class="callout warning" data-aos="fade-left">
-                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; color: var(--warning);"></i>
-                    <p>Đồng thời cũng là <strong>cỗ máy gây phân tâm mạnh nhất</strong>.</p>
-                </div>
-
-                          </div>
-
-<div class="placeholder-card" data-aos="zoom-in">
-    <i class="fa-solid fa-circle-play"></i>
-
-    <h3>Video bài giảng 6.2</h3>
-    <p>Video được nhúng trực tiếp từ Google Drive.</p>
-
-    <div style="margin-top:20px;width:100%;">
-        <iframe
-            src="https://drive.google.com/file/d/1SMOuKDCgjoQ2idOdIO7pwIT47VonEU3j/preview"
-            width="100%"
-            height="520"
-            allow="autoplay"
-            style="border:none;border-radius:12px;box-shadow:var(--shadow);">
-        </iframe>
-    </div>
+               <div class="callout warning" data-aos="fade-left">
+    <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; color: var(--warning);"></i>
+    <p>Đồng thời cũng là <strong>cỗ máy gây phân tâm mạnh nhất</strong>.</p>
 </div>
 
+<div class="placeholder-card" data-aos="zoom-in">
 <h3 style="margin-top: 3rem;" data-aos="fade-up">Passive vs Active Learning</h3>
                 <div class="comparison-wrapper" data-aos="fade-up">
                     <div class="comp-side passive">
@@ -527,7 +674,7 @@ style="border:none;border-radius:12px;box-shadow:var(--shadow);"></iframe>
                         <ul class="comp-list">
                             <li><i class="fa-solid fa-check text-accent"></i> Pause liên tục</li>
                             <li><i class="fa-solid fa-check text-accent"></i> Ghi Cornell Note</li>
-                            <li><i class="fa-solid fa-check text-accent"></i> Tốc độ 1.25x - 1.5x (Tăng tập trung)</li>
+                            <li><i class="fa-solid fa-check text-accent"></i> Tốc độ 1.25x - 1.5x</li>
                             <li><i class="fa-solid fa-check text-accent"></i> Phản biện nội dung</li>
                             <li><i class="fa-solid fa-check text-accent"></i> Ghi nhớ lâu</li>
                         </ul>
@@ -658,7 +805,7 @@ style="border:none;border-radius:12px;box-shadow:var(--shadow);"></iframe>
                     <span class="badge" style="background: #334155; color: white;">MODULE 7</span>
                     <h2 style="color: white; margin: 15px 0;">HỌC TẬP HỢP TÁC VÀ XÂY DỰNG TRI THỨC TRONG MÔI TRƯỜNG SỐ</h2>
                     <p style="color: #94A3B8; margin-bottom: 2rem;">Từ học tập cá nhân sang kiến tạo tri thức cùng cộng đồng.</p>
-                    <button class="btn btn-primary ripple-btn">Tiếp tục Module 7 <i class="fa-solid fa-arrow-right"></i></button>
+                    <button class="btn-primary"style="margin-top:20px;"onclick="finishModule1()">Hoàn thành Module</button>
                 </div>
             </section>
 
@@ -670,6 +817,7 @@ style="border:none;border-radius:12px;box-shadow:var(--shadow);"></iframe>
     </button>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
+        
 /* Preview Infographic 6.2 */
 const infographic62=document.getElementById("infographic62");
 if(infographic62){
@@ -703,6 +851,15 @@ function toggleInfographic61(){
 </script>
     
     <script>
+          function finishModule1(){
+
+    localStorage.setItem("currentModule",6);
+
+    alert("Bạn đã hoàn thành Module 6!");
+
+    window.location.href="module7.html";
+
+}
         // 1. Khởi tạo AOS Animation
         AOS.init({
             duration: 800,
@@ -816,5 +973,109 @@ function toggleInfographic61(){
             });
         });
     </script>
+<script>
+    const video = document.getElementById('myInteractiveVideo');
+    const quizOverlay = document.getElementById('quizOverlay');
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizOptions = document.getElementById('quizOptions');
+    const quizFeedback = document.getElementById('quizFeedback');
+
+    let maxTimePlayed = 0;
+    let currentQuestionIndex = -1;
+
+    // CẤU HÌNH NGÂN HÀNG CÂU HỎI
+    const questions = [
+        {
+            triggerTime: 180, // Giây thứ 180 (Phút thứ 3)
+            text: "Cạm bẫy 'Illusion of Competence' (Ảo tưởng năng lực) khi học qua video là gì?",
+            options: [
+                "A. Đăng ký quá nhiều khóa học nhưng không học",
+                "B. Xem video không ghi chép, tưởng mình đã hiểu",
+                "C. Chỉ xem video ở tốc độ 2x",
+                "D. Học theo Home Feed của YouTube"
+            ],
+            correctAnswer: 1, // Index của đáp án đúng (Mảng bắt đầu từ 0 -> 1 là B)
+            isAnswered: false
+        },
+        {
+            triggerTime: 420, // Giây thứ 420 (Phút thứ 7)
+            text: "Để thực hành học tập chủ động, phương pháp ghi chú nào được khuyến khích trong Module này?",
+            options: [
+                "A. Mindmap",
+                "B. Ghi chép y nguyên lời giảng viên",
+                "C. Cornell Note",
+                "D. Không cần ghi chú nếu đã có Transcript"
+            ],
+            correctAnswer: 2, // Index 2 là C
+            isAnswered: false
+        }
+    ];
+
+    // CHỨC NĂNG 1: CHỐNG TUA NHANH (ANTI-SEEKING) VÀ KIỂM TRA THỜI GIAN
+    video.addEventListener('timeupdate', () => {
+        // Nếu học viên tua quá 1 giây so với thời gian họ đã xem thực tế
+        if (video.currentTime > maxTimePlayed + 1) {
+            video.currentTime = maxTimePlayed; 
+        } else {
+            maxTimePlayed = Math.max(maxTimePlayed, video.currentTime);
+        }
+
+        // Kiểm tra xem đã đến lúc hiển thị câu hỏi chưa
+        questions.forEach((q, index) => {
+            if (!q.isAnswered && video.currentTime >= q.triggerTime && video.currentTime < q.triggerTime + 1) {
+                showQuiz(index);
+            }
+        });
+    });
+
+    // Bổ sung bắt sự kiện khi học viên cố tình kéo thanh thời gian
+    video.addEventListener('seeking', () => {
+        if (video.currentTime > maxTimePlayed) {
+            video.currentTime = maxTimePlayed;
+        }
+    });
+
+    // CHỨC NĂNG 2: HIỂN THỊ VÀ XỬ LÝ TRẮC NGHIỆM
+    function showQuiz(index) {
+        video.pause();
+        video.controls = false; // Tắt thanh điều khiển để học viên không tự bấm Play
+        currentQuestionIndex = index;
+        const q = questions[index];
+        
+        quizQuestion.innerText = q.text;
+        quizOptions.innerHTML = '';
+        quizFeedback.style.display = 'none';
+        
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            // Kế thừa class CSS có sẵn trong bài của bạn để giao diện đồng nhất
+            btn.className = 'btn btn-outline'; 
+            btn.style.color = 'var(--text-main)';
+            btn.style.borderColor = 'var(--border-color)';
+            btn.style.textAlign = 'left';
+            btn.style.width = '100%';
+            
+            btn.onclick = () => checkAnswer(i);
+            quizOptions.appendChild(btn);
+        });
+        
+        quizOverlay.style.display = 'flex';
+    }
+
+    function checkAnswer(selectedIndex) {
+        const q = questions[currentQuestionIndex];
+        if (selectedIndex === q.correctAnswer) {
+            // Đúng: Đánh dấu đã trả lời, ẩn form, mở lại video
+            q.isAnswered = true;
+            quizOverlay.style.display = 'none';
+            video.controls = true;
+            video.play();
+        } else {
+            // Sai: Báo lỗi và giữ nguyên form bắt chọn lại
+            quizFeedback.style.display = 'block';
+        }
+    }
+</script>  
 </body>
 </html>
