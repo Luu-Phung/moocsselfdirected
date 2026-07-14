@@ -1264,6 +1264,41 @@
             .carousel-container { scroll-snap-type: none; }
             .feedback-card { min-width: 100%; }
         }
+        /* ==========================================================================
+   MODAL NHẬP TÊN HỌC VIÊN (BỔ SUNG CHO LUỒNG CHỨNG NHẬN)
+   ========================================================================== */
+.course-modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(15, 23, 42, 0.7); /* Màu nền slate tối đồng bộ */
+    display: none; justify-content: center; align-items: center;
+    z-index: 99999; backdrop-filter: blur(8px);
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.course-modal.show { opacity: 1; }
+.modal-content {
+    background: #ffffff; padding: 35px 30px; border-radius: 20px;
+    max-width: 450px; width: 90%; text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    position: relative; transform: translateY(-30px); transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.course-modal.show .modal-content { transform: translateY(0); }
+.modal-content h3 { font-family: 'Montserrat', sans-serif; color: #0f172a; font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+.modal-content p { color: #64748b; font-size: 14px; line-height: 1.6; margin-bottom: 24px; font-family: 'Inter', sans-serif; }
+.modal-content .form-group input {
+    width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px;
+    font-size: 16px; font-weight: 600; text-align: center; color: #0f172a; outline: none; transition: all 0.2s;
+    margin-bottom: 20px; box-sizing: border-box; font-family: 'Inter', sans-serif;
+}
+.modal-content .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); }
+.modal-content .btn-submit { 
+    width: 100%; padding: 14px; font-weight: 600; border-radius: 12px; cursor: pointer; border: none; 
+    background: var(--primary); color: #fff; display: inline-block; font-size: 15px; transition: all 0.2s;
+}
+.modal-content .btn-submit:hover { background: var(--secondary); transform: translateY(-1px); }
+.close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #94a3b8; cursor: pointer; transition: color 0.2s; }
+.close-modal:hover { color: #0f172a; }
     </style>
 </head>
 <body>
@@ -1742,27 +1777,10 @@
                 <a href="#cta" class="btn btn-outline">Xem mẫu chi tiết</a>
             </div>
             
-            <div class="cert-mockup" data-aos="fade-left">
-                <h3 style="color:#0F172A;">CERTIFICATE</h3>
-                <p style="color:#475569;">OF COMPLETION</p>
-                <div style="font-size: 0.9rem; margin-top:20px; color:#475569;">This is to certify that</div>
-                <div class="cert-name">Tên Học Viên</div>
-                <div style="font-size: 0.9rem; color:#475569; margin-bottom: 20px;">has successfully completed the course</div>
-                <div style="font-weight: bold; color:#0F172A;">Kỹ năng Tự học trong Thời đại Số</div>
+            <div class="cert-mockup" data-aos="fade-left" style="padding: 0; border: none; background: transparent; box-shadow: none;">
+    <img src="chung_nhan.png" alt="Chứng chỉ hoàn thành khóa học" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+</div>
                 
-                <div style="display: flex; justify-content: space-between; margin-top: 40px; text-align: left;">
-                    <div>
-                        <div style="border-bottom: 1px solid #000; width: 100px; margin-bottom: 5px;"></div>
-                        <span style="font-size: 0.8rem; color:#475569;">Date</span>
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-qrcode" style="font-size: 3rem; color: #0F172A;"></i>
-                    </div>
-                    <div>
-                        <div style="border-bottom: 1px solid #000; width: 100px; margin-bottom: 5px; font-family: 'Great Vibes', cursive;">Signature</div>
-                        <span style="font-size: 0.8rem; color:#475569;">Instructor</span>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -1925,7 +1943,97 @@
                 once: true,
                 offset: 100,
             });
+// ==========================================
+// LOGIC CHẶN CHUYỂN HƯỚNG TỐI ƯU NHẤT (EVENT DELEGATION BẢN CAO CẤP)
+// ==========================================
+const modal = document.getElementById('nameModal');
+const inputName = document.getElementById('modalStudentName');
+const btnConfirm = document.getElementById('btnConfirmName');
+const closeModal = document.querySelector('.close-modal');
+let defaultTargetUrl = 'module0.html'; // Trang đích mặc định
 
+// 1. Dùng sự kiện ở cấp độ Document với tham số "true" (Capture phase) 
+// Để đánh chặn mọi cú click trước khi nó kịp kích hoạt bất cứ lệnh chuyển trang nào
+document.addEventListener('click', function(e) {
+    // Tìm phần tử <a> hoặc <button> gần nhất bao quanh chỗ vừa click
+    const targetElement = e.target.closest('a, button, .btn');
+    
+    if (!targetElement) return; // Nếu click chỗ trống thì bỏ qua
+
+    const href = targetElement.getAttribute('href') || '';
+    const text = targetElement.textContent.trim().toLowerCase();
+
+    // 2. Nhận diện mục tiêu: Nút chứa link module0.html HOẶC chứa các từ khóa đặc biệt
+    const isCourseButton = href.includes('module0.html') || 
+                           text.includes('đã đăng ký') || 
+                           text.includes('vào học') || 
+                           text.includes('bắt đầu học');
+
+
+    if (isCourseButton) {
+        const savedName = localStorage.getItem('studentName');
+        
+        // Nếu đã có tên trong máy -> Hủy chặn, cho phép tự động chuyển trang bình thường
+        if (savedName && savedName.trim() !== "") {
+            return; 
+        }
+        
+        // Nếu CHƯA CÓ TÊN -> Ra lệnh cấm tuyệt đối hành vi click và chuyển trang
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Lưu lại đích đến để lát chuyển hướng sau khi nhập tên xong
+        defaultTargetUrl = href !== '#' && href !== '' ? href : 'module0.html';
+
+        // Hiệu ứng bung Modal
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10);
+        
+        // Đặt trỏ chuột sẵn vào ô nhập liệu cho học viên
+        if(inputName) inputName.focus();
+    }
+}, true); // <-- 'true' là chìa khóa quyền năng để khóa các script khác
+
+// 3. Xử lý đóng Modal
+if(closeModal) {
+    closeModal.addEventListener('click', () => {
+        modal.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 300);
+    });
+}
+
+// Click ra ngoài khoảng đen để đóng
+if(modal) {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal.click();
+    });
+}
+
+// 4. Xử lý khi nhấn nút "Xác Nhận & Vào Học Ngay"
+        if(btnConfirm) {
+            btnConfirm.addEventListener('click', function() {
+                const nameValue = inputName.value.trim();
+                
+                if (!nameValue) {
+                    alert('Vui lòng điền họ tên của bạn để hệ thống ghi nhận và cấp chứng nhận!');
+                    inputName.focus();
+                    return;
+                }
+
+                // Ghi tên vào Local Storage vĩnh viễn
+                localStorage.setItem('studentName', nameValue);
+
+                // CẬP NHẬT DÒNG NÀY: Chuyển hướng ngay lập tức đến module0.html
+                window.location.href = 'module0.html'; 
+            });
+        }
+
+// Nhấn Enter để xác nhận nhanh
+if(inputName) {
+    inputName.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') btnConfirm.click();
+    });
+}
             // 2. Sticky Navbar
             const navbar = document.getElementById('navbar');
             window.addEventListener('scroll', () => {
@@ -2123,6 +2231,17 @@
             }
         });
     </script>
+    <div id="nameModal" class="course-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Chào mừng bạn đến với khóa học!</h3>
+            <p>Vui lòng nhập chính xác Họ và Tên của bạn để hệ thống cá nhân hóa lộ trình học tập và in Giấy Chứng Nhận sau khi hoàn thành khóa học.</p>
+            <div class="form-group">
+                <input type="text" id="modalStudentName" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="off">
+            </div>
+            <button id="btnConfirmName" class="btn-submit">Xác Nhận <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i></button>
+        </div>
+    </div>
 </body>
 </html>
 </body>
