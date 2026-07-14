@@ -3,45 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký khóa học | MOOCs</title>
+    <title>Đăng ký thành công | Khởi động Khóa học</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #F8FAFC; font-family: 'Inter', sans-serif;}
-        .loader-container {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            display: flex; flex-direction: column; align-items: center; gap: 16px; color: #475569;
+        :root {
+            --primary: #2563EB;
+            --primary-light: #EFF6FF;
+            --success: #10B981;
+            --surface-color: rgba(255, 255, 255, 0.85);
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --bg-gradient: linear-gradient(135deg, #EEF2F6 0%, #E2E8F0 100%);
         }
-        .spinner {
-            width: 40px; height: 40px; border: 4px solid #E2E8F0; border-top: 4px solid #2563EB;
-            border-radius: 50%; animation: spin 1s linear infinite;
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 10;
+
+        /* Hiệu ứng bong bóng nền sinh động nhưng không làm mất tập trung */
+        .bg-blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(37,99,235,0.1) 0%, rgba(255,255,255,0) 70%);
+            top: -10%;
+            right: -10%;
+            z-index: 0;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+        .bg-blob-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, rgba(255,255,255,0) 70%);
+            bottom: -10%;
+            left: -10%;
+            z-index: 0;
+            animation: float 10s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(30px) scale(1.1); }
+        }
+
+        /* Card thiết kế theo phong cách Glassmorphism */
+        .thank-you-card {
+            background: var(--surface-color);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 45px 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08);
+            max-width: 550px;
+            width: 90%;
+            z-index: 1;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Icon chúc mừng chuyển động nhẹ */
+        .icon-success-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .icon-success {
+            font-size: 80px;
+            color: var(--success);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            margin: 0 0 12px 0;
+            background: linear-gradient(to right, #1E3A8A, #2563EB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+            background: var(--primary-light);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        /* Lộ trình học tập trực quan (Learning Pathway UI) */
+        .learning-pathway {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 0 10px;
+        }
+        .learning-pathway::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: #E2E8F0;
+            z-index: -1;
+        }
+        .path-line-progress {
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            width: 40%; /* Chạy đến giữa bước 1 và bước 2 */
+            height: 3px;
+            background: var(--primary);
+            z-index: -1;
+            transition: width 1.5s ease;
+        }
+        .path-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            width: 33%;
+        }
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            border: 3px solid var(--surface-color);
+        }
+        /* Trạng thái các bước */
+        .path-step.completed .step-icon {
+            background: var(--success);
+            color: white;
+        }
+        .path-step.active .step-icon {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+            animation: pulse 2s infinite;
+        }
+        .path-step.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Nút kêu gọi hành động nổi bật */
+        .btn-start {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+            color: #fff;
+            padding: 18px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.3);
+        }
+        .btn-start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 30px -10px rgba(37, 99, 235, 0.5);
+        }
+        .btn-start:active {
+            transform: translateY(-1px);
+        }
+        .btn-start i {
+            transition: transform 0.3s;
+        }
+        .btn-start:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Khu vực thông báo đếm ngược */
+        .redirect-notice {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        #countdown {
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 2px 8px;
+            border-radius: 4px;
+            min-width: 15px;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
-    <div class="loader-container">
-        <div class="spinner"></div>
-        <div>Đang tải biểu mẫu...</div>
+
+    <div class="bg-blob"></div>
+    <div class="bg-blob-2"></div>
+
+    <div class="thank-you-card">
+        <div class="icon-success-wrapper">
+            <i class="fa-solid fa-circle-check icon-success"></i>
+        </div>
+        <h1>Tuyệt vời, chúc mừng bạn!</h1>
+        <p>Bạn đã kích hoạt thành công tài khoản khóa học. Hãy sẵn sàng bắt đầu ngay với <span class="highlight">Module 0 - Khởi động</span> để thiết lập mục tiêu và nhận hướng dẫn học tập.</p>
+        
+        <div class="learning-pathway">
+            <div class="path-line-progress" id="pathProgress"></div>
+            
+            <div class="path-step completed">
+                <div class="step-icon"><i class="fa-solid fa-check"></i></div>
+                <span>Đăng ký</span>
+            </div>
+            <div class="path-step active">
+                <div class="step-icon"><i class="fa-solid fa-play"></i></div>
+                <span>Module 0</span>
+            </div>
+            <div class="path-step">
+                <div class="step-icon"><i class="fa-solid fa-book-open"></i></div>
+                <span>Khóa học chính</span>
+            </div>
+        </div>
+
+        <a href="#" id="startBtn" class="btn-start">
+            Bắt đầu học ngay <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        
+        <div class="redirect-notice">
+            <i class="fa-regular fa-clock"></i> Hệ thống tự động chuyển hướng sau <span id="countdown">5</span> giây...
+        </div>
     </div>
 
-    <iframe 
-        id="gform" 
-        src="https://forms.gle/xyvts89BMLyZsQYy9?embedded=true" 
-        onload="handleFormLoad()">
-    </iframe>
-
     <script>
-        let loadCount = 0;
-        function handleFormLoad() {
-            loadCount++;
-            // Lần 1: Load form. Lần 2: Người dùng vừa submit xong
-            if (loadCount > 1) {
-                // Tự động chuyển thẳng sang trang Cảm ơn
-                window.location.href = "thank-you.html";
+        // Cấu hình đường dẫn dễ dàng bảo trì
+        const MODULE0_URL = "index.html"; 
+        document.getElementById('startBtn').href = MODULE0_URL;
+
+        // 1. Kích hoạt hiệu ứng pháo hoa ăn mừng (UX học tập) khi vừa tải trang
+        window.addEventListener('DOMContentLoaded', () => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#2563EB', '#10B981', '#F59E0B']
+            });
+
+            // Tự động chạy thanh nối tiến trình sau 300ms
+            setTimeout(() => {
+                document.getElementById('pathProgress').style.width = '40%';
+            }, 300);
+        });
+
+        // 2. Xử lý đếm ngược và tự động chuyển hướng mượt mà
+        let timeLeft = 5;
+        const countdownEl = document.getElementById('countdown');
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownEl.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                window.location.href = MODULE0_URL;
             }
-        }
+        }, 1000);
     </script>
-    </body>
+</body>
 </html>
