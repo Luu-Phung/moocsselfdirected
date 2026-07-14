@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám phá Kỹ thuật Time Blocking - Học liệu số tương tác</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           1. CẤU HÌNH BIẾN TOÀN CỤC & TÁI CẤU TRÚC NỀN TẢNG (VARIABLES & RESET)
+           ========================================================================== */
+        :root {
+            --primary: #3b82f6;           /* Xanh dương hiện đại */
+            --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); /* Gradient chủ đạo */
+            --secondary: #8b5cf6;         /* Tím quyến rũ */
+            --bg-body: #f1f5f9;           /* Nền xám nhạt cao cấp */
+            --bg-card: #ffffff;           /* Nền thẻ trắng tinh khiết */
+            --text-main: #1e293b;         /* Chữ chính xám đậm */
+            --text-muted: #64748b;        /* Chữ phụ xám nhạt */
+            --accent-green: #10b981;      /* Màu xanh lá cho Buffer hợp lý */
+            --accent-amber: #f59e0b;      /* Màu vàng cho Buffer thiếu */
+            --accent-red: #ef4444;        /* Màu đỏ cho Buffer quá nhiều */
+            --shadow-sm: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+        }
+
+        h1, h2, h3, .font-poppins {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           2. BỐ CỤC CHÍNH (MAIN LAYOUT STRUCTURE)
+           ========================================================================== */
+        
+        /* Thanh mục lục bên trái (Sidebar Navigation) */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-card);
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 20px;
+            box-shadow: var(--shadow-sm);
+            z-index: 10;
+            transition: var(--transition-smooth);
+        }
+
+        .sidebar .course-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            padding-bottom: 25px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .sidebar .course-logo i {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 30px;
+            flex-grow: 1;
+        }
+
+        .sidebar-item {
+            margin-bottom: 12px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .sidebar-link:hover, .sidebar-item.active .sidebar-link {
+            background: var(--primary-gradient);
+            color: #ffffff;
+            box-shadow: var(--shadow-md);
+            transform: translateX(5px);
+        }
+
+        .sidebar-link i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 15px;
+        }
+
+        /* Vùng nội dung chính chứa Slide (Main Lesson Content Viewport) */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 100vh;
+            background: #fafafa;
+        }
+
+        /* Thanh tiêu đề trên cùng */
+        .top-navbar {
+            height: 70px;
+            background: var(--bg-card);
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .top-navbar .lesson-title {
+            font-size: 1.2rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Nút Típ nổi bật phía trên bên phải */
+        .btn-tips {
+            background: #fef3c7;
+            color: #d97706;
+            border: 1px solid #fde68a;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-tips:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background: #fde68a;
+        }
+
+        /* Khung hiển thị các Slide */
+        .slide-viewport {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .slide-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Cấu trúc Slide đơn lẻ */
+        .slide-content {
+            display: none; /* Ẩn mặc định, điều khiển qua JS */
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            min-height: 480px;
+            position: relative;
+            animation: fadeInSlide 0.6s ease forwards;
+        }
+
+        .slide-content.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide-header {
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .slide-header h2 {
+            font-size: 1.6rem;
+            color: var(--text-main);
+        }
+
+        .slide-body {
+            flex-grow: 1;
+            margin-bottom: 30px;
+        }
+
+        /* Hộp điều cần ghi nhớ (Key Takeaway Component) */
+        .takeaway-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e8f5e9 100%);
+            border: 1px solid #bbf7d0;
+            border-left: 6px solid var(--accent-green);
+            padding: 18px 22px;
+            border-radius: var(--radius-md);
+            margin-top: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .takeaway-box i {
+            color: var(--accent-green);
+            font-size: 1.4rem;
+            margin-top: 2px;
+        }
+
+        .takeaway-box .takeaway-text h4 {
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 3px;
+        }
+
+        .takeaway-box .takeaway-text p {
+            color: #1e40af;
+            font-size: 0.92rem;
+            color: #14532d;
+        }
+
+        /* Thanh điều hướng chân trang (Bottom Navigation Bar) */
+        .bottom-bar {
+            height: 80px;
+            background: var(--bg-card);
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.03);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-nav {
+            padding: 10px 20px;
+            border: 1px solid #cbd5e1;
+            background: var(--bg-card);
+            color: var(--text-main);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #eff6ff;
+            transform: translateY(-1px);
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-nav.btn-primary-action {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-nav.btn-primary-action:hover {
+            color: white;
+            box-shadow: var(--shadow-md);
+            opacity: 0.9;
+        }
+
+        /* Bộ đếm tiến trình & Progress Bar */
+        .progress-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 35%;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 20%; /* Điều khiển động qua JS */
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ==========================================================================
+           3. CSS CHI TIẾT TỪNG MÀN HÌNH TƯƠNG TÁC (SLIDE-SPECIFIC STYLES)
+           ========================================================================== */
+        
+        /* --- MÀN HÌNH 1: ĐỊNH NGHĨA & LỢI ÍCH --- */
+        .s1-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .s1-intro-panel p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .s1-benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .benefit-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .benefit-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .benefit-card.active {
+            background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .benefit-card i {
+            font-size: 2rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            transition: transform 0.4s ease;
+        }
+
+        .benefit-card:hover i {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .benefit-card h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .s1-detail-display {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px dashed #cbd5e1;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 500;
+            color: var(--text-main);
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* --- MÀN HÌNH 2: SO SÁNH TO-DO LIST & TIME BLOCKING --- */
+        .s2-comparison-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 15px;
+        }
+
+        .comp-column {
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .comp-column.primary-style {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border-top: 4px solid var(--primary);
+        }
+
+        .comp-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comp-list {
+            list-style: none;
+        }
+
+        .comp-item {
+            padding: 12px 15px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+        }
+
+        .comp-item:hover {
+            transform: translateX(3px);
+            border-color: #cbd5e1;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .comp-item.highlighted {
+            background: #f0f5ff;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .comp-item i.status-icon {
+            font-size: 1rem;
+        }
+
+        .s2-conclusion {
+            margin-top: 25px;
+            text-align: center;
+            padding: 15px;
+            background: #f5f3ff;
+            border-radius: var(--radius-md);
+            border: 1px solid #ddd6fe;
+            font-weight: 600;
+            color: #5b21b6;
+        }
+
+        /* --- MÀN HÌNH 3: QUY TRÌNH 3 BƯỚC --- */
+        .s3-flow {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .step-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: #cbd5e1;
+            transition: var(--transition-smooth);
+        }
+
+        .step-card:hover, .step-card.expanded {
+            background: #ffffff;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+        }
+
+        .step-card.expanded::before {
+            background: var(--primary-gradient);
+        }
+
+        .step-badge {
+            width: 40px;
+            height: 40px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+            font-weight: 700;
+            color: var(--text-main);
+            transition: var(--transition-smooth);
+        }
+
+        .step-card.expanded .step-badge {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .step-card i.step-icon {
+            font-size: 1.8rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            transition: var(--transition-smooth);
+        }
+
+        .step-card.expanded i.step-icon {
+            color: var(--secondary);
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .step-example-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            text-align: left;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .step-card.expanded .step-example-container {
+            max-height: 200px;
+            margin-top: 15px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        /* --- MÀN HÌNH 4: NGUYÊN TẮC BUFFER TIME 20% --- */
+        .s4-container {
+            margin-top: 15px;
+        }
+
+        .s4-intro {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        /* Thanh Timeline trực quan hóa phân chia thời gian */
+        .visual-timeline-bar {
+            width: 100%;
+            height: 50px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+        }
+
+        .timeline-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+        }
+
+        .segment-study {
+            background-color: var(--primary);
+        }
+
+        .segment-buffer {
+            background-color: var(--accent-green);
+        }
+
+        /* Thiết kế Slider */
+        .slider-control-box {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: var(--radius-md);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .buffer-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .buffer-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--secondary);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.1s;
+        }
+
+        .buffer-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Hộp phản hồi động dựa trên giá trị slider */
+        .buffer-feedback-alert {
+            padding: 15px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-deficient {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .feedback-optimal {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-excessive {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* --- MÀN HÌNH 5: ĐỒNG HỒ SINH HỌC --- */
+        .s5-prime-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .prime-block {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 6px solid #cbd5e1;
+            border-radius: var(--radius-md);
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        .prime-block:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .prime-block.active[data-energy="high"] {
+            border-left-color: var(--accent-red);
+            background: #fff5f5;
+        }
+
+        .prime-block.active[data-energy="medium"] {
+            border-left-color: var(--accent-amber);
+            background: #fffbeb;
+        }
+
+        .prime-block.active[data-energy="low"] {
+            border-left-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .prime-time-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .prime-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .badge-high { background-color: var(--accent-red); }
+        .badge-medium { background-color: var(--accent-amber); }
+        .badge-low { background-color: var(--primary); }
+
+        .prime-hours {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .prime-action-display {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: var(--radius-md);
+            min-height: 80px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .prime-action-display h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .s5-final-banner {
+            margin-top: 25px;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 18px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            font-weight: 500;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ==========================================================================
+           4. THÀNH PHẦN POPUP HƯỚNG DẪN (POPUP / MODAL COMPONENT)
+           ========================================================================== */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: none; /* Điều khiển qua JS */
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup-overlay.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .popup-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 550px;
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .popup-overlay.open .popup-box {
+            transform: translateY(0);
+        }
+
+        .popup-close-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: var(--transition-smooth);
+        }
+
+        .popup-close-btn:hover {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .popup-header {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
+        }
+
+        .popup-header i {
+            color: #d97706;
+            font-size: 1.4rem;
+        }
+
+        .popup-body ul {
+            list-style: none;
+        }
+
+        .popup-body li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .popup-body li i {
+            color: var(--primary);
+            margin-top: 5px;
+        }
+
+        /* ==========================================================================
+           5. HIỆU ỨNG ĐỘNG & ĐÁP ỨNG DI ĐỘNG (ANIMATIONS & RESPONSIVE)
+           ========================================================================== */
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Thiết kế Responsive cho Thiết bị di động */
+        @media (max-width: 992px) {
+            body {
+                flex-direction: column;
+                height: auto;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 15px 20px;
+            }
+            .sidebar .course-logo, .sidebar-footer {
+                display: none;
+            }
+            .sidebar-menu {
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 0;
+                gap: 8px;
+            }
+            .sidebar-item {
+                margin-bottom: 0;
+            }
+            .sidebar-link {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+            .main-container {
+                height: auto;
+                min-height: calc(100vh - 120px);
+            }
+            .s1-layout, .s2-comparison-table, .s3-flow {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+       THÀNH PHẦN 1: THANH MỤC LỤC BÊN TRÁI (SIDEBAR MENU)
+       ========================================================================== -->
+    <nav class="sidebar" aria-label="Mục lục khóa học">
+        <div class="course-logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <div>
+                <strong>Kỹ năng Tự học</strong>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Thời đại Số (MOOCs)</div>
+            </div>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li class="sidebar-item active" data-target="1">
+                <a class="sidebar-link"><i class="fa-solid fa-book-open"></i> <span>1. Time Blocking là gì?</span></a>
+            </li>
+            <li class="sidebar-item" data-target="2">
+                <a class="sidebar-link"><i class="fa-solid fa-code-compare"></i> <span>2. So sánh Trực quan</span></a>
+            </li>
+            <li class="sidebar-item" data-target="3">
+                <a class="sidebar-link"><i class="fa-solid fa-list-check"></i> <span>3. Quy trình 3 Bước</span></a>
+            </li>
+            <li class="sidebar-item" data-target="4">
+                <a class="sidebar-link"><i class="fa-solid fa-hourglass-half"></i> <span>4. Nguyên tắc 20% Buffer</span></a>
+            </li>
+            <li class="sidebar-item" data-target="5">
+                <a class="sidebar-link"><i class="fa-solid fa-clock"></i> <span>5. Đồng hồ Sinh học</span></a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            &copy; 2026 LXD Interactive Module
+        </div>
+    </nav>
+
+    <!-- ==========================================================================
+       VÙNG HIỂN THỊ CHÍNH (MAIN VIEWPORT)
+       ========================================================================== -->
+    <main class="main-container">
+        
+        <!-- THANH TIÊU ĐỀ TRÊN CÙNG -->
+        <header class="top-navbar">
+            <div class="lesson-title">
+                <i class="fa-solid fa-bolt-lightning"></i> <strong>Chủ đề: Quản trị Thời gian thông minh</strong>
+            </div>
+            <button class="btn-tips" id="openTipsBtn" aria-label="Mở mẹo áp dụng thực tế">
+                <i class="fa-solid fa-thumbtack"></i> 📌 Tips áp dụng
+            </button>
+        </header>
+
+        <!-- VÙNG CHỨA CÁC SLIDE NỘI DUNG -->
+        <div class="slide-viewport">
+            <div class="slide-wrapper">
+
+                <!-- ------------------------------------------------------------------
+                   MÀN HÌNH 1: ĐỊNH NGHĨA & LỢI ÍCH
+                   ------------------------------------------------------------------ -->
+                <section class="slide-content active" id="slide-1">
+                    <div class="slide-body-wrapper">
+                        <div class="slide-header">
+                            <h2>Màn hình 1: Phương pháp Time Blocking là gì?</h2>
+                        </div>
+                        <div class="slide-body">
+                            <div class="s1-layout">
+                                <div class="s1-intro-panel">
+                                    <p><strong>Time Blocking</strong> là phương pháp quản lý thời gian bằng cách chia nhỏ ngày làm việc của bạn thành các khối thời gian (blocks) cụ thể. Mỗi khối thời gian được cam kết chỉ để hoàn thành một nhiệm vụ hoặc một nhóm nhiệm vụ nhất định.</p>
+                                    <p style="font-size: 0.95rem; background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                                        💡 <em>Thay vì để thời gian trôi tự do, bạn chủ động định hướng và gán mục tiêu cho từng phút giây trong ngày.</em>
+                                    </p>
+                                </div>
+                                <div class="s1-benefits-grid">
+                                    <!-- Người học bấm vào từng Card để kích hoạt hiển thị mô tả bên dưới -->
+                                    <div class="benefit-card" data-benefit="focus">
+                                        <i class="fa-solid fa-bullseye"></i>
+                                        <h4>Tăng tập trung</h4>
+                                    </div>
+                                    <div class="benefit-card" data-benefit="procrastination">
+                                        <i class="fa-solid fa-stopwatch-20"></i>
+                                        <h4>Giảm trì hoãn</h4>
+                                    </div>
+                                    <div class="benefit-card" data-benefit="control">
+                                        <i class="fa-solid fa-sliders"></i>
+                                        <h4>Kiểm soát thời gian</h4>
+                                    </div>
+                                    <div class="benefit-card" data-benefit="decision">
+                                        <i class="fa-solid fa-brain"></i>
+                                        <h4>Giảm mệt mỏi quyết định</h4>
+                                    </div>
+                                </div>
+                                <!-- Vùng hiển thị thông tin tương tác động -->
+                                <div class="s1-detail-display" id="s1-feedback-box">
+                                    👉 Nhấp chọn một trong các biểu tượng lợi ích ở trên để khám phá lý do tại sao kỹ thuật này hiệu quả!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="takeaway-box">
+                        <i class="fa-solid fa-star"></i>
+                        <div class="takeaway-text">
+                            <h4>ĐIỀU CẦN GHI NHỚ</h4>
+                            <p>Time blocking chuyển bạn từ trạng thái "phản ứng với công việc" sang trạng thái "chủ động kiến tạo" lộ trình trong ngày.</p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ------------------------------------------------------------------
+                   MÀN HÌNH 2: SO SÁNH TO-DO LIST vs TIME BLOCKING
+                   ------------------------------------------------------------------ -->
+                <section class="slide-content" id="slide-2">
+                    <div class="slide-body-wrapper">
+                        <div class="slide-header">
+                            <h2>Màn hình 2: Sự khác biệt: To-do List vs Time Blocking</h2>
+                        </div>
+                        <div class="slide-body">
+                            <div class="s2-comparison-table">
+                                <!-- Cột To-do List truyền thống -->
+                                <div class="comp-column">
+                                    <h3><i class="fa-solid fa-circle-xmark" style="color: var(--accent-red)"></i> To-do List truyền thống</h3>
+                                    <ul class="comp-list">
+                                        <li class="comp-item" data-explain="Chỉ viết ra đầu việc làm bạn choáng ngợp vì không rõ khối lượng thực tế phải xử lý thế nào.">
+                                            <span>Chỉ liệt kê đầu việc</span> <i class="fa-solid fa-chevron-right status-icon" style="color:#94a3b8"></i>
+                                        </li>
+                                        <li class="comp-item" data-explain="Thiếu mốc thời gian khiến các công việc dễ kéo dài vô tận hoặc lấn sang giờ nghỉ ngơi.">
+                                            <span>Không xác định thời gian</span> <i class="fa-solid fa-chevron-right status-icon" style="color:#94a3b8"></i>
+                                        </li>
+                                        <li class="comp-item" data-explain="Vì không ép buộc thời gian thực hiện, bộ não có xu hướng chọn việc dễ làm trước, hoãn việc khó.">
+                                            <span>Rất dễ sa vào trì hoãn</span> <i class="fa-solid fa-chevron-right status-icon" style="color:#94a3b8"></i>
+                                        </li>
+                                        <li class="comp-item" data-explain="Mọi dòng chữ đều bình đẳng trên giấy, khiến bạn mất phương hướng khi chọn việc cốt lõi.">
+                                            <span>Khó thiết lập mức ưu tiên</span> <i class="fa-solid fa-chevron-right status-icon" style="color:#94a3b8"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Cột Time Blocking tiên tiến -->
+                                <div class="comp-column primary-style">
+                                    <h3><i class="fa-solid fa-circle-check" style="color: var(--accent-green)"></i> Chiến lược Time Blocking</h3>
+                                    <ul class="comp-list">
+                                        <li class="comp-item" data-explain="Mỗi việc được đặt gọn gàng trong một chiếc hộp thời gian rõ ràng từ mấy giờ đến mấy giờ.">
+                                            <span>Luôn có khung giờ cụ thể</span> <i class="fa-solid fa-chevron-right status-icon" style="color:#3b82f6"></i>
+                                        </li>
+                                        <li class="comp-item" data-explain="Xây dựng bản đồ ngày rõ ràng, giúp bạn biết chính xác mình phải làm gì ngay khi bắt đầu.">
+                                            <span>Kế hoạch hành động trực quan</span> <i class="fa-solid fa-chevron-right status-icon" style="color:#3b82f6"></i>
+                                        </li>
+                                        <li class="comp-item" data-explain="Khóa khung giờ cho việc quan trọng nhất (Deep Work) trước khi những việc lặt vặt chen chân.">
+                                            <span>Ưu tiên tối đa việc cốt lõi</span> <i class="fa-solid fa-chevron-right status-icon" style="color:#3b82f6"></i>
+                                        </li>
+                                        <li class="comp-item" data-explain="Tăng cam kết tâm lý, đẩy tỷ lệ hoàn thành mục tiêu thực tế lên hơn 80% so với thông thường.">
+                                            <span>Tối ưu hóa tỷ lệ hoàn thành</span> <i class="fa-solid fa-chevron-right status-icon" style="color:#3b82f6"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="s2-conclusion" id="s2-explanation-output">
+                                💡 Nhấp chuột vào bất kỳ đặc điểm so sánh nào ở trên để xem phân tích chuyên sâu!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="takeaway-box">
+                        <i class="fa-solid fa-star"></i>
+                        <div class="takeaway-text">
+                            <h4>ĐIỀU CẦN GHI NHỚ</h4>
+                            <p>To-do List chỉ là ý định; Time Blocking mới là cam kết hành động thực tế.</p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ------------------------------------------------------------------
+                   MÀN HÌNH 3: QUY TRÌNH 3 BƯỚC THỰC HIỆN
+                   ------------------------------------------------------------------ -->
+                <section class="slide-content" id="slide-3">
+                    <div class="slide-body-wrapper">
+                        <div class="slide-header">
+                            <h2>Màn hình 3: Quy trình 3 bước thiết lập hiệu quả</h2>
+                        </div>
+                        <div class="slide-body">
+                            <p style="color: var(--text-muted); margin-bottom: 15px;">Bấm chọn vào từng bước dưới đây để xem mô tả chi tiết kèm ví dụ thực tế trực quan:</p>
+                            
+                            <div class="s3-flow">
+                                <!-- Bước 1 -->
+                                <div class="step-card" data-step="1">
+                                    <div class="step-badge">1</div>
+                                    <i class="fa-solid fa-clipboard-list step-icon"></i>
+                                    <h3>Liệt kê nhiệm vụ</h3>
+                                    <div class="step-example-container">
+                                        <div class="example-title">📝 Ví dụ cụ thể:</div>
+                                        Gom cụm các đầu việc cần giải quyết trong ngày vào danh sách nháp: Ôn thi kiến thức mới, Làm bài tập lớn, Đọc tài liệu nghiên cứu.
+                                    </div>
+                                </div>
+                                <!-- Bước 2 -->
+                                <div class="step-card" data-step="2">
+                                    <div class="step-badge">2</div>
+                                    <i class="fa-solid fa-hourglass-start step-icon"></i>
+                                    <h3>Ước lượng thời gian</h3>
+                                    <div class="step-example-container">
+                                        <div class="example-title">⏱️ Ví dụ cụ thể:</div>
+                                        Dự tính thời gian thực tế dựa trên độ khó: Ôn thi kiến thức mới: <strong>90 phút</strong>; Làm bài tập lớn: <strong>60 phút</strong>.
+                                    </div>
+                                </div>
+                                <!-- Bước 3 -->
+                                <div class="step-card" data-step="3">
+                                    <div class="step-badge">3</div>
+                                    <i class="fa-solid fa-calendar-days step-icon"></i>
+                                    <h3>Gán vào khung giờ</h3>
+                                    <div class="step-example-container">
+                                        <div class="example-title">📅 Ví dụ cụ thể:</div>
+                                        Khóa vị trí cố định trên lịch: <br>
+                                        • <strong>08:00 - 09:30:</strong> Ôn tập kiến thức<br>
+                                        • <strong>09:45 - 10:45:</strong> Làm bài tập
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="takeaway-box">
+                        <i class="fa-solid fa-star"></i>
+                        <div class="takeaway-text">
+                            <h4>ĐIỀU CẦN GHI NHỚ</h4>
+                            <p>Hãy luôn thực tế khi ước lượng. Thà đánh giá thời gian thừa một chút còn hơn đẩy bản thân vào cái bẫy áp lực trễ lịch.</p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ------------------------------------------------------------------
+                   MÀN HÌNH 4: NGUYÊN TẮC BUFFER TIME 20%
+                   ------------------------------------------------------------------ -->
+                <section class="slide-content" id="slide-4">
+                    <div class="slide-body-wrapper">
+                        <div class="slide-header">
+                            <h2>Màn hình 4: Nguyên tắc vàng: 20% Buffer Time</h2>
+                        </div>
+                        <div class="slide-body">
+                            <p class="s4-intro">Một ngày của chúng ta hiếm khi diễn ra hoàn hảo. Luôn có sự cố phát sinh, tin nhắn khẩn cấp hoặc sự mệt mỏi tự nhiên. Do đó, bạn cần dành 20% tổng quỹ thời gian làm <strong>Thời gian dự phòng (Buffer Time)</strong> để xử lý việc đột xuất, nghỉ ngơi ngắn hoặc chuyển đổi tâm lý giữa các đầu việc.</p>
+                            
+                            <!-- Biểu đồ phân chia trực quan tương tác -->
+                            <div class="visual-timeline-bar" id="timelineBar">
+                                <div class="timeline-segment segment-study" id="studySegment" style="width: 80%;">
+                                    Học tập / Làm việc (80%)
+                                </div>
+                                <div class="timeline-segment segment-buffer" id="bufferSegment" style="width: 20%;">
+                                    Buffer (20%)
+                                </div>
+                            </div>
+
+                            <!-- Thanh Slider kéo tương tác -->
+                            <div class="slider-control-box">
+                                <div class="slider-label">
+                                    <span>Tỷ lệ Buffer Time mong muốn:</span>
+                                    <span style="color: var(--secondary); font-size: 1.2rem;" id="sliderValueText">20%</span>
+                                </div>
+                                <input type="range" min="0" max="50" value="20" class="buffer-slider" id="bufferRangeSlider" aria-label="Điều chỉnh tỷ lệ phần trăm thời gian dự phòng">
+                            </div>
+
+                            <!-- Thông điệp phản hồi động -->
+                            <div class="buffer-feedback-alert feedback-optimal" id="bufferAlertBox">
+                                <i class="fa-solid fa-circle-check" id="alertIcon"></i>
+                                <span id="alertMessage">Tỷ lệ Buffer tuyệt vời! Giúp bạn vừa bảo vệ tiến độ học tập vừa không lo bị kiệt sức hay vỡ trận khi phát sinh vấn đề ngoài dự kiến.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="takeaway-box">
+                        <i class="fa-solid fa-star"></i>
+                        <div class="takeaway-text">
+                            <h4>ĐIỀU CẦN GHI NHỚ</h4>
+                            <p>Lịch trình thông minh không phải là một lịch trình kín mít không kẽ hở, mà là một lịch trình có không gian để thích ứng.</p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ------------------------------------------------------------------
+                   MÀN HÌNH 5: ĐỒNG HỒ SINH HỌC CÁ NHÂN
+                   ------------------------------------------------------------------ -->
+                <section class="slide-content" id="slide-5">
+                    <div class="slide-body-wrapper">
+                        <div class="slide-header">
+                            <h2>Màn hình 5: Đồng hồ sinh học cá nhân (Biological Prime Time)</h2>
+                        </div>
+                        <div class="slide-body">
+                            <p style="color: var(--text-muted); padding-bottom: 5px;">Mức năng lượng của chúng ta biến thiên liên tục trong ngày. Hãy nhấp chuột vào từng giai đoạn thời gian bên dưới để tìm hiểu chiến thuật phân bổ loại công việc phù hợp nhất:</p>
+                            
+                            <div class="s5-prime-timeline">
+                                <!-- Khung năng lượng cao -->
+                                <div class="prime-block" data-energy="high">
+                                    <div class="prime-time-info">
+                                        <span class="prime-badge badge-high"><i class="fa-solid fa-bolt"></i> Cao</span>
+                                        <span class="prime-hours">05:00 – 12:00</span>
+                                    </div>
+                                    <div class="prime-status-text">Đỉnh cao sự tập trung <i class="fa-solid fa-chevron-right" style="margin-left: 10px; color: #ccc;"></i></div>
+                                </div>
+                                <!-- Khung năng lượng trung bình -->
+                                <div class="prime-block" data-energy="medium">
+                                    <div class="prime-time-info">
+                                        <span class="prime-badge badge-medium"><i class="fa-solid fa-battery-half"></i> Trung bình</span>
+                                        <span class="prime-hours">12:00 – 17:00</span>
+                                    </div>
+                                    <div class="prime-status-text">Thời điểm duy trì ổn định <i class="fa-solid fa-chevron-right" style="margin-left: 10px; color: #ccc;"></i></div>
+                                </div>
+                                <!-- Khung năng lượng thấp -->
+                                <div class="prime-block" data-energy="low">
+                                    <div class="prime-time-info">
+                                        <span class="prime-badge badge-low"><i class="fa-solid fa-battery-empty"></i> Thấp</span>
+                                        <span class="prime-hours">17:00 – 23:00</span>
+                                    </div>
+                                    <div class="prime-status-text">Giai đoạn phục hồi <i class="fa-solid fa-chevron-right" style="margin-left: 10px; color: #ccc;"></i></div>
+                                </div>
+                            </div>
+
+                            <!-- Vùng tương tác kết quả công việc phù hợp -->
+                            <div class="prime-action-display" id="primeOutputDisplay">
+                                🔍 <em>Nhấp chọn một mốc thời gian ở danh sách trên để xem loại công việc khuyến nghị cụ thể.</em>
+                            </div>
+
+                            <div class="s5-final-banner">
+                                <i class="fa-solid fa-quote-left"></i> Hãy lên lịch những công việc quan trọng nhất vào thời điểm bạn có nhiều năng lượng nhất để đạt hiệu suất tối đa!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="takeaway-box">
+                        <i class="fa-solid fa-star"></i>
+                        <div class="takeaway-text">
+                            <h4>ĐIỀU CẦN GHI NHỚ</h4>
+                            <p>Quản lý năng lượng quan trọng không kém quản lý thời gian. Đừng ép bộ não làm việc nặng khi nó đã cạn kiệt pin sinh học.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXTENSION COMPONENT PLACEHOLDER: 
+                     Nếu sau này bạn muốn nhúng video Youtube, Canva Infographic hay Google Forms, 
+                     chỉ cần thêm một section tương tự với class "slide-content" và viết mã nhúng iframe vào đây. -->
+
+            </div>
+        </div>
+
+        <!-- ==========================================================================
+           THÀNH PHẦN 2: THANH ĐIỀU HƯỚNG CHÂN TRANG (BOTTOM CONTROL BAR)
+           ========================================================================== -->
+        <footer class="bottom-bar">
+            <div class="nav-buttons">
+                <button class="btn-nav" id="homeBtn" title="Về màn hình đầu tiên"><i class="fa-solid fa-house"></i> Home</button>
+                <button class="btn-nav" id="prevBtn"><i class="fa-solid fa-arrow-left"></i> Trước</button>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-text">Tiến trình học tập: <span id="slideIndicator">1</span> / 5</div>
+                <div class="progress-bar-bg" role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1">
+                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-primary-action" id="nextBtn">Tiếp theo <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </footer>
+    </main>
+
+    <!-- ==========================================================================
+       THÀNH PHẦN 3: POPUP POPUP MẸO THỰC TẾ (TIPS WINDOW MODAL)
+       ========================================================================== -->
+    <div class="popup-overlay" id="tipsModalOverlay">
+        <div class="popup-box" role="dialog" aria-labelledby="modalTitle">
+            <button class="popup-close-btn" id="closeTipsBtn" aria-label="Đóng popup">&times;</button>
+            <div class="popup-header">
+                <i class="fa-solid fa-lightbulb"></i>
+                <h3 id="modalTitle">Mẹo Áp Dụng Thực Tế (Pro-Tips)</h3>
+            </div>
+            <div class="popup-body">
+                <ul>
+                    <li><i class="fa-solid fa-circle-dot"></i> <span><strong>Gom nhóm tác vụ nhỏ (Batching):</strong> Đừng lập khối thời gian riêng lẻ cho từng email. Hãy gom chúng lại làm một khối duy nhất dài 30 phút vào cuối buổi chiều.</span></li>
+                    <li><i class="fa-solid fa-circle-dot"></i> <span><strong>Đừng quên việc sinh hoạt:</strong> Hãy đưa cả giờ ăn trưa, đi bộ thể thao hoặc thư giãn vào Time block để đảm bảo cuộc sống cân bằng.</span></li>
+                    <li><i class="fa-solid fa-circle-dot"></i> <span><strong>Sử dụng công cụ trực quan:</strong> Nên số hóa lịch bằng Google Calendar, Outlook Calendar giúp dễ dàng co giãn, di chuyển các khối công việc bằng thao tác kéo thả mượt mà.</span></li>
+                    <li><i class="fa-solid fa-circle-dot"></i> <span><strong>Khóa ngày đánh giá (Weekly Review):</strong> Dành ra 30 phút ngày Chủ nhật để nhìn lại tuần cũ và lên sẵn khung sườn cho tuần kế tiếp.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       6. ĐIỀU KHIỂN LOGIC JAVASCRIPT TƯƠNG TÁC (INTERACTION LOGIC)
+       ========================================================================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // --- KHỞI TẠO BIẾN TOÀN CỤC QUẢN LÝ TIẾN TRÌNH SLIDE ---
+            let currentSlide = 1;
+            const totalSlides = 5;
+
+            // Truy vấn các phần tử DOM cốt lõi
+            const slides = document.querySelectorAll('.slide-content');
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const homeBtn = document.getElementById('homeBtn');
+            const slideIndicator = document.getElementById('slideIndicator');
+            const progressBarFill = document.getElementById('progressBarFill');
+
+            // --- HÀM CẬP NHẬT TRẠNG THÁI GIAO DIỆN HỌC TẬP ---
+            function updateLessonUI() {
+                // 1. Chuyển đổi hiển thị slide tương ứng bằng class hoạt động
+                slides.forEach((slide, index) => {
+                    if (index + 1 === currentSlide) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+
+                // 2. Đồng bộ hóa trạng thái chọn trên thanh mục lục bên trái
+                sidebarItems.forEach(item => {
+                    const target = parseInt(item.getAttribute('data-target'));
+                    if (target === currentSlide) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // 3. Cập nhật các chỉ số và thanh tiến trình (Progress Bar)
+                slideIndicator.innerText = currentSlide;
+                const progressPercentage = (currentSlide / totalSlides) * 100;
+                progressBarFill.style.width = progressPercentage + '%';
+
+                // 4. Kiểm soát bật/tắt nút điều hướng ở chân trang
+                prevBtn.disabled = (currentSlide === 1);
+                
+                if (currentSlide === totalSlides) {
+                    nextBtn.innerHTML = `Hoàn thành <i class="fa-solid fa-circle-check"></i>`;
+                } else {
+                    nextBtn.innerHTML = `Tiếp theo <i class="fa-solid fa-arrow-right"></i>`;
+                }
+            }
+
+            // --- SỰ KIỆN ĐIỀU HƯỚNG ---
+            // --- SỰ KIỆN ĐIỀU HƯỚNG ---
+// --- SỰ KIỆN ĐIỀU HƯỚNG ---
+nextBtn.addEventListener('click', function() {
+    if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateLessonUI();
+    } else {
+        // Hiển thị thông báo ghi nhận thành tích trước
+        alert("🎉 Chúc mừng bạn đã hoàn thành bài học khám phá chiến lược Time Blocking!");
+        // Sau khi người học bấm OK, hệ thống sẽ điều hướng
+        window.location.href = 'module2.html';
+    }
+});
+            prevBtn.addEventListener('click', function() {
+                if (currentSlide > 1) {
+                    currentSlide--;
+                    updateLessonUI();
+                }
+            });
+
+            homeBtn.addEventListener('click', function() {
+                currentSlide = 1;
+                updateLessonUI();
+            });
+
+            // Gán sự kiện click nhanh từ Menu Mục lục bên trái
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    currentSlide = parseInt(this.getAttribute('data-target'));
+                    updateLessonUI();
+                });
+            });
+
+
+            // ==========================================================================
+            // TƯƠNG TÁC CHI TIẾT CHO MÀN HÌNH 1 (SLIDE 1: BENEFIT CARDS)
+            // ==========================================================================
+            const benefitCards = document.querySelectorAll('.benefit-card');
+            const s1Feedback = document.getElementById('s1-feedback-box');
+
+            const benefitDetails = {
+                focus: "🎯 <strong>Tăng tập trung tối đa:</strong> Bằng cách cam kết một khung giờ duy nhất cho một việc, bộ não loại bỏ xu hướng phân tâm đa nhiệm (multitasking), giúp bạn đi sâu vào trạng thái làm việc sâu (Deep Work).",
+                procrastination: "⏱️ <strong>Triệt tiêu sự trì hoãn:</strong> Khi thời gian đã được đóng khung rõ ràng (ví dụ: học toán lúc 8:00), bạn không còn mất thời gian đắn đo xem mình nên bắt đầu hay chưa, bẻ gãy quán tính trì hoãn.",
+                control: "⚙️ <strong>Làm chủ dòng thời gian:</strong> Bạn sẽ biết chính xác quỹ thời gian thực tế trong ngày của mình đi về đâu, thay vì rơi vào trạng thái mơ hồ 'không biết làm gì mà hết ngày'.",
+                decision: "🧠 <strong>Bảo vệ năng lượng bộ não:</strong> Quyết định xem tiếp theo phải làm gì tốn rất nhiều năng lượng. Khóa lịch từ trước giúp bạn dành toàn bộ tài nguyên não bộ cho công việc chuyên môn."
+            };
+
+            benefitCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    benefitCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    const key = this.getAttribute('data-benefit');
+                    s1Feedback.innerHTML = benefitDetails[key];
+                });
+            });
+
+
+            // ==========================================================================
+            // TƯƠNG TÁC CHI TIẾT CHO MÀN HÌNH 2 (SLIDE 2: COMPARISON ROWS)
+            // ==========================================================================
+            const compItems = document.querySelectorAll('.comp-item');
+            const s2Explanation = document.getElementById('s2-explanation-output');
+
+            compItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    compItems.forEach(i => i.classList.remove('highlighted'));
+                    this.classList.add('highlighted');
+                    const text = this.getAttribute('data-explain');
+                    s2Explanation.innerHTML = `💡 ${text}`;
+                });
+            });
+
+
+            // ==========================================================================
+            // TƯƠNG TÁC CHI TIẾT CHO MÀN HÌNH 3 (SLIDE 3: ACCORDION EXPANSION FLOW)
+            // ==========================================================================
+            const stepCards = document.querySelectorAll('.step-card');
+
+            stepCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Nếu card đã mở, click lại sẽ thu gọn nó
+                    if (this.classList.contains('expanded')) {
+                        this.classList.remove('expanded');
+                    } else {
+                        // Thu gọn tất cả các card khác và mở rộng card hiện tại
+                        stepCards.forEach(c => c.classList.remove('expanded'));
+                        this.classList.add('expanded');
+                    }
+                });
+            });
+
+
+            // ==========================================================================
+            // TƯƠNG TÁC CHI TIẾT CHO MÀN HÌNH 4 (SLIDE 4: DYNAMIC BUFFER RANGE SLIDER)
+            // ==========================================================================
+            const slider = document.getElementById('bufferRangeSlider');
+            const sliderValueText = document.getElementById('sliderValueText');
+            const studySegment = document.getElementById('studySegment');
+            const bufferSegment = document.getElementById('bufferSegment');
+            const alertBox = document.getElementById('bufferAlertBox');
+            const alertIcon = document.getElementById('alertIcon');
+            const alertMessage = document.getElementById('alertMessage');
+
+            slider.addEventListener('input', function() {
+                const val = parseInt(this.value);
+                sliderValueText.innerText = val + '%';
+                
+                // Cập nhật linh hoạt độ rộng thanh đồ họa trực quan
+                const studyVal = 100 - val;
+                studySegment.style.width = studyVal + '%';
+                studySegment.innerText = `Học tập / Làm việc (${studyVal}%)`;
+                
+                bufferSegment.style.width = val + '%';
+                bufferSegment.innerText = `Buffer (${val}%)`;
+
+                // Xử lý các ngưỡng logic phản hồi
+                // Ngưỡng 1: Thiếu thời gian dự phòng (Buffer quá ít)
+                if (val < 15) {
+                    alertBox.className = "buffer-feedback-alert feedback-deficient";
+                    alertIcon.className = "fa-solid fa-triangle-exclamation";
+                    alertMessage.innerText = "Buffer quá ít! Lịch trình của bạn đang quá khít, chỉ cần một sự cố nhỏ như tắc đường hay máy hỏng sẽ làm sụp đổ toàn bộ kế hoạch ngày.";
+                    bufferSegment.style.backgroundColor = "var(--accent-amber)";
+                } 
+                // Ngưỡng 2: Tối ưu (Buffer hợp lý)
+                else if (val >= 15 && val <= 25) {
+                    alertBox.className = "buffer-feedback-alert feedback-optimal";
+                    alertIcon.className = "fa-solid fa-circle-check";
+                    alertMessage.innerText = "Buffer lý tưởng! Tỷ lệ quanh mức 20% giúp bạn tạo được 'tấm đệm' an toàn lý tưởng cho tinh thần mà vẫn giữ vững hiệu suất làm việc cao.";
+                    bufferSegment.style.backgroundColor = "var(--accent-green)";
+                } 
+                // Ngưỡng 3: Lãng phí thời gian (Buffer quá nhiều)
+                else {
+                    alertBox.className = "buffer-feedback-alert feedback-excessive";
+                    alertIcon.className = "fa-solid fa-circle-xmark";
+                    alertMessage.innerText = "Buffer quá nhiều! Việc dành quá nhiều thời gian trống có thể gây lãng phí tài nguyên và tạo điều kiện cho thói quen thư thả, lười biếng phát sinh.";
+                    bufferSegment.style.backgroundColor = "var(--accent-red)";
+                }
+            });
+
+
+            // ==========================================================================
+            // TƯƠNG TÁC CHI TIẾT CHO MÀN HÌNH 5 (SLIDE 5: CHU KỲ NĂNG LƯỢNG SINH HỌC)
+            // ==========================================================================
+            const primeBlocks = document.querySelectorAll('.prime-block');
+            const primeOutputDisplay = document.getElementById('primeOutputDisplay');
+
+            const energyRecommendations = {
+                high: "<h4>🎯 Giai đoạn Năng lượng Đỉnh cao (Deep Work):</h4><ul><li><strong>Loại công việc phù hợp:</strong> Học các khái niệm lý thuyết khó, giải bài tập phức tạp, viết tiểu luận luận văn, lập trình hoặc tư duy chiến lược.</li><li><strong>Lời khuyên:</strong> Hãy ngắt hoàn toàn kết nối mạng xã hội, điện thoại để bảo vệ tối đa khoảng thời gian vàng ngọc này.</li></ul>",
+                medium: "<h4>📩 Giai đoạn Năng lượng Duy trì (Shallow Work):</h4><ul><li><strong>Loại công việc phù hợp:</strong> Trả lời hòm thư điện tử (email), thảo luận làm việc nhóm, lên lịch trình tuần, tìm kiếm tài liệu tham khảo cơ bản.</li><li><strong>Lời khuyên:</strong> Hoàn thành các công việc mang tính thủ tục hành chính, giao tiếp xã hội mà không cần dốc toàn lực tư duy.</li></ul>",
+                low: "<h4>🌱 Giai đoạn Năng lượng Thấp (Recovery / Rest):</h4><ul><li><strong>Loại công việc phù hợp:</strong> Sắp xếp lại dọn dẹp bàn làm việc, nghe podcast học tập nhẹ nhàng, đọc sách giải trí, tập thể dục nhẹ hoặc nghỉ ngơi hoàn toàn.</li><li><strong>Lời khuyên:</strong> Tuyệt đối tránh việc cố đấm ăn xôi nạp thêm kiến thức nặng, điều này chỉ khiến bộ não thêm kiệt quệ.</li></ul>"
+            };
+
+            primeBlocks.forEach(block => {
+                block.addEventListener('click', function() {
+                    primeBlocks.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const energyType = this.getAttribute('data-energy');
+                    primeOutputDisplay.innerHTML = energyRecommendations[energyType];
+                });
+            });
+
+
+            // ==========================================================================
+            // QUẢN LÝ POPUP CỬA SỔ LỰA CHỌN MẸO (MODAL DIALOG POPUP TIPS)
+            // ==========================================================================
+            const openTipsBtn = document.getElementById('openTipsBtn');
+            const closeTipsBtn = document.getElementById('closeTipsBtn');
+            const tipsModalOverlay = document.getElementById('tipsModalOverlay');
+
+            function openModal() {
+                tipsModalOverlay.classList.add('open');
+            }
+
+            function closeModal() {
+                tipsModalOverlay.classList.remove('open');
+            }
+
+            openTipsBtn.addEventListener('click', openModal);
+            closeTipsBtn.addEventListener('click', closeModal);
+
+            // Đóng cửa sổ popup tự động nếu người học bấm chuột ra vùng nền mờ bên ngoài
+            tipsModalOverlay.addEventListener('click', function(event) {
+                if (event.target === tipsModalOverlay) {
+                    closeModal();
+                }
+            });
+
+            // Hỗ trợ đóng nhanh popup bằng phím bấm Escape (ESC) cho trải nghiệm tối ưu
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && tipsModalOverlay.classList.contains('open')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
