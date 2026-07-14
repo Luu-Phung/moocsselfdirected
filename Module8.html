@@ -437,8 +437,6 @@
                 ⚠️ Vui lòng trả lời cả 2 câu hỏi để mở khóa nút chuyển tiếp.
             </p>
         </div>
-
-        <footer>&copy; 2026 Nền tảng MOOCs "Kỹ năng Tự học trong Thời đại Số".</footer>
     </main>
 
     <!-- Modals cho Bài 8.1 -->
@@ -784,7 +782,7 @@
             // ========== CHUYỂN ĐẾN DỰ ÁN CUỐI KHÓA ==========
             window.goToFinalProject = function() {
                 // Thay đổi URL bên dưới thành trang dự án cuối khóa thực tế
-                window.location.href = 'du-an-cuoi-khoa.html';
+                window.location.href = 'duAnCuoiKhoa.html';
             };
 
             // Quiz handlers
@@ -869,10 +867,24 @@
             }
 
             // Khởi tạo luồng bài học
-            let startOn8_2 = false;
-            try { startOn8_2 = localStorage.getItem('bai8_1_completed') === 'true'; } catch(e) {}
-            if (startOn8_2) { window.switchToBai8_2(); } else { window.switchToBai8_1(); }
-            updateProgress();
+const urlParams = new URLSearchParams(window.location.search);
+const forceStart = urlParams.get('force_start');
+
+if (forceStart === '8.1') {
+    // Nếu đi từ link Module 7 có chứa ?force_start=8.1, luôn mở 8.1
+    window.switchToBai8_1();
+} else {
+    // Nếu tải lại trang bình thường, kiểm tra xem đã học xong 8.1 chưa
+    let startOn8_2 = false;
+    try { startOn8_2 = localStorage.getItem('bai8_1_completed') === 'true'; } catch(e) {}
+    
+    if (startOn8_2) { 
+        window.switchToBai8_2(); 
+    } else { 
+        window.switchToBai8_1(); 
+    }
+}
+updateProgress();
         })();
     </script>
 </body>
