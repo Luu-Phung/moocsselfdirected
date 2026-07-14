@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giấy Chứng Nhận Của Bạn</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%); 
+        }
+        .font-thu-phap { font-family: 'Alex Brush', cursive; }
+        .page-animation { animation: smoothAppear 0.4s ease-out forwards; }
+        @keyframes smoothAppear { 
+            0% { opacity: 0; transform: scale(0.99); } 
+            100% { opacity: 1; transform: scale(1); } 
+        }
+
+        @media print {
+            body { background: none !important; padding: 0 !important; }
+            .no-print { display: none !important; }
+            .cert-container { box-shadow: none !important; border: none !important; width: 100% !important; max-width: 100% !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 text-slate-100">
+
+    <div class="w-full max-w-4xl flex-col items-center page-animation flex text-slate-900">
+        
+        <div class="no-print bg-white/5 backdrop-blur-md p-3 rounded-xl w-full mb-4 border border-white/10 flex justify-between items-center text-xs text-white">
+            <button id="btn-back" class="font-medium text-slate-300 hover:text-amber-400 transition cursor-pointer px-4 py-2 rounded-lg bg-white/5">
+                ← Về trang Dashboard
+            </button>
+            <button id="btn-print" class="bg-amber-500 text-slate-950 font-bold py-2 px-6 rounded-lg shadow-sm hover:bg-amber-400 transition tracking-wide uppercase cursor-pointer">
+                🖨️ Tiến hành in / Lưu file PDF
+            </button>
+        </div>
+
+        <div class="cert-container relative w-full aspect-[4/3] bg-cover bg-center shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] rounded-sm box-border overflow-hidden" 
+             style="background-image: url('chung_nhan.png');">
+            
+            <div class="absolute w-full text-center left-0 px-10" style="top: 31%;"> 
+                <h2 id="cert-name" class="font-thu-phap text-6xl sm:text-7xl lg:text-8xl text-[#4a2c11] select-all tracking-wide">
+                </h2>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // LẤY TÊN TỪ LOCAL STORAGE THAY VÌ TỪ URL
+            const studentName = localStorage.getItem('studentName');
+
+            if (studentName) {
+                document.getElementById('cert-name').innerText = studentName;
+            } else {
+                alert("Không tìm thấy dữ liệu tên! Hệ thống sẽ đưa bạn về trang nhập liệu.");
+                window.location.href = 'index.html';
+            }
+
+            // Nút quay lại điều hướng về module cuối cùng hoặc dashboard
+            document.getElementById('btn-back').addEventListener('click', () => {
+                window.location.href = 'module0.html'; 
+            });
+
+            document.getElementById('btn-print').addEventListener('click', () => {
+                window.print();
+            });
+        });
+    </script>
+</body>
+</html>
