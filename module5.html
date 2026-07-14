@@ -10,6 +10,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+            .btn-primary {
+    display: block;
+    width: fit-content;   /* hoặc bỏ dòng này nếu không cần */
+    margin: 20px auto;
+
+    background: var(--primary);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+    border: none;
+    cursor: pointer;
+}
+        ..btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+}
         /* --- CSS VARIABLES & THEME --- */
         :root {
             --primary: #2563EB;
@@ -361,6 +383,65 @@
         .custom-checklist li i { color: var(--secondary); font-size: 1.1rem; }
 
         /* --- THE ONLY SINGLE VIDEO CONTAINER --- */
+        /* --- TÙY CHỈNH CHO VIDEO QUIZ OVERLAY --- */
+.quiz-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quiz-box {
+    background: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 550px;
+    text-align: left;
+    color: var(--text-main);
+    box-shadow: var(--shadow-hover);
+    border: 2px solid var(--primary);
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+}
+
+.radio-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.radio-label:hover {
+    border-color: var(--primary);
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.quiz-feedback {
+    min-height: 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
         .single-video-container {
             background: #0F172A;
             border: 2px solid var(--primary);
@@ -941,21 +1022,33 @@
 
         <hr class="section-divider">
 
-        <!-- ================================================================= -->
-        <!-- CHỖ CHÈN VIDEO DUY NHẤT TRÊN TOÀN BỘ TRANG / SINGLE VIDEO CONTAINER -->
-        <!-- ================================================================= -->
         <section id="main-video-section" class="fade-in">
-            <div class="single-video-container" id="unique-video-spot" style="padding: 0; overflow: hidden; height: 500px; background: #000000;">
-                <iframe 
-                    src="https://drive.google.com/file/d/1XMyinMa1xpWM2uLV079I8X8de7MHqiKj/preview" 
-                    width="100%" 
-                    height="100%" 
-                    style="border: none;" 
-                    allow="autoplay; encrypted-media" 
-                    allowfullscreen>
-                </iframe>
+    <div class="single-video-container" id="unique-video-spot" style="padding: 0; overflow: hidden; height: 500px; background: #000000; position: relative;">
+        
+        <video id="module-video" width="100%" height="100%" controls controlsList="nodownload">
+            <source src="module5.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ thẻ video HTML5.
+        </video>
+
+        <div id="video-quiz-overlay" class="quiz-overlay" style="display: none;">
+            <div class="quiz-box">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;"><i class="fa-solid fa-brain"></i> Kiểm tra kiến thức nhanh</h3>
+                <p style="font-size: 1.05rem; margin-bottom: 1rem;">Theo nội dung Module 5 về mô hình cấu trúc Prompt RCTF, chữ <strong>C</strong> đại diện cho yếu tố nào?</p>
+                
+                <div class="quiz-options">
+                    <label class="radio-label"><input type="radio" name="rctf-q1" value="wrong"> Content (Nội dung)</label>
+                    <label class="radio-label"><input type="radio" name="rctf-q1" value="correct"> Context (Bối cảnh nền tảng)</label>
+                    <label class="radio-label"><input type="radio" name="rctf-q1" value="wrong"> Create (Kiến tạo)</label>
+                    <label class="radio-label"><input type="radio" name="rctf-q1" value="wrong"> Condition (Điều kiện)</label>
+                </div>
+                
+                <p id="quiz-feedback" class="quiz-feedback"></p>
+                <button class="btn btn-primary" style="margin-top: 1rem;" onclick="checkVideoQuiz()">Xác nhận đáp án</button>
             </div>
-        </section>
+        </div>
+
+    </div>
+</section>
         <!-- ================================================================= -->
 
         <hr class="section-divider">
@@ -1296,6 +1389,8 @@
                 </a>
             </div>
         </section>
+        <button class="btn-primary"style="margin-top:20px;"onclick="finishModule1()">Hoàn thành Module</button>
+
     </main>
 
     <!-- FOOTER ARCHITECTURE -->
@@ -1308,6 +1403,15 @@
 
     <!-- --- JAVASCRIPT LOGIC DRIVER --- -->
     <script>
+                 function finishModule1(){
+
+    localStorage.setItem("currentModule",5);
+
+    alert("Bạn đã hoàn thành Module 5!");
+
+    window.location.href="module6.html";
+
+}
         document.addEventListener('DOMContentLoaded', () => {
             
             // 1. SCROLL READING PROGRESS BAR INDICATOR
@@ -1418,6 +1522,67 @@
                 console.error('Không thể sao chép văn bản: ', err);
             });
         }
+        // --- 7. INTERACTIVE VIDEO LOGIC (CHỐNG TUA & CHÈN CÂU HỎI) --- //
+const video = document.getElementById('module-video');
+const quizOverlay = document.getElementById('video-quiz-overlay');
+const feedback = document.getElementById('quiz-feedback');
+
+let supposedCurrentTime = 0;
+let hasAnsweredCorrectly = false;
+// Cài đặt thời điểm hiển thị câu hỏi (đơn vị: giây). Ví dụ ở đây là giây thứ 60.
+const triggerTime = 60; 
+
+// Sự kiện 1: Theo dõi thời gian và kích hoạt câu hỏi
+video.addEventListener('timeupdate', function() {
+    // Lưu lại thời gian người dùng đã xem thực tế để chống tua
+    if (!video.seeking) {
+        if(video.currentTime > supposedCurrentTime) {
+            supposedCurrentTime = video.currentTime;
+        }
+    }
+    
+    // Kích hoạt câu hỏi khi đến mốc triggerTime (nếu chưa trả lời đúng)
+    if (video.currentTime >= triggerTime && !hasAnsweredCorrectly) {
+        video.pause();
+        video.controls = false; // Tạm tắt thanh công cụ để học viên không bấm Play tiếp được
+        quizOverlay.style.display = 'flex';
+    }
+});
+
+// Sự kiện 2: Ngăn chặn thao tác tua (Seeking prevention)
+video.addEventListener('seeking', function() {
+    // Nếu học viên cố tình kéo thanh thời gian vượt qua mức đã xem
+    let delta = video.currentTime - supposedCurrentTime;
+    if (Math.abs(delta) > 0.01 && video.currentTime > supposedCurrentTime) {
+        video.currentTime = supposedCurrentTime;
+    }
+});
+
+// Hàm kiểm tra đáp án
+function checkVideoQuiz() {
+    const selected = document.querySelector('input[name="rctf-q1"]:checked');
+    if (!selected) {
+        feedback.style.color = "var(--danger)";
+        feedback.textContent = "⚠ Vui lòng chọn một đáp án trước khi xác nhận.";
+        return;
+    }
+
+    if (selected.value === 'correct') {
+        feedback.style.color = "var(--success)";
+        feedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> Chính xác! Context là Bối cảnh giúp AI hiểu rõ tình huống. Video sẽ tiếp tục ngay...';
+        hasAnsweredCorrectly = true; // Ghi nhận đã pass
+        
+        // Đợi 2 giây để học viên đọc feedback rồi mới tiếp tục
+        setTimeout(() => {
+            quizOverlay.style.display = 'none';
+            video.controls = true; // Bật lại thanh công cụ
+            video.play();
+        }, 2000);
+    } else {
+        feedback.style.color = "var(--danger)";
+        feedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Chưa chính xác. Gợi ý: Hãy nhớ lại chữ C cung cấp "bối cảnh nền tảng, giới hạn" cho AI.';
+    }
+}
     </script>
 </body>
 </html>
